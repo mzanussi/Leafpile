@@ -1,4 +1,4 @@
-package com.michaelzanussi.leafpile;
+package com.michaelzanussi.leafpile.objecttable;
 
 /**
  * @author <a href="mailto:iosdevx@gmail.com">Michael Zanussi</a>

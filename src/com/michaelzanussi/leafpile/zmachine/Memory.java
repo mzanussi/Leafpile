@@ -1,10 +1,12 @@
-package com.michaelzanussi.leafpile;
+package com.michaelzanussi.leafpile.zmachine;
 
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+
+import com.michaelzanussi.leafpile.Debug;
 
 /**
  * Z-machine memory (i.e. the story)

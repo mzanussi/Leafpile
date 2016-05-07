@@ -1,6 +1,9 @@
-package com.michaelzanussi.leafpile;
+package com.michaelzanussi.leafpile.objecttable;
 
 import java.util.List;
+
+import com.michaelzanussi.leafpile.Debug;
+import com.michaelzanussi.leafpile.zmachine.Memory;
 
 /**
  * @author <a href="mailto:iosdevx@gmail.com">Michael Zanussi</a>
