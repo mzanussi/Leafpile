@@ -3,6 +3,7 @@ package com.michaelzanussi.leafpile.factory;
 import com.michaelzanussi.leafpile.instructions.Call;
 import com.michaelzanussi.leafpile.instructions.Instruction;
 import com.michaelzanussi.leafpile.instructions.Instruction.Opcount;
+import com.michaelzanussi.leafpile.instructions.LongFormInstruction;
 import com.michaelzanussi.leafpile.instructions.Opcode;
 import com.michaelzanussi.leafpile.instructions.VariableFormInstruction;
 import com.michaelzanussi.leafpile.zmachine.Zmachine;
@@ -39,7 +40,7 @@ public class Factory {
 		} else if (bits67 == 2) {		// short form
 			assert (false) : "short form";
 		} else {						// long form
-			assert (false) : "long form";
+			return new LongFormInstruction(zmachine);
 		}
 		return null;
 	}
