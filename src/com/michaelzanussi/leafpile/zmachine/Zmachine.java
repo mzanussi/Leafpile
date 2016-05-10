@@ -43,10 +43,18 @@ public class Zmachine {
 		return rous;
 	}
 	
+	public Rous createRoutine(int pc) {
+		// first push the current routine onto the stack
+		rscs.add(rous);
+		// then create a new routine and return it
+		rous = new Rous(pc, this);
+		return rous;
+	}
+	
 	public void test() {
 		
 		// create new routine state with pc, set as current
-		rous = new Rous(memory.getInitialPC());
+		rous = new Rous(memory.getInitialPC(), this);
 		
 		while (true) {
 			Instruction instruction = factory.createInstruction();

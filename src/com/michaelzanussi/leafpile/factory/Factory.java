@@ -29,12 +29,12 @@ public class Factory {
 		int pc = zmachine.rous().getPC();
 		// get the opcode byte
 		int obyte = zmachine.memory().getByte(pc);
-		// get bits 6 & 7 to determine form
+		// get bits 6 & 7 to determine form (4.3)
 		int bits67 = obyte >> 6;
 		
-		if (bits67 == 3) {				// Variable form
+		if (bits67 == 3) {				// variable form
 			return new VariableFormInstruction(zmachine);
-		} else if (obyte == 0xbe) {	// extended form
+		} else if (obyte == 0xbe) {		// extended form
 			assert (false) : "extended form";
 		} else if (bits67 == 2) {		// short form
 			assert (false) : "short form";
@@ -52,7 +52,7 @@ public class Factory {
 	 * @param opcode the opcode number
 	 * @return an opcode object
 	 */
-	public Opcode createOpcode(Instruction instruction/*Opcount opcount, int opcode_no*/) {
+	public Opcode createOpcode(Instruction instruction) {
 		
 		Opcount opcount = instruction.getOpcount();
 		int opcode_no = instruction.getOpcodeNumber();
@@ -80,7 +80,7 @@ public class Factory {
 			switch (opcode_no) {
 			case 0x00:
 				if (zmachine.memory().getVersion() <= 3) {
-					return new Call(instruction/*opcount, opcode_no, zmachine*/);
+					return new Call(instruction);
 				} else {
 					assert (false) : "call_vs not implemented";
 				}

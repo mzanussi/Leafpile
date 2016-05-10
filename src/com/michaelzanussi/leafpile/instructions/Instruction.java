@@ -1,5 +1,7 @@
 package com.michaelzanussi.leafpile.instructions;
 
+import java.util.List;
+
 import com.michaelzanussi.leafpile.zmachine.Zmachine;
 
 /**
@@ -42,6 +44,13 @@ public interface Instruction {
 	 * @return the opcode byte
 	 */
 	public int getOpcodeByte();
+	
+	/**
+	 * Returns the operands for ths instruction.
+	 * 
+	 * @return the operands
+	 */
+	public List<Integer> getOperands();
 	
 	/**
 	 * Returns the Z-machine.

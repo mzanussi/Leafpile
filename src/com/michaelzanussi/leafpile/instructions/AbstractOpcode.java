@@ -1,5 +1,6 @@
 package com.michaelzanussi.leafpile.instructions;
 
+import com.michaelzanussi.leafpile.zmachine.Memory;
 import com.michaelzanussi.leafpile.zmachine.Zmachine;
 
 /**
@@ -13,6 +14,7 @@ public abstract class AbstractOpcode implements Opcode {
 
 	protected Zmachine zmachine;
 	protected Instruction instruction;
+	protected Memory memory;
 	
 	protected String name;
 	
@@ -22,8 +24,16 @@ public abstract class AbstractOpcode implements Opcode {
 	public AbstractOpcode(Instruction instruction) {
 		this.instruction = instruction;
 		zmachine = instruction.getZmachine();
+		memory = zmachine.memory();
 		isStore = false;
 		isBranch = false;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.michaelzanussi.leafpile.instructions.Opcode#isStore()
+	 */
+	public boolean isStore() {
+		return isStore;
 	}
 	
 	/* (non-Javadoc)

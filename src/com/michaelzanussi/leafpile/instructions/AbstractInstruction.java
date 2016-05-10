@@ -71,6 +71,13 @@ public abstract class AbstractInstruction implements Instruction {
 	}
 	
 	/* (non-Javadoc)
+	 * @see com.michaelzanussi.leafpile.instructions.Instruction#getOperands()
+	 */
+	public List<Integer> getOperands() {
+		return operands;
+	}
+	
+	/* (non-Javadoc)
 	 * @see com.michaelzanussi.leafpile.instructions.Instruction#getZmachine()
 	 */
 	public Zmachine getZmachine() {

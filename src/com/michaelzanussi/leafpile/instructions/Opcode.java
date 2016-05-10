@@ -9,6 +9,14 @@ package com.michaelzanussi.leafpile.instructions;
 public interface Opcode {
 	
 	/**
+	 * Does this instruction store its result?
+	 * 
+	 * @return <code>true</code> if the instruction stores its
+	 * result; otherwise, <code>false</code>.
+	 */
+	public boolean isStore();
+	
+	/**
 	 * Execute the opcode portion of the instruction.
 	 */
 	public void exec();
