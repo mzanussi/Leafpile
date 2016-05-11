@@ -23,7 +23,7 @@ public class Zmachine {
 	private Stack<Rous> rscs;
 	
 	// The current routine being executed.
-	private Rous rous;
+	private Rous current;
 	
 	private Factory factory;
 	
@@ -39,22 +39,22 @@ public class Zmachine {
 	}
 	
 	// getter
-	public Rous rous() {
-		return rous;
+	public Rous getCurrentRous() {
+		return current;
 	}
 	
 	public Rous createRoutine(int pc) {
 		// first push the current routine onto the stack
-		rscs.add(rous);
+		rscs.add(current);
 		// then create a new routine and return it
-		rous = new Rous(pc, this);
-		return rous;
+		current = new Rous(pc, this);
+		return current;
 	}
 	
 	public void test() {
 		
 		// create new routine state with pc, set as current
-		rous = new Rous(memory.getInitialPC(), this);
+		current = new Rous(memory.getInitialPC(), this);
 		
 		while (true) {
 			Instruction instruction = factory.createInstruction();

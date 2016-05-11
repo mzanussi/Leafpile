@@ -132,6 +132,36 @@ public class Memory {
 	}
 	
 	/**
+	 * Convert an unsigned value to a signed value. In Z-machine, numbers 
+	 * are usually stored in 2 bytes (in the form most-significant byte 
+	 * first, then least-significant) and hold any value in the range 
+	 * $0000 to $ffff. (2.1) These values are sometimes regarded as signed, 
+	 * in the range -32768 to 32767. (2.2) So prior to a signed operation,
+	 * convert the operands to signed values. Once the operation is
+	 * performed, convert back to unsigned.
+	 * 
+	 * @param value
+	 * @return
+	 */
+	public int signed(int value) {
+		return (short)value;
+	}
+	
+	/**
+	 * Convert a signed value to an unsigned value. In the Z-machine, 
+	 * numbers are usually stored in 2 bytes (in the form most-significant 
+	 * byte first, then least-significant) and hold any value in the range 
+	 * $0000 to $ffff (0 to 65535 decimal). (2.1). So after signed 
+	 * operation, need to convert back to unsigned value.
+	 * 
+	 * @param value
+	 * @return
+	 */
+	public int unsigned(int value) {
+		return value & 0xffff;
+	}
+	
+	/**
 	 * Returns the story file version.
 	 * 
 	 * @return the story file version

@@ -36,12 +36,12 @@ public class VariableFormInstruction extends AbstractInstruction {
 		int poss_ops = 0;
 		if (opcode_no == 0x0c || opcode_no == 0x1a) {
 			poss_ops = 8;
-			otypebyte = memory.getWord(rous.getPC());
-			rous.setPC(rous.getPC() + 2);
+			otypebyte = memory.getWord(current.getPC());
+			current.setPC(current.getPC() + 2);
 		} else {
 			poss_ops = 4;
-			otypebyte = memory.getByte(rous.getPC());
-			rous.setPC(rous.getPC() + 1);
+			otypebyte = memory.getByte(current.getPC());
+			current.setPC(current.getPC() + 1);
 		}
 		
 		// Now retrieve the operands and store them in an array.
@@ -53,17 +53,17 @@ public class VariableFormInstruction extends AbstractInstruction {
 			}
 			switch (otype) {
 			case OTYPE_LC:	// large constant (0-65535)
-				operands.add(memory.getWord(rous.getPC()));
-				rous.setPC(rous.getPC() + 2);
+				operands.add(memory.getWord(current.getPC()));
+				current.setPC(current.getPC() + 2);
 				break;
 			case OTYPE_SC:	// small constant (0-255)
-				operands.add(memory.getByte(rous.getPC()));
-				rous.setPC(rous.getPC() + 1);
+				operands.add(memory.getByte(current.getPC()));
+				current.setPC(current.getPC() + 1);
 				break;
 			case OTYPE_VAR:	// variable value
-				int variable = memory.getByte(rous.getPC());
-				rous.setPC(rous.getPC() + 1);
-				int value = rous.getVariableValue(variable);
+				int variable = memory.getByte(current.getPC());
+				current.setPC(current.getPC() + 1);
+				int value = current.getVariableValue(variable);
 				operands.add(value);
 				break;
 			}
@@ -75,9 +75,9 @@ public class VariableFormInstruction extends AbstractInstruction {
 		
 		// The variable number of where to put result. (4.6)
 		if (opcode.isStore()) {
-			int store = memory.getByte(rous.getPC());
-			rous.setPC(rous.getPC() + 1);
-			rous.setStore(store);
+			int store = memory.getByte(current.getPC());
+			current.setPC(current.getPC() + 1);
+			current.setStore(store);
 		}
 
 	}

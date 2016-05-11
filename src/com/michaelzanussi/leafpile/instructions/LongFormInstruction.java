@@ -26,28 +26,28 @@ public class LongFormInstruction extends AbstractInstruction {
 		// 1 means a variable, 0 means a small constant. (4.4.2)
 		if ((opcode_byte & 0x40) == 0x40) {
 			// variable value
-			int variable = memory.getByte(rous.getPC());
-			rous.setPC(rous.getPC() + 1);
-			int value = rous.getVariableValue(variable);
+			int variable = memory.getByte(current.getPC());
+			current.setPC(current.getPC() + 1);
+			int value = current.getVariableValue(variable);
 			operands.add(value);
 		} else {
 			// small constant (0-255)
-			operands.add(memory.getByte(rous.getPC()));
-			rous.setPC(rous.getPC() + 1);
+			operands.add(memory.getByte(current.getPC()));
+			current.setPC(current.getPC() + 1);
 		}
 		
 		// Bit 5 (0x20) of the opcode gives the type of the second operand.
 		// 1 means a variable, 0 means a small constant. (4.4.2)
 		if ((opcode_byte & 0x20) == 0x20) {
 			// variable value
-			int variable = memory.getByte(rous.getPC());
-			rous.setPC(rous.getPC() + 1);
-			int value = rous.getVariableValue(variable);
+			int variable = memory.getByte(current.getPC());
+			current.setPC(current.getPC() + 1);
+			int value = current.getVariableValue(variable);
 			operands.add(value);
 		} else {
 			// small constant (0-255)
-			operands.add(memory.getByte(rous.getPC()));
-			rous.setPC(rous.getPC() + 1);
+			operands.add(memory.getByte(current.getPC()));
+			current.setPC(current.getPC() + 1);
 		}
 		
 		// Create the opcode object.
@@ -56,12 +56,11 @@ public class LongFormInstruction extends AbstractInstruction {
 		
 		// The variable number of where to put result. (4.6)
 		if (opcode.isStore()) {
-			int store = memory.getByte(rous.getPC());
-			rous.setPC(rous.getPC() + 1);
-			rous.setStore(store);
+			int store = memory.getByte(current.getPC());
+			current.setPC(current.getPC() + 1);
+			current.setStore(store);
 		}
 
-		System.out.println();
 	}
 	
 	/* (non-Javadoc)

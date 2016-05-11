@@ -18,7 +18,7 @@ public abstract class AbstractInstruction implements Instruction {
 	
 	protected Zmachine zmachine;
 	protected Memory memory;
-	protected Rous rous;
+	protected Rous current;
 	
 	protected Form form;				// instruction form
 	protected Opcount opcount;			// operand count
@@ -39,13 +39,13 @@ public abstract class AbstractInstruction implements Instruction {
 		this.zmachine = zmachine;
 		
 		memory = zmachine.memory();
-		rous = zmachine.rous();
+		current = zmachine.getCurrentRous();
 		
 		operands = new ArrayList<Integer>();
 		
 		// Fetch the opcode byte.
-		opcode_byte = zmachine.memory().getByte(rous.getPC());
-		rous.setPC(rous.getPC() + 1);
+		opcode_byte = zmachine.memory().getByte(current.getPC());
+		current.setPC(current.getPC() + 1);
 		
 	}
 	
@@ -98,7 +98,7 @@ public abstract class AbstractInstruction implements Instruction {
 		sb.append("Operand count: " + opcount + "\n");
 		sb.append("Opcode byte: " + opcode_byte + "\n");
 		sb.append("Opcode: " + opcode_no + "\n");
-		sb.append("Current PC: " + rous.getPC() + "\n");
+		sb.append("Current PC: " + current.getPC() + "\n");
 		sb.append(opcode + "\n");
 		return sb.toString();
 	}

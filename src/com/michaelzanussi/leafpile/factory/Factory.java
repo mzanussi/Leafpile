@@ -1,5 +1,6 @@
 package com.michaelzanussi.leafpile.factory;
 
+import com.michaelzanussi.leafpile.instructions.Add;
 import com.michaelzanussi.leafpile.instructions.Call;
 import com.michaelzanussi.leafpile.instructions.Instruction;
 import com.michaelzanussi.leafpile.instructions.Instruction.Opcount;
@@ -27,7 +28,7 @@ public class Factory {
 	 */
 	public Instruction createInstruction() {
 		// get the current routine's pc
-		int pc = zmachine.rous().getPC();
+		int pc = zmachine.getCurrentRous().getPC();
 		// get the opcode byte
 		int obyte = zmachine.memory().getByte(pc);
 		// get bits 6 & 7 to determine form (4.3)
@@ -62,19 +63,21 @@ public class Factory {
 		case O_0OP:
 			switch (opcode_no) {
 			default:
-				assert (false) : "unimplemented 0OP opcode: " + opcode_no;
+				assert (false) : "unimplemented 0OP opcode: 0x" + Integer.toHexString(opcode_no);
 			}
 			break;
 		case O_1OP:
 			switch (opcode_no) {
 			default:
-				assert (false) : "unimplemented 1OP opcode: " + opcode_no;
+				assert (false) : "unimplemented 1OP opcode: 0x" + Integer.toHexString(opcode_no);
 			}
 			break;
 		case O_2OP:
 			switch (opcode_no) {
+			case 0x14:
+				return new Add(instruction);
 			default:
-				assert (false) : "unimplemented 2OP opcode: " + opcode_no;
+				assert (false) : "unimplemented 2OP opcode: 0x" + Integer.toHexString(opcode_no);
 			}
 			break;
 		case O_VAR:
@@ -86,7 +89,7 @@ public class Factory {
 					assert (false) : "call_vs not implemented";
 				}
 			default:
-				assert (false) : "unimplemented VAR opcode: " + opcode_no;
+				assert (false) : "unimplemented VAR opcode: 0x" + Integer.toHexString(opcode_no);
 			}
 			break;
 		}
