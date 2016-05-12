@@ -9,12 +9,12 @@ import com.michaelzanussi.leafpile.zmachine.Rous;
  * @author <a href="mailto:iosdevx@gmail.com">Michael Zanussi</a>
  * @version 1.0 (10 May 2016) 
  */
-public class Add extends AbstractOpcode {
+public class Sub extends AbstractOpcode {
 
-	public Add(Instruction instruction) {
+	public Sub(Instruction instruction) {
 		super(instruction);
 		isStore = true;
-		name = "add";
+		name = "sub";
 	}
 	
 	public void exec() {
@@ -27,11 +27,11 @@ public class Add extends AbstractOpcode {
 		int op2 = memory.signed(operands.get(1));
 		
 		// Perform the signed addition and store unsigned.
-		int result = op1 + op2;
+		int result = op1 - op2;
 		current.setVariableValue(current.getStoreVariable(), memory.unsigned(result));
 		
 		{
-			System.out.println("ADD op1:" + op1 + " op2:" + op2 + " result:" + result + " store:" + current.getStoreVariable() + " (" + current.getVariableValue(current.getStoreVariable()) + ")");
+			System.out.println("SUB op1:" + op1 + " op2:" + op2 + " result:" + result + " store:" + current.getStoreVariable() + " (" + current.getVariableValue(current.getStoreVariable()) + ")");
 			System.out.print("local vars now = ");
 			int[] foo = current.getLocals();
 			for (int i = 0; i < foo.length; i++) {
@@ -41,5 +41,5 @@ public class Add extends AbstractOpcode {
 		}
 		
 	}
-		
+
 }

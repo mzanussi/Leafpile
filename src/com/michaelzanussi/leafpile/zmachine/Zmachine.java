@@ -3,7 +3,6 @@ package com.michaelzanussi.leafpile.zmachine;
 import java.io.File;
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.Stack;
 
 import com.michaelzanussi.leafpile.factory.Factory;
 import com.michaelzanussi.leafpile.instructions.Instruction;
@@ -67,7 +66,7 @@ public class Zmachine {
 			System.out.println("+++++ NEW INSTRUCTION +++++");
 			Instruction instruction = factory.createInstruction();
 			System.out.println(instruction);
-			System.out.println("-Now Executing-");
+			System.out.println("-- Now Executing --");
 			instruction.exec();
 		}
 		

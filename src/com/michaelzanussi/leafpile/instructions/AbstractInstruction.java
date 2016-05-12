@@ -29,9 +29,9 @@ public abstract class AbstractInstruction implements Instruction {
 	protected Opcode opcode;			// the opcode
 	protected List<Integer> operands;	// operands
 
-	protected boolean branchWhenTrue;	// branch when true?
-	protected boolean branchWhenFalse;	// branch when false?
-	protected int branchOffset;			// branch offset
+	private boolean branchWhenTrue;		// branch when true?
+	private boolean branchWhenFalse;	// branch when false?
+	private int branchOffset;			// branch offset
 	
 	// Operand type
 	protected static final int OTYPE_LC = 0;
@@ -90,11 +90,13 @@ public abstract class AbstractInstruction implements Instruction {
 		// or the branch is on true.
 		if ((br & 0x80) == 0x80) {
 			// Branch occurs when true
-			/*current.*/setBranchWhenTrue(true);
+//			setBranchWhenTrue(true);
+			branchWhenTrue = true;
 		}
 		else {
 			// Branch occurs when false
-			/*current.*/setBranchWhenFalse(true);
+//			setBranchWhenFalse(true);
+			branchWhenFalse = true;
 		}
 		// Test bit 6. If set the branch occupies 1 byte and offset is in
 		// range 0-63, given by bottom 6 bits (0-5); otherwise, the offset 
@@ -103,7 +105,8 @@ public abstract class AbstractInstruction implements Instruction {
 		if ((br & 0x40) == 0x40) {
 			// Branch occupies 1 byte, offset in range of 0-63,
 			// given in bottom 6 bits.
-			/*current.*/setBranchOffset(br & 0x3f);
+//			setBranchOffset(br & 0x3f);
+			branchOffset = br & 0x3f;
 		}
 		else {
 			// Offset is a 14-bit signed integer, given by first
@@ -116,21 +119,22 @@ public abstract class AbstractInstruction implements Instruction {
 			if ((offset & 0x2000) == 0x2000) {
 				offset |= 0xC000;
 			}
-			/*current.*/setBranchOffset(offset);
+//			setBranchOffset(offset);
+			branchOffset = offset;
 		}
 	}
 	
-	public void setBranchOffset(int branchOffset) {
-		this.branchOffset = branchOffset;
-	}
+//	public void setBranchOffset(int branchOffset) {
+//		this.branchOffset = branchOffset;
+//	}
 
-	public void setBranchWhenFalse(boolean branchWhenFalse) {
-		this.branchWhenFalse = branchWhenFalse;
-	}
+//	public void setBranchWhenFalse(boolean branchWhenFalse) {
+//		this.branchWhenFalse = branchWhenFalse;
+//	}
 
-	public void setBranchWhenTrue(boolean branchWhenTrue) {
-		this.branchWhenTrue = branchWhenTrue;
-	}
+//	public void setBranchWhenTrue(boolean branchWhenTrue) {
+//		this.branchWhenTrue = branchWhenTrue;
+//	}
 	
 	/* (non-Javadoc)
 	 * @see com.michaelzanussi.leafpile.instructions.Instruction#getOpcount()
@@ -177,12 +181,17 @@ public abstract class AbstractInstruction implements Instruction {
 	 */
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("@" + start_pc + " " + form + " " + opcount + " obyte=" + opcode_byte + " opcode=" + opcode_no + " operands={");
+		sb.append("@" + start_pc + " (rous=" + current.getId() + ") "+ form + " " + opcount + " obyte=" + opcode_byte + " opcode=" + opcode_no + " operands={");
 		StringBuilder temp = new StringBuilder();
 		for (Integer operand : operands) {
 			temp.append(operand + ",");
 		}
-		sb.append(temp.substring(0, temp.length() - 1) + "}\n");
+		sb.append(temp.substring(0, temp.length() - 1) + "} ");
+		sb.append("br=" + isBranch() + " ");
+		if (isBranch()) {
+			sb.append("(br when " + branchWhen() + ")");
+		}
+		sb.append("\n");
 		sb.append("cur rous PC: " + current.getPC() + "\n");
 		sb.append("cur rous Local vars: ");
 		int[] foo = current.getLocals();
@@ -191,12 +200,8 @@ public abstract class AbstractInstruction implements Instruction {
 		}
 		sb.append("\n");
 		sb.append("cur rous Arguments: " + current.getNumberOfArgs() + "\n");
-		sb.append("cur rous Store: " + current.getStoreVariable() + "\n");
-		sb.append("cur rous Branch: " + /*current.*/isBranch() + " ");
-		if (/*current.*/isBranch()) {
-			sb.append("(branch when " + /*current.*/branchWhen() + ")");
-		}
-		sb.append("\n");
+		sb.append("cur rous Store: " + current.getStoreVariable());
+		//sb.append("\n");
 		//sb.append(opcode + "\n");
 		return sb.toString();
 	}

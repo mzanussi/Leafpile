@@ -24,9 +24,9 @@ public class Rous {
 	private int args;
 	private Deque<Integer> stack;
 	private int store;
-	//private boolean branchWhenTrue;
-	//private boolean branchWhenFalse;
-	//private int branchOffset;
+	
+	private static int _ctr = 0;
+	private int id;
 	
 	public Rous(int pc, Zmachine zmachine) {
 		this.pc = pc;
@@ -35,8 +35,12 @@ public class Rous {
 		args = 0;
 		stack = new ArrayDeque<Integer>();
 		store = 0;
-		//branchWhenTrue = false;
-		//branchWhenFalse = false;
+		_ctr++;
+		id = _ctr;
+	}
+	
+	public int getId() {
+		return id;
 	}
 
 	public int getPC() {

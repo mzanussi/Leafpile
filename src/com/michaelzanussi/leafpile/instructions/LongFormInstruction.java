@@ -56,7 +56,6 @@ public class LongFormInstruction extends AbstractInstruction {
 		
 		// The variable number of where to put result. (4.6)
 		if (opcode.isStore()) {
-			//setStore();
 			int store = memory.getByte(current.getPC());
 			current.setPC(current.getPC() + 1);
 			current.setStoreVariable(store);

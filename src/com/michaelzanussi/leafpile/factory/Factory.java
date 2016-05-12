@@ -6,6 +6,7 @@ import com.michaelzanussi.leafpile.opcodes.Add;
 import com.michaelzanussi.leafpile.opcodes.Call;
 import com.michaelzanussi.leafpile.opcodes.Je;
 import com.michaelzanussi.leafpile.opcodes.Opcode;
+import com.michaelzanussi.leafpile.opcodes.Sub;
 import com.michaelzanussi.leafpile.instructions.LongFormInstruction;
 import com.michaelzanussi.leafpile.instructions.VariableFormInstruction;
 import com.michaelzanussi.leafpile.zmachine.Zmachine;
@@ -79,6 +80,8 @@ public class Factory {
 				return new Je(instruction);
 			case 0x14:
 				return new Add(instruction);
+			case 0x15:
+				return new Sub(instruction);
 			default:
 				assert (false) : "unimplemented 2OP opcode: 0x" + Integer.toHexString(opcode_no);
 			}

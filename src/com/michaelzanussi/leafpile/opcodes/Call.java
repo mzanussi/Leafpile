@@ -58,7 +58,6 @@ public class Call extends AbstractOpcode {
 		}
 		
 		{
-			//System.out.print(zmachine.getCurrentRous().getPC() + " CALL addr:");
 			System.out.print("CALL addr:");
 			System.out.print((operands.get(0) * 2) + " args:");
 			for (int x = 0; x < 7; x++) {
