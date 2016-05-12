@@ -1,4 +1,4 @@
-package com.michaelzanussi.leafpile.instructions;
+package com.michaelzanussi.leafpile.opcodes;
 
 /**
  * This interface defines an opcode.
@@ -15,6 +15,14 @@ public interface Opcode {
 	 * result; otherwise, <code>false</code>.
 	 */
 	public boolean isStore();
+	
+	/**
+	 * Does this instruction branch?
+	 * 
+	 * @return <code>true</code> if the instruction branches;
+	 * otherwise, <code>false</code>.
+	 */
+	public boolean isBranch();
 	
 	/**
 	 * Execute the opcode portion of the instruction.

@@ -1,11 +1,12 @@
 package com.michaelzanussi.leafpile.factory;
 
-import com.michaelzanussi.leafpile.instructions.Add;
-import com.michaelzanussi.leafpile.instructions.Call;
 import com.michaelzanussi.leafpile.instructions.Instruction;
 import com.michaelzanussi.leafpile.instructions.Instruction.Opcount;
+import com.michaelzanussi.leafpile.opcodes.Add;
+import com.michaelzanussi.leafpile.opcodes.Call;
+import com.michaelzanussi.leafpile.opcodes.Je;
+import com.michaelzanussi.leafpile.opcodes.Opcode;
 import com.michaelzanussi.leafpile.instructions.LongFormInstruction;
-import com.michaelzanussi.leafpile.instructions.Opcode;
 import com.michaelzanussi.leafpile.instructions.VariableFormInstruction;
 import com.michaelzanussi.leafpile.zmachine.Zmachine;
 
@@ -74,6 +75,8 @@ public class Factory {
 			break;
 		case O_2OP:
 			switch (opcode_no) {
+			case 0x01:
+				return new Je(instruction);
 			case 0x14:
 				return new Add(instruction);
 			default:

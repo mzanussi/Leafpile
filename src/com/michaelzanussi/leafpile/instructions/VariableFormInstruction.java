@@ -77,7 +77,12 @@ public class VariableFormInstruction extends AbstractInstruction {
 		if (opcode.isStore()) {
 			int store = memory.getByte(current.getPC());
 			current.setPC(current.getPC() + 1);
-			current.setStore(store);
+			current.setStoreVariable(store);
+		}
+
+		// Branches. (4.7)
+		if (opcode.isBranch()) {
+			setBranch();
 		}
 
 	}

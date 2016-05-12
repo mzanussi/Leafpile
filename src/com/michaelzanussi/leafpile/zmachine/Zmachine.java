@@ -1,6 +1,8 @@
 package com.michaelzanussi.leafpile.zmachine;
 
 import java.io.File;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Stack;
 
 import com.michaelzanussi.leafpile.factory.Factory;
@@ -20,7 +22,7 @@ public class Zmachine {
 	// When the new routine completes, the old routine state will
 	// be popped off the stack and execution continues where it
 	// left off.
-	private Stack<Rous> rscs;
+	private Deque<Rous> rscs;
 	
 	// The current routine being executed.
 	private Rous current;
@@ -30,7 +32,7 @@ public class Zmachine {
 	public Zmachine(File story) {
 		memory = new Memory(story);
 		factory = new Factory(this);
-		rscs = new Stack<Rous>();
+		rscs = new ArrayDeque<Rous>();
 	}
 	
 	// getter
@@ -45,9 +47,14 @@ public class Zmachine {
 	
 	public Rous createRoutine(int pc) {
 		// first push the current routine onto the stack
-		rscs.add(current);
+		rscs.push(current);
 		// then create a new routine and return it
 		current = new Rous(pc, this);
+		return current;
+	}
+	
+	public Rous previousRoutine() {
+		current = rscs.pop();
 		return current;
 	}
 	
@@ -57,8 +64,10 @@ public class Zmachine {
 		current = new Rous(memory.getInitialPC(), this);
 		
 		while (true) {
+			System.out.println("+++++ NEW INSTRUCTION +++++");
 			Instruction instruction = factory.createInstruction();
 			System.out.println(instruction);
+			System.out.println("-Now Executing-");
 			instruction.exec();
 		}
 		

@@ -46,11 +46,32 @@ public interface Instruction {
 	public int getOpcodeByte();
 	
 	/**
-	 * Returns the operands for ths instruction.
+	 * Returns the operands for this instruction.
 	 * 
 	 * @return the operands
 	 */
 	public List<Integer> getOperands();
+	
+	/**
+	 * Returns the store variable for this instruction.
+	 * 
+	 * @return the store variable
+	 */
+	//public int getStoreVariable();
+	
+	/**
+	 * Returns the condition where a branch would occur.
+	 * 
+	 * @return the condition where a branch would occur
+	 */
+	public boolean branchWhen();
+	
+	/**
+	 * Returns the branch offset.
+	 * 
+	 * @return the branch offset
+	 */
+	public int getBranchOffset();
 	
 	/**
 	 * Returns the Z-machine.

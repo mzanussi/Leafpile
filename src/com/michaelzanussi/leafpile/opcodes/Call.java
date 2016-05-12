@@ -1,7 +1,8 @@
-package com.michaelzanussi.leafpile.instructions;
+package com.michaelzanussi.leafpile.opcodes;
 
 import java.util.List;
 
+import com.michaelzanussi.leafpile.instructions.Instruction;
 import com.michaelzanussi.leafpile.zmachine.Rous;
 
 /**
@@ -54,6 +55,17 @@ public class Call extends AbstractOpcode {
 			if (i < num_of_locals) {
 				locals[i] = operands.get(i + 1);
 			}
+		}
+		
+		{
+			//System.out.print(zmachine.getCurrentRous().getPC() + " CALL addr:");
+			System.out.print("CALL addr:");
+			System.out.print((operands.get(0) * 2) + " args:");
+			for (int x = 0; x < 7; x++) {
+				System.out.print(locals[x] + " ");
+			}
+			System.out.print("(args=" + num_of_args + ",lcls=" + num_of_locals + ") ");
+			System.out.println("\n");
 		}
 		
 		// Create new routine state for the new routine. Execution

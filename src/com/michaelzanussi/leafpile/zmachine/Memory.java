@@ -82,7 +82,7 @@ public class Memory {
 			throw new IndexOutOfBoundsException("Invalid address: " + address);
 		}
 		int value = memory[address] & 0xFF;
-		{ debug.println("--> byte [" + address + "] = " + value); }
+		{ debug.println("\t--> byte [" + address + "] = " + value); }
 		return value;
 	}
 	
@@ -111,7 +111,7 @@ public class Memory {
 			throw new IndexOutOfBoundsException("Invalid address: " + address);
 		}
 		int value = ((memory[address] & 0xff) << 8) | (memory[address + 1] & 0xff);
-		{ debug.println("--> word [" + address + "][" + (address+1) + "] = " + value); }
+		{ debug.println("\t--> word [" + address + "][" + (address+1) + "] = " + value); }
 		return value;
 	}
 	

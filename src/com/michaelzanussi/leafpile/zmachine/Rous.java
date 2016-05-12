@@ -24,6 +24,9 @@ public class Rous {
 	private int args;
 	private Deque<Integer> stack;
 	private int store;
+	//private boolean branchWhenTrue;
+	//private boolean branchWhenFalse;
+	//private int branchOffset;
 	
 	public Rous(int pc, Zmachine zmachine) {
 		this.pc = pc;
@@ -31,6 +34,9 @@ public class Rous {
 		locals = new int[15];
 		args = 0;
 		stack = new ArrayDeque<Integer>();
+		store = 0;
+		//branchWhenTrue = false;
+		//branchWhenFalse = false;
 	}
 
 	public int getPC() {
@@ -61,13 +67,37 @@ public class Rous {
 		return stack;
 	}
 	
-	public int getStore() {
+	public int getStoreVariable() {
 		return store;
 	}
 	
-	public void setStore(int store) {
+	public void setStoreVariable(int store) {
 		this.store = store;
 	}
+	
+	/*public boolean isBranch() {
+		return (branchWhenFalse || branchWhenTrue);
+	}
+	
+	public boolean branchWhen() {
+		if (branchWhenFalse) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	public void setBranchWhenFalse(boolean branchWhenFalse) {
+		this.branchWhenFalse = branchWhenFalse;
+	}
+
+	public void setBranchWhenTrue(boolean branchWhenTrue) {
+		this.branchWhenTrue = branchWhenTrue;
+	}
+	
+	public void setBranchOffset(int branchOffset) {
+		this.branchOffset = branchOffset;
+	}*/
 
 	/**
 	 * Returns the value for the specified variable. If variable is 0, get
@@ -100,7 +130,7 @@ public class Rous {
 	 * @param variable
 	 * @param value
 	 */
-	public void setVariable(int variable, int value) {
+	public void setVariableValue(int variable, int value) {
 		// Test if this is void routine. If so, throw away result.
 		if (variable < 0) {
 			return;
