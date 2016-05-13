@@ -1,28 +1,35 @@
 package com.michaelzanussi.leafpile.opcodes;
 
-import java.util.List;
-
 import com.michaelzanussi.leafpile.instructions.Instruction;
-import com.michaelzanussi.leafpile.zmachine.Rous;
 
 /**
+ * This class provides a concrete implementation of the <code>Opcode</code> 
+ * interface for Add (signed 16-bit addition) instructions. See p. 79.
+ * 
+ * add a b -> (result)
+ * 
  * @author <a href="mailto:iosdevx@gmail.com">Michael Zanussi</a>
  * @version 1.0 (10 May 2016) 
  */
 public class Add extends AbstractOpcode {
 
+	/**
+	 * Single-arg constructor takes Instruction object as only arg.
+	 * 
+	 * @param instruction the instruction
+	 */
 	public Add(Instruction instruction) {
 		super(instruction);
 		isStore = true;
 		name = "add";
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.michaelzanussi.leafpile.opcodes.AbstractOpcode#exec()
+	 */
 	public void exec() {
 		
-		Rous current = zmachine.getCurrentRous();
-		
 		// Retrieve the operands.
-		List<Integer> operands = instruction.getOperands();
 		int op1 = memory.signed(operands.get(0));
 		int op2 = memory.signed(operands.get(1));
 		

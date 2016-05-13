@@ -98,6 +98,7 @@ public class Memory {
 		}
 		byte byte_value = (byte)(value & 0xff);
 		memory[address] = byte_value;
+		{ debug.println("\t--> SET byte [" + address + "] = " + value + " (byteval=" + value +")"); }
 	}
 	
 	/**
@@ -129,6 +130,7 @@ public class Memory {
 		byte lsb = (byte)(value & 0xff);
 		memory[address] = msb;
 		memory[address + 1] = lsb;
+		{ debug.println("\t--> SET word [" + address + "][" + (address+1) + "] = " + value + " (msb=" + msb + ", lsb=" + lsb +")"); }
 	}
 	
 	/**

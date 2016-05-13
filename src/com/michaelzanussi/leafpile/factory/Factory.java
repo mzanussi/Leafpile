@@ -5,9 +5,14 @@ import com.michaelzanussi.leafpile.instructions.Instruction.Opcount;
 import com.michaelzanussi.leafpile.opcodes.Add;
 import com.michaelzanussi.leafpile.opcodes.Call;
 import com.michaelzanussi.leafpile.opcodes.Je;
+import com.michaelzanussi.leafpile.opcodes.Jz;
+import com.michaelzanussi.leafpile.opcodes.Loadw;
 import com.michaelzanussi.leafpile.opcodes.Opcode;
+import com.michaelzanussi.leafpile.opcodes.Ret;
+import com.michaelzanussi.leafpile.opcodes.Storew;
 import com.michaelzanussi.leafpile.opcodes.Sub;
 import com.michaelzanussi.leafpile.instructions.LongFormInstruction;
+import com.michaelzanussi.leafpile.instructions.ShortFormInstruction;
 import com.michaelzanussi.leafpile.instructions.VariableFormInstruction;
 import com.michaelzanussi.leafpile.zmachine.Zmachine;
 
@@ -41,7 +46,7 @@ public class Factory {
 		} else if (obyte == 0xbe) {		// extended form
 			assert (false) : "extended form";
 		} else if (bits67 == 2) {		// short form
-			assert (false) : "short form";
+			return new ShortFormInstruction(zmachine);
 		} else {						// long form
 			return new LongFormInstruction(zmachine);
 		}
@@ -70,6 +75,10 @@ public class Factory {
 			break;
 		case O_1OP:
 			switch (opcode_no) {
+			case 0x00:
+				return new Jz(instruction);
+			case 0x0b:
+				return new Ret(instruction);
 			default:
 				assert (false) : "unimplemented 1OP opcode: 0x" + Integer.toHexString(opcode_no);
 			}
@@ -78,6 +87,8 @@ public class Factory {
 			switch (opcode_no) {
 			case 0x01:
 				return new Je(instruction);
+			case 0x0f:
+				return new Loadw(instruction);
 			case 0x14:
 				return new Add(instruction);
 			case 0x15:
@@ -94,6 +105,8 @@ public class Factory {
 				} else {
 					assert (false) : "call_vs not implemented";
 				}
+			case 0x01:
+				return new Storew(instruction);
 			default:
 				assert (false) : "unimplemented VAR opcode: 0x" + Integer.toHexString(opcode_no);
 			}

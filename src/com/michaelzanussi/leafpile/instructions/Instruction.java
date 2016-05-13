@@ -53,13 +53,6 @@ public interface Instruction {
 	public List<Integer> getOperands();
 	
 	/**
-	 * Returns the store variable for this instruction.
-	 * 
-	 * @return the store variable
-	 */
-	//public int getStoreVariable();
-	
-	/**
 	 * Returns the condition where a branch would occur.
 	 * 
 	 * @return the condition where a branch would occur

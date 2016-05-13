@@ -1,5 +1,7 @@
 package com.michaelzanussi.leafpile.opcodes;
 
+import java.util.List;
+
 import com.michaelzanussi.leafpile.instructions.Instruction;
 import com.michaelzanussi.leafpile.zmachine.Memory;
 import com.michaelzanussi.leafpile.zmachine.Rous;
@@ -17,6 +19,8 @@ public abstract class AbstractOpcode implements Opcode {
 	protected Zmachine zmachine;
 	protected Instruction instruction;
 	protected Memory memory;
+	protected Rous current;				// current routine state
+	protected List<Integer> operands;	// operands
 	
 	protected String name;
 	
@@ -26,17 +30,27 @@ public abstract class AbstractOpcode implements Opcode {
 	protected static final int FALSE = 0;
 	protected static final int TRUE = 1;
 	
+	/**
+	 * Single-arg constructor takes Instruction object as only arg.
+	 * 
+	 * @param instruction the Instruction object.
+	 */
 	public AbstractOpcode(Instruction instruction) {
 		this.instruction = instruction;
 		zmachine = instruction.getZmachine();
 		memory = zmachine.memory();
+		current = zmachine.getCurrentRous();
+		operands = instruction.getOperands();
 		isStore = false;
 		isBranch = false;
 	}
 	
+	/**
+	 * Executes a branch based on the condition argument.
+	 * 
+	 * @param condition the condition
+	 */
 	protected void executeBranch(boolean condition) {
-		
-		Rous current = zmachine.getCurrentRous();
 		
 		boolean branch_when = instruction.branchWhen();
 		
@@ -64,7 +78,7 @@ public abstract class AbstractOpcode implements Opcode {
 			current.setPC(newPC);
 
 			{
-				System.out.print("newPC:" + newPC);
+				System.out.print("pc:" + newPC);
 			}
 
 		}
@@ -72,7 +86,6 @@ public abstract class AbstractOpcode implements Opcode {
 		{
 			System.out.println();
 		}
-		
 		
 	}
 	
@@ -106,11 +119,5 @@ public abstract class AbstractOpcode implements Opcode {
 	 * @see com.michaelzanussi.leafpile.instructions.Opcode#exec()
 	 */
 	public abstract void exec();
-	
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(name + " " + instruction.getOpcount() + ":" + instruction.getOpcodeByte() + " " + instruction.getOpcodeNumber() + " store:" + isStore + " branch:" + isBranch);
-		return sb.toString();
-	}
 	
 }

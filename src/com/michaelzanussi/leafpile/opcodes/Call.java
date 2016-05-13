@@ -1,25 +1,40 @@
 package com.michaelzanussi.leafpile.opcodes;
 
-import java.util.List;
-
 import com.michaelzanussi.leafpile.instructions.Instruction;
 import com.michaelzanussi.leafpile.zmachine.Rous;
 
 /**
+ * This class provides a concrete implementation of the <code>Opcode</code> 
+ * interface for Call (call routine) instructions. See p. 80.
+ * 
+ * call routine ...up to 3 args... -> (result)
+ * 
+ * The only call instruction in Version 3, Inform reads this as call_vs
+ * in higher versions: it calls the routine with 0, 1, 2 or 3 arguments
+ * as supplied and stores the resulting return value. (When the address
+ * 0 is called as a routine, nothing happens and the return value is 
+ * false.)
+ * 
  * @author <a href="mailto:iosdevx@gmail.com">Michael Zanussi</a>
  * @version 1.0 (6 May 2016) 
  */
 public class Call extends AbstractOpcode {
 	
+	/**
+	 * Single-arg constructor takes Instruction object as only arg.
+	 * 
+	 * @param instruction the instruction
+	 */
 	public Call(Instruction instruction) {
 		super(instruction);
 		isStore = true;
 		name = "call";
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.michaelzanussi.leafpile.opcodes.AbstractOpcode#exec()
+	 */
 	public void exec() {
-		
-		List<Integer> operands = instruction.getOperands();
 		
 		// First operand is packed address to routine start address. (5.1)
 		int addr = operands.get(0) * 2;

@@ -4,11 +4,18 @@ import com.michaelzanussi.leafpile.factory.Factory;
 import com.michaelzanussi.leafpile.zmachine.Zmachine;
 
 /**
+ * A concrete implementation of a long form instruction.
+ * 
  * @author <a href="mailto:iosdevx@gmail.com">Michael Zanussi</a>
  * @version 1.0 (9 May 2016) 
  */
 public class LongFormInstruction extends AbstractInstruction {
 
+	/**
+	 * Single-arg constructor takes Z-machine object as only arg.
+	 * 
+	 * @param zmachine the Z-machine object
+	 */
 	public LongFormInstruction(Zmachine zmachine) {
 		
 		super(zmachine);
@@ -19,7 +26,7 @@ public class LongFormInstruction extends AbstractInstruction {
 		// operand count is 2OP. (4.3.2)
 		opcount = Opcount.O_2OP;
 
-		// Get the opcode. (4.3.3)
+		// Get the opcode. (4.3.2)
 		opcode_no = (opcode_byte & 0x1f);
 
 		// Bit 6 (0x40) of the opcode gives the type of the first operand.

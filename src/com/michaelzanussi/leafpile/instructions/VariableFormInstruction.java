@@ -4,11 +4,18 @@ import com.michaelzanussi.leafpile.factory.Factory;
 import com.michaelzanussi.leafpile.zmachine.Zmachine;
 
 /**
+ * A concrete implementation of a variable form instruction.
+ * 
  * @author <a href="mailto:iosdevx@gmail.com">Michael Zanussi</a>
  * @version 1.0 (5 May 2016) 
  */
 public class VariableFormInstruction extends AbstractInstruction {
 	
+	/**
+	 * Single-arg constructor takes Z-machine object as only arg.
+	 * 
+	 * @param zmachine the Z-machine object
+	 */
 	public VariableFormInstruction(Zmachine zmachine) {
 		
 		super(zmachine);

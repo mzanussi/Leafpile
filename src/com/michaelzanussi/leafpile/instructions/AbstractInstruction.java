@@ -83,21 +83,22 @@ public abstract class AbstractInstruction implements Instruction {
 	 * Set branch conditions and offset. (4.7)
 	 */
 	protected void setBranch() {
+		
 		// get first byte of branch information
 		int br = memory.getByte(current.getPC());
 		current.setPC(current.getPC() + 1);
+		
 		// Test bit 7, to see if branch occurs when the condition is false,
 		// or the branch is on true.
 		if ((br & 0x80) == 0x80) {
 			// Branch occurs when true
-//			setBranchWhenTrue(true);
 			branchWhenTrue = true;
 		}
 		else {
 			// Branch occurs when false
-//			setBranchWhenFalse(true);
 			branchWhenFalse = true;
 		}
+		
 		// Test bit 6. If set the branch occupies 1 byte and offset is in
 		// range 0-63, given by bottom 6 bits (0-5); otherwise, the offset 
 		// is a signed 14-bit number given by the bottom 6 bits (0-5)
@@ -105,7 +106,6 @@ public abstract class AbstractInstruction implements Instruction {
 		if ((br & 0x40) == 0x40) {
 			// Branch occupies 1 byte, offset in range of 0-63,
 			// given in bottom 6 bits.
-//			setBranchOffset(br & 0x3f);
 			branchOffset = br & 0x3f;
 		}
 		else {
@@ -119,22 +119,10 @@ public abstract class AbstractInstruction implements Instruction {
 			if ((offset & 0x2000) == 0x2000) {
 				offset |= 0xC000;
 			}
-//			setBranchOffset(offset);
 			branchOffset = offset;
 		}
+		
 	}
-	
-//	public void setBranchOffset(int branchOffset) {
-//		this.branchOffset = branchOffset;
-//	}
-
-//	public void setBranchWhenFalse(boolean branchWhenFalse) {
-//		this.branchWhenFalse = branchWhenFalse;
-//	}
-
-//	public void setBranchWhenTrue(boolean branchWhenTrue) {
-//		this.branchWhenTrue = branchWhenTrue;
-//	}
 	
 	/* (non-Javadoc)
 	 * @see com.michaelzanussi.leafpile.instructions.Instruction#getOpcount()
