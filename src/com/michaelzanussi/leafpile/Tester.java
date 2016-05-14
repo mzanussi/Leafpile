@@ -17,8 +17,6 @@ import javax.swing.JTextArea;
 
 import com.michaelzanussi.leafpile.dictionary.Dictionary;
 import com.michaelzanussi.leafpile.dictionary.V1Dictionary;
-import com.michaelzanussi.leafpile.objecttable.ObjectTable;
-import com.michaelzanussi.leafpile.objecttable.ObjectTableObject;
 import com.michaelzanussi.leafpile.ui.components.Console;
 import com.michaelzanussi.leafpile.ui.components.V3ScreenModel;
 import com.michaelzanussi.leafpile.zmachine.Memory;
@@ -166,9 +164,9 @@ public class Tester extends JFrame {
 		String zstr = zscii.decode(data);
 		System.out.println("~" + zstr + "~");
 		
-		ObjectTable ot = new ObjectTable(memory);
-		ObjectTableObject oto = ot.getObject(180);
-		System.out.println(oto);
+		//ObjectTable ot = new ObjectTable(memory);
+		//ObjectTableObject oto = ot.getObject(180);
+		//System.out.println(oto);
 		
 		//OTO toto = ot.getOTO(156);
 		//System.out.println(toto);

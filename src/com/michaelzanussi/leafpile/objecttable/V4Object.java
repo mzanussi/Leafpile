@@ -105,6 +105,13 @@ public class V4Object extends AbstractObject {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see com.michaelzanussi.leafpile.objecttable.AbstractObject#setProperty(int, int)
+	 */
+	public void setProperty(int property, int value) {
+		assert(false);
+	}
+	
 	// gets called when the game attempts to read the value of property n
 	// for an object which does not provide property n. in such a case,
 	// the n-th entry in the property default table is the resulting value.

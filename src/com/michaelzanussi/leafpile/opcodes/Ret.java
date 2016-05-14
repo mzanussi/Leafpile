@@ -31,13 +31,13 @@ public class Ret extends AbstractOpcode {
 	public void exec() {
 		
 		// Retrieve the operand.
-		int op1 = operands.get(0);
+		int value = operands.get(0);
 		
 		{
-			System.out.println("RET op1:" + op1);
+			System.out.println("RET value:" + value);
 		}
 		
-		retuurn(op1);
+		retuurn(value);
 
 	}
 	

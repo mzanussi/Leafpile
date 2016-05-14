@@ -33,24 +33,24 @@ public class Je extends AbstractOpcode {
 	public void exec() {
 		
 		// Retrieve the operand.
-		int op1 = operands.get(0);
+		int a = operands.get(0);
 
 		boolean result = false;
 		
 		for (int i = 1; i < operands.size(); i++) {
 			// Branch on True occurs if first operand 
 			// equals any of the subsequent operands.
-			int op2 = operands.get(i);
-			if (op1 == op2) {
+			int b = operands.get(i);
+			if (a == b) {
 				result = true;
 				break;
 			}
 		}
 		
 		{
-			System.out.print("JE op1:" + op1 + " ");
+			System.out.print("JE a:" + a + " ");
 			for (int j = 1; j < operands.size(); j++) {
-				System.out.print("op" + j + ":" + operands.get(j) + " ");
+				System.out.print("b" + j + ":" + operands.get(j) + " ");
 			}
 			System.out.print("result:" + result + " ");
 		}

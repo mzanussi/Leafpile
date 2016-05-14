@@ -37,16 +37,16 @@ public class Call extends AbstractOpcode {
 	public void exec() {
 		
 		// First operand is packed address to routine start address. (5.1)
-		int addr = operands.get(0) * 2;
+		int routine_addr = operands.get(0) * 2;
 		
 		// TODO: A routine call to packed address 0 is legal: 
 		// it does nothing returns false (0). (6.4.3)
-		if (addr == 0) {
+		if (routine_addr == 0) {
 			assert (false) : "finish Call exec for packed address 0";
 		}
 
 		// Header. Number of local variables. (5.2)
-		int num_of_locals = memory.getByte(addr++);
+		int num_of_locals = memory.getByte(routine_addr++);
 		
 		// Create an array of local variables. (5.2)
 		int[] locals = new int[15];
@@ -56,8 +56,8 @@ public class Call extends AbstractOpcode {
 		// to zeroes for version >= 5. (5.2.1)
 		if (memory.getVersion() <= 4) {
 			for (int i = 0; i < num_of_locals; i++) {
-				locals[i] = memory.getWord(addr);
-				addr += 2;
+				locals[i] = memory.getWord(routine_addr);
+				routine_addr += 2;
 			}
 		} 
 				
@@ -85,7 +85,7 @@ public class Call extends AbstractOpcode {
 		// Create new routine state for the new routine. Execution
 		// of instructions begins from the byte after the header
 		// information, currently pointed to by addr. This is the new PC.
-		Rous rous = zmachine.createRoutine(addr);
+		Rous rous = zmachine.createRoutine(routine_addr);
 		rous.setLocals(locals);
 		rous.setNumberOfArgs(num_of_args > num_of_locals ? num_of_locals : num_of_args);
 		

@@ -30,19 +30,19 @@ public class Add extends AbstractOpcode {
 	public void exec() {
 		
 		// Retrieve the operands.
-		int op1 = memory.signed(operands.get(0));
-		int op2 = memory.signed(operands.get(1));
+		int a = memory.signed(operands.get(0));
+		int b = memory.signed(operands.get(1));
 		
 		// Perform the signed addition and store unsigned.
-		int result = op1 + op2;
+		int result = a + b;
 		current.setVariableValue(current.getStoreVariable(), memory.unsigned(result));
 		
 		{
-			System.out.println("ADD op1:" + op1 + " op2:" + op2 + " result:" + result + " store:" + current.getStoreVariable() + " (" + current.getVariableValue(current.getStoreVariable()) + ")");
+			System.out.println("ADD a:" + a + " b:" + b + " result:" + result + " store:" + current.getStoreVariable());
 			System.out.print("local vars now = ");
-			int[] foo = current.getLocals();
-			for (int i = 0; i < foo.length; i++) {
-				System.out.print(foo[i] + " ");
+			int[] locals = current.getLocals();
+			for (int i = 0; i < locals.length; i++) {
+				System.out.print(locals[i] + " ");
 			}
 			System.out.println("\n");
 		}

@@ -32,12 +32,12 @@ public class Jz extends AbstractOpcode {
 	public void exec() {
 		
 		// Retrieve the operand.
-		int op1 = operands.get(0);
+		int a = operands.get(0);
 
-		boolean result = (op1 == 0);
+		boolean result = (a == 0);
 
 		{
-			System.out.print("JZ op1:" + op1 + " result:" + result + " ");
+			System.out.print("JZ a:" + a + " result:" + result + " ");
 		}
 
 		executeBranch(result);

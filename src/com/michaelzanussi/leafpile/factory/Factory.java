@@ -2,12 +2,17 @@ package com.michaelzanussi.leafpile.factory;
 
 import com.michaelzanussi.leafpile.instructions.Instruction;
 import com.michaelzanussi.leafpile.instructions.Instruction.Opcount;
+import com.michaelzanussi.leafpile.objecttable.ObjectTableObject;
+import com.michaelzanussi.leafpile.objecttable.V1Object;
+import com.michaelzanussi.leafpile.objecttable.V4Object;
 import com.michaelzanussi.leafpile.opcodes.Add;
 import com.michaelzanussi.leafpile.opcodes.Call;
 import com.michaelzanussi.leafpile.opcodes.Je;
+import com.michaelzanussi.leafpile.opcodes.Jump;
 import com.michaelzanussi.leafpile.opcodes.Jz;
 import com.michaelzanussi.leafpile.opcodes.Loadw;
 import com.michaelzanussi.leafpile.opcodes.Opcode;
+import com.michaelzanussi.leafpile.opcodes.Put_prop;
 import com.michaelzanussi.leafpile.opcodes.Ret;
 import com.michaelzanussi.leafpile.opcodes.Storew;
 import com.michaelzanussi.leafpile.opcodes.Sub;
@@ -17,6 +22,8 @@ import com.michaelzanussi.leafpile.instructions.VariableFormInstruction;
 import com.michaelzanussi.leafpile.zmachine.Zmachine;
 
 /**
+ * A factory class for instantiating various kinds of objects.
+ * 
  * @author <a href="mailto:iosdevx@gmail.com">Michael Zanussi</a>
  * @version 1.0 (6 May 2016) 
  */
@@ -24,8 +31,27 @@ public class Factory {
 	
 	private Zmachine zmachine;
 	
+	/**
+	 * Single-arg instruction takes a Z-machine as its only arg.
+	 * 
+	 * @param zmachine the Z-machine
+	 */
 	public Factory(Zmachine zmachine) {
 		this.zmachine = zmachine;
+	}
+	
+	/**
+	 * Creates an object table object for the given object number.
+	 * 
+	 * @param obj_num the object number to create
+	 * @return the object table object
+	 */
+	public ObjectTableObject createObject(int obj_num) {
+		if (zmachine.memory().getVersion() < 4) {
+			return new V1Object(obj_num, zmachine.memory());
+		} else {
+			return new V4Object(obj_num, zmachine.memory());
+		}
 	}
 	
 	/**
@@ -79,6 +105,8 @@ public class Factory {
 				return new Jz(instruction);
 			case 0x0b:
 				return new Ret(instruction);
+			case 0x0c:
+				return new Jump(instruction);
 			default:
 				assert (false) : "unimplemented 1OP opcode: 0x" + Integer.toHexString(opcode_no);
 			}
@@ -107,6 +135,8 @@ public class Factory {
 				}
 			case 0x01:
 				return new Storew(instruction);
+			case 0x03:
+				return new Put_prop(instruction);
 			default:
 				assert (false) : "unimplemented VAR opcode: 0x" + Integer.toHexString(opcode_no);
 			}

@@ -64,7 +64,7 @@ public class Zmachine {
 		
 		while (true) {
 			System.out.println("+++++ NEW INSTRUCTION +++++");
-			if (current.getPC() == 21657) {	// debug only
+			if (current.getPC() == 20314) {	// debug only
 				System.out.print("");
 			}
 			Instruction instruction = factory.createInstruction();

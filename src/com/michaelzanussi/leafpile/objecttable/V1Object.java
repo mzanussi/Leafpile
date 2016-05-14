@@ -101,6 +101,32 @@ public class V1Object extends AbstractObject {
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.michaelzanussi.leafpile.objecttable.AbstractObject#setProperty(int, int)
+	 */
+	public void setProperty(int property, int value) {
+		
+		Property temp = null;
+		
+		for (Property prop : prop_table) {
+			if (prop.prop_num == property) {
+				temp = prop;
+				break;
+			}
+		}
+				
+		if (temp == null) {
+			throw new NullPointerException("No such property exists: " + property);
+		}
+		
+		if (temp.prop_size == 1) {
+			memory.setByte(temp.prop_ptr, value);
+		} else {
+			memory.setWord(temp.prop_ptr, value);
+		}
+		
+	}
+	
 	// gets called when the game attempts to read the value of property n
 	// for an object which does not provide property n. in such a case,
 	// the n-th entry in the property default table is the resulting value.

@@ -9,7 +9,7 @@ import com.michaelzanussi.leafpile.zmachine.Memory;
  * @author <a href="mailto:iosdevx@gmail.com">Michael Zanussi</a>
  * @version 1.0 (28 April 2016) 
  */
-public class AbstractObject implements ObjectTableObject {
+public abstract class AbstractObject implements ObjectTableObject {
 
 	protected Memory memory;
 	protected Debug debug;
@@ -47,6 +47,11 @@ public class AbstractObject implements ObjectTableObject {
 	public int getChild() {
 		return child;
 	}
+	
+	/* (non-Javadoc)
+	 * @see com.michaelzanussi.leafpile.objecttable.ObjectTableObject#setProperty(int, int)
+	 */
+	public abstract void setProperty(int property, int value);
 	
 	/**
 	 * The Property class represents a single property for an object.

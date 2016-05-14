@@ -10,4 +10,5 @@ public interface ObjectTableObject {
 	public int getSibling();
 	public int getChild();
 	//private int getPropertyDefault(int prop_num);
+	public void setProperty(int property, int value);
 }
