@@ -14,8 +14,10 @@ import com.michaelzanussi.leafpile.opcodes.Loadw;
 import com.michaelzanussi.leafpile.opcodes.Opcode;
 import com.michaelzanussi.leafpile.opcodes.Put_prop;
 import com.michaelzanussi.leafpile.opcodes.Ret;
+import com.michaelzanussi.leafpile.opcodes.Store;
 import com.michaelzanussi.leafpile.opcodes.Storew;
 import com.michaelzanussi.leafpile.opcodes.Sub;
+import com.michaelzanussi.leafpile.opcodes.Test_attr;
 import com.michaelzanussi.leafpile.instructions.LongFormInstruction;
 import com.michaelzanussi.leafpile.instructions.ShortFormInstruction;
 import com.michaelzanussi.leafpile.instructions.VariableFormInstruction;
@@ -115,6 +117,10 @@ public class Factory {
 			switch (opcode_no) {
 			case 0x01:
 				return new Je(instruction);
+			case 0x0a:
+				return new Test_attr(instruction);
+			case 0x0d:
+				return new Store(instruction);
 			case 0x0f:
 				return new Loadw(instruction);
 			case 0x14:

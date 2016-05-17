@@ -48,7 +48,7 @@ public class ShortFormInstruction extends AbstractInstruction {
 			break;
 		case 0x30: 	// omitted
 		default:
-			return;
+			break;
 		}
 
 		// Create the opcode object.

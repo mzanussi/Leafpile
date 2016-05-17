@@ -174,7 +174,11 @@ public abstract class AbstractInstruction implements Instruction {
 		for (Integer operand : operands) {
 			temp.append(operand + ",");
 		}
-		sb.append(temp.substring(0, temp.length() - 1) + "} ");
+		if (temp.length() > 0) {
+			sb.append(temp.substring(0, temp.length() - 1) + "} ");
+		} else {
+			sb.append("} ");
+		}
 		sb.append("br=" + isBranch() + " ");
 		if (isBranch()) {
 			sb.append("(br when " + branchWhen() + ")");
@@ -188,7 +192,8 @@ public abstract class AbstractInstruction implements Instruction {
 		}
 		sb.append("\n");
 		sb.append("cur rous Arguments: " + current.getNumberOfArgs() + "\n");
-		sb.append("cur rous Store: " + current.getStoreVariable());
+		sb.append("cur rous Store: " + current.getStoreVariable() + "\n");
+		sb.append("cur rous Stack: " + current.getStack());
 		//sb.append("\n");
 		//sb.append(opcode + "\n");
 		return sb.toString();

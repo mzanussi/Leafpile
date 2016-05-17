@@ -53,6 +53,14 @@ public abstract class AbstractObject implements ObjectTableObject {
 	 */
 	public abstract void setProperty(int property, int value);
 	
+	/* (non-Javadoc)
+	 * @see com.michaelzanussi.leafpile.objecttable.ObjectTableObject#isAttributeSet(int)
+	 */
+	public boolean isAttributeSet(int attribute) {
+		boolean isSet = attributes.get(attribute);
+		return isSet;
+	}
+	
 	/**
 	 * The Property class represents a single property for an object.
 	 * It holds the property number, the size of the property, and a
