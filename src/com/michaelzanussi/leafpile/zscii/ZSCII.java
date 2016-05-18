@@ -4,6 +4,11 @@ import com.michaelzanussi.leafpile.Debug;
 import com.michaelzanussi.leafpile.zmachine.Memory;
 
 /**
+ * This interface defines the ZSCII character set and encoding
+ * and decoding utilities. Z-machine text is a sequence of ZSCII
+ * character codes. These ZSCII values are encoded in memory using
+ * a string of Z-characters. (3.1)
+ * 
  * @author <a href="mailto:iosdevx@gmail.com">Michael Zanussi</a>
  * @version 1.0 (29 April 2016) 
  */
@@ -23,7 +28,30 @@ public abstract class ZSCII {
 		version = memory.getVersion();
 	}
 	
+	/**
+	 * Convert the array of 2-byte words into an ASCII string.
+	 * Defer implementation to the subclass.
+	 * 
+	 * @param data
+	 * @return
+	 */
+	public abstract String decode(int[] data);
+	
+	/**
+	 * Text in memory consists of a sequence of 2-byte words. Each word
+	 * is divided into three 5-bit 'Z-characters', plus 1 bit left over.
+	 * That bit is set only on the last 2-byte word of the text, and so
+	 * marks the end. (3.2)
+	 * 
+	 * Convert a chunk of memory (a series of 2-byte words stored in an
+	 * integer array) to its corresponding Z-characters (stored in a
+	 * byte array).
+	 * 
+	 * @param data a chunk of memory to convert to Z-characters
+	 * @return a byte array containing Z-characters
+	 */
 	protected byte[] toZchars(int[] data) {
+		
 		// Each 2-byte word contains 3 5-bit Z-characters and a stop bit,
 		// so create a byte array large enough to hold the Z-characters.
 		byte[] zchars = new byte[data.length * 3];
@@ -48,9 +76,23 @@ public abstract class ZSCII {
 		}
 		
 		return zchars;
+		
 	}
 	
+	/**
+	 * Text in memory consists of a sequence of 2-byte words. Each word
+	 * is divided into three 5-bit 'Z-characters', plus 1 bit left over.
+	 * That bit is set only on the last 2-byte word of the text, and so
+	 * marks the end. (3.2)
+	 * 
+	 * Convert an array of Z-characters into corresponding 2-byte word
+	 * equivalent, and store in an integer array.
+	 * 
+	 * @param data an array containing Z-characters
+	 * @return a integer array containing 2-byte words
+	 */
 	protected int[] fromZchars(byte[] data) {
+		
 		int[] words = new int[data.length / 3];
 		
 		int counter = 0;
@@ -74,18 +116,25 @@ public abstract class ZSCII {
 		}
 		
 		return words;
+		
 	}
 	
-	public abstract String decode(int[] data);
-	
-	// When an interpreter is encrypting typed-in text to match against dictionary words, 
-	// the following restrictions apply. Text should be converted to lower case (as a 
-	// result A1 will not be needed unless the game provides its own alphabet table). 
-	// Abbreviations may not be used. The pad character, if needed, must be 5. The total 
-	// string length must be 6 Z-characters (in Versions 1 to 3) or 9 (Versions 4 and later): 
-	// any multi-Z-character constructions should be left incomplete (rather than omitted) 
-	// if there's no room to finish them.
+	/**
+	 * When an interpreter is encrypting typed-in text to match against 
+	 * dictionary words, the following restrictions apply. Text should be 
+	 * converted to lower case (as a result A1 will not be needed unless 
+	 * the game provides its own alphabet table). Abbreviations may not 
+	 * be used. The pad character, if needed, must be 5. The total string 
+	 * length must be 6 Z-characters (in Versions 1 to 3) or 9 (Versions 
+	 * 4 and later): any multi-Z-character constructions should be left 
+	 * incomplete (rather than omitted) if there's no room to finish them.
+	 * (3.7)
+	 * 
+	 * @param text the text to convert into Z-character string
+	 * @return the Z-character string
+	 */
 	public byte[] encode(String text) {
+		
 		// set Z-string length
 		int zlen = (version <= 3 ? 6 : 9);
 		byte[] zstr = new byte[zlen];
@@ -106,9 +155,7 @@ public abstract class ZSCII {
 				}
 			}
 		}
-		
-		//int[] words = fromZchars(zstr);
-		
+				
 		return zstr;
 		
 	}

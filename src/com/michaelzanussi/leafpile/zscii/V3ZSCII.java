@@ -6,6 +6,8 @@ import java.util.List;
 import com.michaelzanussi.leafpile.zmachine.Memory;
 
 /**
+ * Support for V3-V4 alphabet: shift, abbreviations.
+ * 
  * @author <a href="mailto:iosdevx@gmail.com">Michael Zanussi</a>
  * @version 1.0 (29 April 2016) 
  */
@@ -17,7 +19,11 @@ public class V3ZSCII extends ZSCII {
 		assert (version < 5) : "add support for alt alphabets";
 	}
 
+	/* (non-Javadoc)
+	 * @see com.michaelzanussi.leafpile.zscii.ZSCII#decode(int[])
+	 */
 	public String decode(int[] data) {
+		
 		// set the default alphabet
 		String alphabet = a0;
 		// 1. get the Z-characters

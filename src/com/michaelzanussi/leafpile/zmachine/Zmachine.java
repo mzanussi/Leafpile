@@ -6,12 +6,13 @@ import java.util.Deque;
 
 import com.michaelzanussi.leafpile.factory.Factory;
 import com.michaelzanussi.leafpile.instructions.Instruction;
+import com.michaelzanussi.leafpile.ui.IUI;
 
 /**
  * @author <a href="mailto:iosdevx@gmail.com">Michael Zanussi</a>
  * @version 1.0 (5 May 2016) 
  */
-public class Zmachine {
+public class Zmachine extends Thread {
 	
 	// The memory map, which is the story file.
 	private Memory memory;
@@ -28,10 +29,22 @@ public class Zmachine {
 	
 	private Factory factory;
 	
-	public Zmachine(File story) {
-		memory = new Memory(story);
-		factory = new Factory(this);
-		rscs = new ArrayDeque<Rous>();
+	// The user interface.
+	private IUI ui;
+	
+	// The story file.
+	private File story;
+	
+	public Zmachine(IUI ui/*File story*/) {
+		this.ui = ui;
+		//memory = new Memory(story);
+		//factory = new Factory(this);
+		//rscs = new ArrayDeque<Rous>();
+	}
+	
+	// getter
+	public IUI ui() {
+		return ui;
 	}
 	
 	// getter
@@ -57,7 +70,24 @@ public class Zmachine {
 		return current;
 	}
 	
-	public void test() {
+	/**
+	 * Set the story file.
+	 * 
+	 * @param story the story file.
+	 */
+	public void setStory(File story) {
+		this.story = story;
+	}
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Thread#run()
+	 */
+	public void run() {
+		
+		// do some init
+		memory = new Memory(story);
+		factory = new Factory(this);
+		rscs = new ArrayDeque<Rous>();
 		
 		// create new routine state with pc, set as current
 		current = new Rous(memory.getInitialPC(), this);
@@ -68,17 +98,11 @@ public class Zmachine {
 				System.out.print("");
 			}
 			Instruction instruction = factory.createInstruction();
-			System.out.println(instruction);
+			System.out.println(instruction.toString());
 			System.out.println("-- Now Executing --");
 			instruction.exec();
 		}
 		
-	}
-	
-	public static void main(String[] args) {
-		File file = new File("test/tdata.z3");
-		Zmachine zmachine = new Zmachine(file);
-		zmachine.test();
 	}
 	
 }

@@ -12,6 +12,7 @@ import com.michaelzanussi.leafpile.opcodes.Jump;
 import com.michaelzanussi.leafpile.opcodes.Jz;
 import com.michaelzanussi.leafpile.opcodes.Loadw;
 import com.michaelzanussi.leafpile.opcodes.Opcode;
+import com.michaelzanussi.leafpile.opcodes.Print;
 import com.michaelzanussi.leafpile.opcodes.Put_prop;
 import com.michaelzanussi.leafpile.opcodes.Ret;
 import com.michaelzanussi.leafpile.opcodes.Store;
@@ -21,7 +22,11 @@ import com.michaelzanussi.leafpile.opcodes.Test_attr;
 import com.michaelzanussi.leafpile.instructions.LongFormInstruction;
 import com.michaelzanussi.leafpile.instructions.ShortFormInstruction;
 import com.michaelzanussi.leafpile.instructions.VariableFormInstruction;
+import com.michaelzanussi.leafpile.zmachine.Memory;
 import com.michaelzanussi.leafpile.zmachine.Zmachine;
+import com.michaelzanussi.leafpile.zscii.V1ZSCII;
+import com.michaelzanussi.leafpile.zscii.V3ZSCII;
+import com.michaelzanussi.leafpile.zscii.ZSCII;
 
 /**
  * A factory class for instantiating various kinds of objects.
@@ -32,6 +37,7 @@ import com.michaelzanussi.leafpile.zmachine.Zmachine;
 public class Factory {
 	
 	private Zmachine zmachine;
+	private Memory memory;
 	
 	/**
 	 * Single-arg instruction takes a Z-machine as its only arg.
@@ -40,6 +46,14 @@ public class Factory {
 	 */
 	public Factory(Zmachine zmachine) {
 		this.zmachine = zmachine;
+		memory = zmachine.memory();
+	}
+	
+	public ZSCII createZSCII() {
+		if (memory.getVersion() < 3) {
+			return new V1ZSCII(memory);
+		}
+		return new V3ZSCII(memory);
 	}
 	
 	/**
@@ -49,10 +63,10 @@ public class Factory {
 	 * @return the object table object
 	 */
 	public ObjectTableObject createObject(int obj_num) {
-		if (zmachine.memory().getVersion() < 4) {
-			return new V1Object(obj_num, zmachine.memory());
+		if (memory.getVersion() < 4) {
+			return new V1Object(obj_num, memory);
 		} else {
-			return new V4Object(obj_num, zmachine.memory());
+			return new V4Object(obj_num, memory);
 		}
 	}
 	
@@ -65,7 +79,7 @@ public class Factory {
 		// get the current routine's pc
 		int pc = zmachine.getCurrentRous().getPC();
 		// get the opcode byte
-		int obyte = zmachine.memory().getByte(pc);
+		int obyte = memory.getByte(pc);
 		// get bits 6 & 7 to determine form (4.3)
 		int bits67 = obyte >> 6;
 		
@@ -97,6 +111,8 @@ public class Factory {
 		switch (opcount) {
 		case O_0OP:
 			switch (opcode_no) {
+			case 0x02:
+				return new Print(instruction);
 			default:
 				assert (false) : "unimplemented 0OP opcode: 0x" + Integer.toHexString(opcode_no);
 			}
