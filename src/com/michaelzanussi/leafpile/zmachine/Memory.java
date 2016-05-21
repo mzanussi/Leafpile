@@ -21,7 +21,7 @@ public class Memory {
 	private Debug debug;
 	
 	private static final int VERSION = 0x00;
-	private static final int FLAGS1 = 0x01;				// TODO:
+	private static final int FLAGS1 = 0x01;
 	private static final int HIGH_MEMORY = 0x04;
 	private static final int PC = 0x06;
 	private static final int DICTIONARY = 0x08;
@@ -161,6 +161,24 @@ public class Memory {
 	 */
 	public int unsigned(int value) {
 		return value & 0xffff;
+	}
+	
+	/**
+	 * Returns Flags 1
+	 * 
+	 * @return Flags 1
+	 */
+	public int getFlags1() {
+		return getByte(FLAGS1);
+	}
+	
+	/**
+	 * Set Flags 1 to value.
+	 * 
+	 * @param flags1 the flags to set
+	 */
+	public void setFlags1(int flags1) {
+		setByte(FLAGS1, flags1);
 	}
 	
 	/**

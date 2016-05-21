@@ -35,11 +35,8 @@ public class Zmachine extends Thread {
 	// The story file.
 	private File story;
 	
-	public Zmachine(IUI ui/*File story*/) {
+	public Zmachine(IUI ui) {
 		this.ui = ui;
-		//memory = new Memory(story);
-		//factory = new Factory(this);
-		//rscs = new ArrayDeque<Rous>();
 	}
 	
 	// getter
@@ -89,8 +86,24 @@ public class Zmachine extends Thread {
 		factory = new Factory(this);
 		rscs = new ArrayDeque<Rous>();
 		
+		int version = memory.getVersion();
+		
 		// create new routine state with pc, set as current
 		current = new Rous(memory.getInitialPC(), this);
+		
+		// setup header FLAGS1
+		int flags1 = memory.getFlags1();
+		if (version <= 3) {
+			// status line NOT available? 1=true; 0=false
+			flags1 &= 0xef;
+			// screen split? 1=true; 0=false
+			flags1 |= 0x20;
+			// font is variable pitch font default? 1=true; 0=false
+			flags1 &= 0xbf;
+		} else {
+			assert(false) : "set Flags1 for vers >= 4";
+		}
+		memory.setFlags1(flags1);
 		
 		while (true) {
 			System.out.println("+++++ NEW INSTRUCTION +++++");

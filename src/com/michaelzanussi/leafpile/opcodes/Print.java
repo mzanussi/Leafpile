@@ -60,10 +60,9 @@ public class Print extends AbstractOpcode {
 		// decode it
 		String string = zscii.decode(words);
 		zmachine.ui().write(string);
-		zmachine.ui().flush_buf();
 		
 		{
-			System.out.println(string);
+			System.out.println("PRINT ~" + string + "~");
 		}
 		
 	}

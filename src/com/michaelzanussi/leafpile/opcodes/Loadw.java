@@ -4,7 +4,7 @@ import com.michaelzanussi.leafpile.instructions.Instruction;
 
 /**
  * This class provides a concrete implementation of the <code>Opcode</code> 
- * interface for Load (load word) instructions. See p. 88.
+ * interface for Loadw (load word) instructions. See p. 88.
  * 
  * loadw array word-index -> (result)
  * 
@@ -44,6 +44,13 @@ public class Loadw extends AbstractOpcode {
 		
 		{
 			System.out.println("LOADW array:" + array + " word-index:" + word_index + " (addr=" + address + ") var:" + variable + " value:" + value);
+			System.out.print("local vars now = ");
+			int[] locals = current.getLocals();
+			for (int i = 0; i < locals.length; i++) {
+				System.out.print(locals[i] + " ");
+			}
+			System.out.print("\n");
+			System.out.println("stack now = " + current.getStack());
 		}
 
 	}

@@ -4,24 +4,26 @@ import com.michaelzanussi.leafpile.instructions.Instruction;
 
 /**
  * This class provides a concrete implementation of the <code>Opcode</code> 
- * interface for Sub (signed 16-bit subtraction) instructions. See p. 102.
+ * interface for And (bitwise AND) instructions. See p. 79.
  * 
- * sub a b -> (result)
+ * and a b -> (result)
+ * 
+ * Bitwise AND.
  * 
  * @author <a href="mailto:iosdevx@gmail.com">Michael Zanussi</a>
- * @version 1.0 (10 May 2016) 
+ * @version 1.0 (20 May 2016) 
  */
-public class Sub extends AbstractOpcode {
+public class And extends AbstractOpcode {
 
 	/**
 	 * Single-arg constructor takes Instruction object as only arg.
 	 * 
 	 * @param instruction the instruction
 	 */
-	public Sub(Instruction instruction) {
+	public And(Instruction instruction) {
 		super(instruction);
 		isStore = true;
-		name = "sub";
+		name = "and";
 	}
 	
 	/* (non-Javadoc)
@@ -34,11 +36,11 @@ public class Sub extends AbstractOpcode {
 		int b = memory.signed(operands.get(1));
 		
 		// Perform the signed addition and store unsigned.
-		int result = a - b;
+		int result = a & b;
 		current.setVariableValue(current.getStoreVariable(), memory.unsigned(result));
 		
 		{
-			System.out.println("SUB a:" + a + " b:" + b + " result:" + result + " store:" + current.getStoreVariable());
+			System.out.println("AND a:" + a + " b:" + b + " result:" + result + " store:" + current.getStoreVariable());
 			System.out.print("local vars now = ");
 			int[] locals = current.getLocals();
 			for (int i = 0; i < locals.length; i++) {
@@ -49,5 +51,5 @@ public class Sub extends AbstractOpcode {
 		}
 		
 	}
-
+	
 }

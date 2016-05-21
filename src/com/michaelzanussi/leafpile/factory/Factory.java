@@ -6,11 +6,14 @@ import com.michaelzanussi.leafpile.objecttable.ObjectTableObject;
 import com.michaelzanussi.leafpile.objecttable.V1Object;
 import com.michaelzanussi.leafpile.objecttable.V4Object;
 import com.michaelzanussi.leafpile.opcodes.Add;
+import com.michaelzanussi.leafpile.opcodes.And;
 import com.michaelzanussi.leafpile.opcodes.Call;
 import com.michaelzanussi.leafpile.opcodes.Je;
 import com.michaelzanussi.leafpile.opcodes.Jump;
 import com.michaelzanussi.leafpile.opcodes.Jz;
+import com.michaelzanussi.leafpile.opcodes.Loadb;
 import com.michaelzanussi.leafpile.opcodes.Loadw;
+import com.michaelzanussi.leafpile.opcodes.New_line;
 import com.michaelzanussi.leafpile.opcodes.Opcode;
 import com.michaelzanussi.leafpile.opcodes.Print;
 import com.michaelzanussi.leafpile.opcodes.Put_prop;
@@ -113,6 +116,8 @@ public class Factory {
 			switch (opcode_no) {
 			case 0x02:
 				return new Print(instruction);
+			case 0x0b:
+				return new New_line(instruction);
 			default:
 				assert (false) : "unimplemented 0OP opcode: 0x" + Integer.toHexString(opcode_no);
 			}
@@ -133,12 +138,16 @@ public class Factory {
 			switch (opcode_no) {
 			case 0x01:
 				return new Je(instruction);
+			case 0x09:
+				return new And(instruction);
 			case 0x0a:
 				return new Test_attr(instruction);
 			case 0x0d:
 				return new Store(instruction);
 			case 0x0f:
 				return new Loadw(instruction);
+			case 0x10:
+				return new Loadb(instruction);
 			case 0x14:
 				return new Add(instruction);
 			case 0x15:

@@ -44,7 +44,8 @@ public class Add extends AbstractOpcode {
 			for (int i = 0; i < locals.length; i++) {
 				System.out.print(locals[i] + " ");
 			}
-			System.out.println("\n");
+			System.out.print("\n");
+			System.out.println("stack now = " + current.getStack());
 		}
 		
 	}

@@ -4,24 +4,27 @@ import com.michaelzanussi.leafpile.instructions.Instruction;
 
 /**
  * This class provides a concrete implementation of the <code>Opcode</code> 
- * interface for Sub (signed 16-bit subtraction) instructions. See p. 102.
+ * interface for Loadb (load byte) instructions. See p. 88.
  * 
- * sub a b -> (result)
+ * loadb array byte-index -> (result)
+ * 
+ * Stores array -> byte-index, i.e. the byte at address array + byte-index, 
+ * (which must lie in static or dynamic memory).
  * 
  * @author <a href="mailto:iosdevx@gmail.com">Michael Zanussi</a>
- * @version 1.0 (10 May 2016) 
+ * @version 1.0 (19 May 2016) 
  */
-public class Sub extends AbstractOpcode {
+public class Loadb extends AbstractOpcode {
 
 	/**
 	 * Single-arg constructor takes Instruction object as only arg.
 	 * 
 	 * @param instruction the instruction
 	 */
-	public Sub(Instruction instruction) {
+	public Loadb(Instruction instruction) {
 		super(instruction);
 		isStore = true;
-		name = "sub";
+		name = "loadb";
 	}
 	
 	/* (non-Javadoc)
@@ -30,15 +33,17 @@ public class Sub extends AbstractOpcode {
 	public void exec() {
 		
 		// Retrieve the operands.
-		int a = memory.signed(operands.get(0));
-		int b = memory.signed(operands.get(1));
+		int array = operands.get(0);
+		int byte_index = operands.get(1);
 		
-		// Perform the signed addition and store unsigned.
-		int result = a - b;
-		current.setVariableValue(current.getStoreVariable(), memory.unsigned(result));
+		int address = array + byte_index;
+		int variable = current.getStoreVariable();
+		int value = memory.getByte(address);
+		
+		current.setVariableValue(variable, value);
 		
 		{
-			System.out.println("SUB a:" + a + " b:" + b + " result:" + result + " store:" + current.getStoreVariable());
+			System.out.println("LOADB array:" + array + " byte-index:" + byte_index + " (addr=" + address + ") var:" + variable + " value:" + value);
 			System.out.print("local vars now = ");
 			int[] locals = current.getLocals();
 			for (int i = 0; i < locals.length; i++) {
@@ -47,7 +52,7 @@ public class Sub extends AbstractOpcode {
 			System.out.print("\n");
 			System.out.println("stack now = " + current.getStack());
 		}
-		
-	}
 
+	}
+	
 }
