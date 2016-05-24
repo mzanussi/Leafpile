@@ -8,6 +8,8 @@ import com.michaelzanussi.leafpile.instructions.Instruction;
  * 
  * sub a b -> (result)
  * 
+ * Signed 16-bit substraction.
+ * 
  * @author <a href="mailto:iosdevx@gmail.com">Michael Zanussi</a>
  * @version 1.0 (10 May 2016) 
  */
@@ -46,6 +48,7 @@ public class Sub extends AbstractOpcode {
 			}
 			System.out.print("\n");
 			System.out.println("stack now = " + current.getStack());
+			System.out.println();
 		}
 		
 	}

@@ -47,13 +47,16 @@ public class V1Object extends AbstractObject {
 		address += ATTRIBUTES / 8;
 		
 		//{ debug.print("parent: "); }
-		parent = memory.getByte(address++);
+		parent_addr = address++;
+		parent = memory.getByte(parent_addr/*address++*/);
 		
 		//{ debug.print("sibling: "); }
-		sibling = memory.getByte(address++);
+		sibling_addr = address++;
+		sibling = memory.getByte(sibling_addr/*address++*/);
 		
 		//{ debug.print("child: "); }
-		child = memory.getByte(address++);
+		child_addr = address++;
+		child = memory.getByte(child_addr/*address++*/);
 		
 		//{ debug.print("properties: "); }
 		prop_addr = memory.getWord(address);

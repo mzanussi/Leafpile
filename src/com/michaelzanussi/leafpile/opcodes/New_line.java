@@ -35,6 +35,7 @@ public class New_line extends AbstractOpcode {
 		
 		{
 			System.out.println("PRINT ~\\n~");
+			System.out.println();
 		}
 		
 	}

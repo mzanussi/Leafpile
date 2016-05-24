@@ -8,6 +8,8 @@ import com.michaelzanussi.leafpile.instructions.Instruction;
  * 
  * add a b -> (result)
  * 
+ * Signed 16-bit addition.
+ * 
  * @author <a href="mailto:iosdevx@gmail.com">Michael Zanussi</a>
  * @version 1.0 (10 May 2016) 
  */
@@ -46,6 +48,7 @@ public class Add extends AbstractOpcode {
 			}
 			System.out.print("\n");
 			System.out.println("stack now = " + current.getStack());
+			System.out.println();
 		}
 		
 	}

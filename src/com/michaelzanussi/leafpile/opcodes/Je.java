@@ -8,8 +8,8 @@ import com.michaelzanussi.leafpile.instructions.Instruction;
  * 
  * je a b ?(label)
  * 
- * Jump if op1 is equal to any of the subsequent operands. (Thus JE op1
- * never jumps and JE op1 op2 jumps if op1 = op2.)
+ * Jump if a is equal to any of the subsequent operands. (Thus JE a
+ * never jumps and JE a b jumps if a = b.)
  * 
  * @author <a href="mailto:iosdevx@gmail.com">Michael Zanussi</a>
  * @version 1.0 (11 May 2016) 
@@ -56,6 +56,10 @@ public class Je extends AbstractOpcode {
 		}
 		
 		executeBranch(result);
+		
+		{
+			System.out.println();
+		}
 		
 	}
 	

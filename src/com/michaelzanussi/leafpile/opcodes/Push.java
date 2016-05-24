@@ -4,27 +4,25 @@ import com.michaelzanussi.leafpile.instructions.Instruction;
 
 /**
  * This class provides a concrete implementation of the <code>Opcode</code> 
- * interface for Loadb (load byte) instructions. See p. 88.
+ * interface for Push (push value) instructions. See p. 93.
  * 
- * loadb array byte-index -> (result)
+ * push value
  * 
- * Stores array -> byte-index, i.e. the byte at address array + byte-index, 
- * (which must lie in static or dynamic memory).
+ * Pushes value onto the game stack.
  * 
  * @author <a href="mailto:iosdevx@gmail.com">Michael Zanussi</a>
- * @version 1.0 (19 May 2016) 
+ * @version 1.0 (23 May 2016) 
  */
-public class Loadb extends AbstractOpcode {
+public class Push extends AbstractOpcode {
 
 	/**
 	 * Single-arg constructor takes Instruction object as only arg.
 	 * 
 	 * @param instruction the instruction
 	 */
-	public Loadb(Instruction instruction) {
+	public Push(Instruction instruction) {
 		super(instruction);
-		isStore = true;
-		name = "loadb";
+		name = "push";
 	}
 	
 	/* (non-Javadoc)
@@ -32,18 +30,14 @@ public class Loadb extends AbstractOpcode {
 	 */
 	public void exec() {
 		
-		// Retrieve the operands.
-		int array = operands.get(0);
-		int byte_index = operands.get(1);
+		// Retrieve the operand.
+		int value = memory.signed(operands.get(0));
 		
-		int address = array + byte_index;
-		int variable = current.getStoreVariable();
-		int value = memory.getByte(address);
-		
-		current.setVariableValue(variable, value);
+		// Push the value onto the game stack.
+		current.setVariableValue(0, value);
 		
 		{
-			System.out.println("LOADB array:" + array + " byte-index:" + byte_index + " (addr=" + address + ") var:" + variable + " value:" + value);
+			System.out.println("PUSH value:" + value);
 			System.out.print("local vars now = ");
 			int[] locals = current.getLocals();
 			for (int i = 0; i < locals.length; i++) {
@@ -53,7 +47,7 @@ public class Loadb extends AbstractOpcode {
 			System.out.println("stack now = " + current.getStack());
 			System.out.println();
 		}
-
+		
 	}
 	
 }

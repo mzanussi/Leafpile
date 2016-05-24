@@ -48,6 +48,7 @@ public class Jump extends AbstractOpcode {
 		
 		{
 			System.out.println("JUMP op:" + op + " (signed=" + signed + ", new pc=" + pc + ")");
+			System.out.println();
 		}
 
 	}

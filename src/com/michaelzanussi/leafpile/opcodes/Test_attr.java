@@ -46,6 +46,10 @@ public class Test_attr extends AbstractOpcode {
 		
 		executeBranch(result);
 		
+		{
+			System.out.println();
+		}
+		
 	}
 	
 }

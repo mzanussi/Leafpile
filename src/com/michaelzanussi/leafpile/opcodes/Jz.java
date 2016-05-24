@@ -8,7 +8,7 @@ import com.michaelzanussi.leafpile.instructions.Instruction;
  * 
  * jz a ?(label)
  * 
- * Jump if op1 = 0.
+ * Jump if a = 0.
  * 
  * @author <a href="mailto:iosdevx@gmail.com">Michael Zanussi</a>
  * @version 1.0 (12 May 2016) 
@@ -41,6 +41,10 @@ public class Jz extends AbstractOpcode {
 		}
 
 		executeBranch(result);
+		
+		{
+			System.out.println();
+		}
 		
 	}
 	

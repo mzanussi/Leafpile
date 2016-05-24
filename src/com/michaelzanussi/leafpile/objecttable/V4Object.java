@@ -50,26 +50,32 @@ public class V4Object extends AbstractObject {
 		
 		//{ debug.print("parent: "); }
 		if (version < 4) { 
-			parent = memory.getByte(address++);
+			parent_addr = address++;
+			parent = memory.getByte(parent_addr/*address++*/);
 		} else {
-			parent = memory.getWord(address);
+			parent_addr = address;
 			address += 2;
+			parent = memory.getWord(parent_addr/*address*/);
 		}
 		
 		//{ debug.print("sibling: "); }
 		if (version < 4) {
-			sibling = memory.getByte(address++);
+			sibling_addr = address++;
+			sibling = memory.getByte(sibling_addr/*address++*/);
 		} else {
-			sibling = memory.getWord(address);
+			sibling_addr = address;
 			address += 2;
+			sibling = memory.getWord(sibling_addr/*address*/);
 		}
 		
 		//{ debug.print("child: "); }
 		if (version < 4) {
-			child = memory.getByte(address++);
+			child_addr = address++;
+			child = memory.getByte(child_addr/*address++*/);
 		} else {
-			child = memory.getWord(address);
+			child_addr = address;
 			address += 2;
+			child = memory.getWord(child_addr/*address*/);
 		}
 		
 		//{ debug.print("properties: "); }

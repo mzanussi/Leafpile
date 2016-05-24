@@ -63,6 +63,7 @@ public class Print extends AbstractOpcode {
 		
 		{
 			System.out.println("PRINT ~" + string + "~");
+			System.out.println();
 		}
 		
 	}

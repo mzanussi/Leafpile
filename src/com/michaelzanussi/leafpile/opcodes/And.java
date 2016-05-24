@@ -35,7 +35,7 @@ public class And extends AbstractOpcode {
 		int a = memory.signed(operands.get(0));
 		int b = memory.signed(operands.get(1));
 		
-		// Perform the signed addition and store unsigned.
+		// Perform the operation and store unsigned.
 		int result = a & b;
 		current.setVariableValue(current.getStoreVariable(), memory.unsigned(result));
 		
@@ -48,6 +48,7 @@ public class And extends AbstractOpcode {
 			}
 			System.out.print("\n");
 			System.out.println("stack now = " + current.getStack());
+			System.out.println();
 		}
 		
 	}

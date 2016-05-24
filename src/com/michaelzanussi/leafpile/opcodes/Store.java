@@ -45,6 +45,7 @@ public class Store extends AbstractOpcode {
 			}
 			System.out.print("\n");
 			System.out.println("stack now = " + current.getStack());
+			System.out.println();
 		}
 		
 	}

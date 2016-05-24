@@ -4,25 +4,25 @@ import com.michaelzanussi.leafpile.instructions.Instruction;
 
 /**
  * This class provides a concrete implementation of the <code>Opcode</code> 
- * interface for Ret (return from current routine) instructions. See p. 97.
+ * interface for Print_num (print signed number) instructions. See p. 92.
  * 
- * ret value
+ * print_num value
  * 
- * Returns from the current routine with the value given
+ * Print (signed) number in decimal.
  * 
  * @author <a href="mailto:iosdevx@gmail.com">Michael Zanussi</a>
- * @version 1.0 (12 May 2016) 
+ * @version 1.0 (23 May 2016) 
  */
-public class Ret extends AbstractOpcode {
+public class Print_num extends AbstractOpcode {
 
 	/**
 	 * Single-arg constructor takes Instruction object as only arg.
 	 * 
 	 * @param instruction the instruction
 	 */
-	public Ret(Instruction instruction) {
+	public Print_num(Instruction instruction) {
 		super(instruction);
-		name = "ret";
+		name = "print_num";
 	}
 	
 	/* (non-Javadoc)
@@ -31,15 +31,18 @@ public class Ret extends AbstractOpcode {
 	public void exec() {
 		
 		// Retrieve the operand.
-		int value = operands.get(0);
+		int value = memory.signed(operands.get(0));
+		
+		// Convert int to String.
+		String string = Integer.toString(value);
+		
+		zmachine.ui().write(string);
 		
 		{
-			System.out.println("RET value:" + value);
+			System.out.println("PRINT_NUM ~" + string + "~");
 			System.out.println();
 		}
 		
-		retuurn(value);
-
 	}
 	
 }

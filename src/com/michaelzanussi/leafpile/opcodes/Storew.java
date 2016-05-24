@@ -43,6 +43,7 @@ public class Storew extends AbstractOpcode {
 		
 		{
 			System.out.println("STOREW array:" + array + " word-index:" + word_index + " (addr=" + address + ") value:" + value);
+			System.out.println();
 		}
 
 	}

@@ -4,25 +4,25 @@ import com.michaelzanussi.leafpile.instructions.Instruction;
 
 /**
  * This class provides a concrete implementation of the <code>Opcode</code> 
- * interface for Ret (return from current routine) instructions. See p. 97.
+ * interface for Rtrue (return true) instructions. See p. 98.
  * 
- * ret value
+ * rtrue
  * 
- * Returns from the current routine with the value given
+ * Return true (i.e., 1) from the current routine.
  * 
  * @author <a href="mailto:iosdevx@gmail.com">Michael Zanussi</a>
- * @version 1.0 (12 May 2016) 
+ * @version 1.0 (23 May 2016) 
  */
-public class Ret extends AbstractOpcode {
+public class Rtrue extends AbstractOpcode {
 
 	/**
 	 * Single-arg constructor takes Instruction object as only arg.
 	 * 
 	 * @param instruction the instruction
 	 */
-	public Ret(Instruction instruction) {
+	public Rtrue(Instruction instruction) {
 		super(instruction);
-		name = "ret";
+		name = "rtrue";
 	}
 	
 	/* (non-Javadoc)
@@ -30,16 +30,13 @@ public class Ret extends AbstractOpcode {
 	 */
 	public void exec() {
 		
-		// Retrieve the operand.
-		int value = operands.get(0);
-		
 		{
-			System.out.println("RET value:" + value);
+			System.out.println("RTRUE");
 			System.out.println();
 		}
 		
-		retuurn(value);
-
+		retuurn(1);
+		
 	}
 	
 }

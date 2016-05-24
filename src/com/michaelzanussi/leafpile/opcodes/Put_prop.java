@@ -47,6 +47,7 @@ public class Put_prop extends AbstractOpcode {
 		
 		{
 			System.out.println("PUT_PROP object:" + obj_num + " property:" + property + " value:" + value);
+			System.out.println();
 		}
 
 	}

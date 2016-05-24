@@ -18,9 +18,13 @@ public abstract class AbstractObject implements ObjectTableObject {
 	
 	protected int obj_num;
 	protected List<Boolean> attributes;
-	protected int parent;
-	protected int sibling;
-	protected int child;
+	protected int parent;					// parent object
+	protected int sibling;					// sibling object
+	protected int child;					// child object
+	
+	protected int parent_addr;				// parent object address
+	protected int sibling_addr;				// sibling object address
+	protected int child_addr;				// child object address
 	
 	protected int prop_addr;
 	// property table holds an array of Property objects
@@ -40,12 +44,24 @@ public abstract class AbstractObject implements ObjectTableObject {
 		return parent;
 	}
 	
+	public void setParent(int parent) {
+		memory.setByte(parent_addr, parent);
+	}
+	
 	public int getSibling() {
 		return sibling;
 	}
 	
+	public void setSibling(int sibling) {
+		memory.setByte(sibling_addr, sibling);
+	}
+	
 	public int getChild() {
 		return child;
+	}
+	
+	public void setChild(int child) {
+		memory.setByte(child_addr, child);
 	}
 	
 	/* (non-Javadoc)

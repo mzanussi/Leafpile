@@ -4,27 +4,28 @@ import com.michaelzanussi.leafpile.instructions.Instruction;
 
 /**
  * This class provides a concrete implementation of the <code>Opcode</code> 
- * interface for Loadb (load byte) instructions. See p. 88.
+ * interface for Pull (pull value) instructions. See p. 93.
  * 
- * loadb array byte-index -> (result)
+ * pull (variable)
+ * pull stack -> (result)
  * 
- * Stores array -> byte-index, i.e. the byte at address array + byte-index, 
- * (which must lie in static or dynamic memory).
+ * Pulls value off a stack. (If the stack underflows, the interpreter should
+ * halt with a suitable error message.) In version 6, the stack in question
+ * may be specified as a user one: otherwise it is the game stack.
  * 
  * @author <a href="mailto:iosdevx@gmail.com">Michael Zanussi</a>
- * @version 1.0 (19 May 2016) 
+ * @version 1.0 (23 May 2016) 
  */
-public class Loadb extends AbstractOpcode {
+public class Pull extends AbstractOpcode {
 
 	/**
 	 * Single-arg constructor takes Instruction object as only arg.
 	 * 
 	 * @param instruction the instruction
 	 */
-	public Loadb(Instruction instruction) {
+	public Pull(Instruction instruction) {
 		super(instruction);
-		isStore = true;
-		name = "loadb";
+		name = "pull";
 	}
 	
 	/* (non-Javadoc)
@@ -32,18 +33,20 @@ public class Loadb extends AbstractOpcode {
 	 */
 	public void exec() {
 		
-		// Retrieve the operands.
-		int array = operands.get(0);
-		int byte_index = operands.get(1);
+		// Retrieve the operand.
+		int variable = memory.signed(operands.get(0));
 		
-		int address = array + byte_index;
-		int variable = current.getStoreVariable();
-		int value = memory.getByte(address);
-		
-		current.setVariableValue(variable, value);
+		if (memory.getVersion() < 6) {
+			// Pop the stack and store locally via var.
+			int value = current.getVariableValue(0);
+			current.setVariableValue(variable, value);
+		}
+		else {
+			assert(false) : "handle v6 pulls";
+		}
 		
 		{
-			System.out.println("LOADB array:" + array + " byte-index:" + byte_index + " (addr=" + address + ") var:" + variable + " value:" + value);
+			System.out.println("PULL variable:" + variable);
 			System.out.print("local vars now = ");
 			int[] locals = current.getLocals();
 			for (int i = 0; i < locals.length; i++) {
@@ -53,7 +56,7 @@ public class Loadb extends AbstractOpcode {
 			System.out.println("stack now = " + current.getStack());
 			System.out.println();
 		}
-
+		
 	}
-	
+		
 }
