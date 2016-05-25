@@ -114,6 +114,7 @@ public class Rous {
 	 */
 	public int getVariableValue(int variable) {
 		if (variable == 0x00) {
+			System.out.println("stack popped!");
 			return stack.pop();
 		} else if (variable <= 0x0f) {
 			return locals[variable - 1];

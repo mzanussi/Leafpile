@@ -11,8 +11,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.filechooser.FileFilter;
 
+import com.michaelzanussi.leafpile.factory.Factory;
 import com.michaelzanussi.leafpile.ui.components.Console;
-import com.michaelzanussi.leafpile.ui.components.V3ScreenModel;
 import com.michaelzanussi.leafpile.ui.menu.Menu;
 import com.michaelzanussi.leafpile.ui.property.GuiPropertyManager;
 import com.michaelzanussi.leafpile.zmachine.Zmachine;
@@ -30,6 +30,7 @@ public class LeafpileGUI extends JFrame implements IUI {
 	private Menu menu;				// menu bar
 
 	private Zmachine zmachine;		// the virtual machine
+	private Factory factory;		// the object factory
 
 	private Font font;
 	private int scr_height;
@@ -43,7 +44,7 @@ public class LeafpileGUI extends JFrame implements IUI {
 	private int cur_line_len;		// the current line length
 	private int lines;				// number of lines buffered
 	private String more_prompt;		// More prompt
-
+	
 	/**
 	 * Because: It is strongly recommended that all serializable classes
 	 * explicitly declare serialVersionUID values.
@@ -62,7 +63,7 @@ public class LeafpileGUI extends JFrame implements IUI {
 
 		// Load the driver.
 		zmachine = new Zmachine(this);
-
+		
 		debug = pm.isDebug();
 		// zm.setDebug(debug);
 
@@ -116,7 +117,35 @@ public class LeafpileGUI extends JFrame implements IUI {
 	 * @param fn the story filename.
 	 */
 	public void start(File fn) {
+		// Set the story and initialize memory.
 		zmachine.setStory(fn);
+		
+		// get the story version
+		int version = zmachine.memory().getVersion();
+		
+		// Now initialize the factory, this needs to be 
+		// done after the story has been read into memory.
+		factory = new Factory(zmachine);
+		
+		// Get the screen model for this story and init
+		// the fame console.
+		console = factory.createConsole(scr_width, scr_height, font);
+		console.init();
+		
+		// Update a few settings in memory specific to GUI.
+		zmachine.memory().setScreenHeight(scr_height);	// (8.4)
+		zmachine.memory().setScreenWidth(scr_width);	// (8.4)
+		
+		if (version >= 5) {
+			assert(false) : "set screen width and height in units (8.4.3)";
+		}
+		
+		// add to container, add listener
+		add(console);
+		pack();
+		addKeyListener(console);
+		
+		// Start the game.
 		zmachine.start();
 	}
 
@@ -308,15 +337,67 @@ public class LeafpileGUI extends JFrame implements IUI {
 	/**
 	 * 
 	 */
-	public void setScreenModel() {
-		// need to set it based on story file version
-		// number. fake it for the moment with V3.
-		console = new V3ScreenModel(zmachine, scr_width, scr_height, font);
+/*	public void setScreenModel() {
+		
+		// setup a factory, get the screen model for this story and init
+		Factory factory = new Factory(zmachine);
+		console = factory.createConsole(scr_width, scr_height, font);
 		console.init();
-
+		
+		// add to container, add listener
 		add(console);
 		pack();
 		addKeyListener(console);
+		
+	}*/
+	
+	/* (non-Javadoc)
+	 * @see com.michaelzanussi.leafpile.ui.IUI#hasSplitScreen()
+	 */
+	public boolean hasSplitScreen() {
+		return console.hasSplitScreen();
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.michaelzanussi.leafpile.ui.IUI#hasNoStatusLine()
+	 */
+	public boolean hasNoStatusLine() {
+		return console.hasNoStatusLine();
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.michaelzanussi.leafpile.ui.IUI#isVariablePitchDefault()
+	 */
+	public boolean isVariablePitchDefault() {
+		return console.isVariablePitchDefault();
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.michaelzanussi.leafpile.ui.IUI#isBoldAvailable()
+	 */
+	public boolean isBoldAvailable() {
+		return console.isBoldAvailable();
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.michaelzanussi.leafpile.ui.IUI#isItalicAvailable()
+	 */
+	public boolean isItalicAvailable() {
+		return console.isItalicAvailable();
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.michaelzanussi.leafpile.ui.IUI#isFixedSpaceFontAvailable()
+	 */
+	public boolean isFixedSpaceFontAvailable() {
+		return console.isFixedSpaceFontAvailable();
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.michaelzanussi.leafpile.ui.IUI#hasTimedInput()
+	 */
+	public boolean hasTimedInput() {
+		return console.hasTimedInput();
 	}
 
 	/**

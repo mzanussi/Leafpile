@@ -11,14 +11,9 @@ import java.awt.Font;
  */
 public class V1ScreenModel extends Console {
 
-	/**
-	 * Because: It is strongly recommended that all serializable
-	 * classes explicitly declare serialVersionUID values.
-	 */
-	private static final long serialVersionUID = -612865576249729802L;
-
-	public V1ScreenModel(Object/*ZMachine*/ zm, int width, int height, Font font) {
-		super(/*zm, */width, height, font);
+	public V1ScreenModel(int width, int height, Font font) {
+		super(width, height, font);
+		noStatusLine = false;
 	}
 	
 	public void init() {

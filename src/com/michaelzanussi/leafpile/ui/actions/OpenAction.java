@@ -44,7 +44,7 @@ public class OpenAction extends AbstractAction {
 		file.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		int choice = file.showDialog(mf, "Select Story");
 		if (choice != JFileChooser.CANCEL_OPTION) {
-			mf.setScreenModel();
+			//mf.setScreenModel();
 			mf.start(file.getSelectedFile());
 		}
 	}

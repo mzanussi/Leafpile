@@ -282,12 +282,24 @@ public class Memory {
 		return getByte(TERP_NUMBER);
 	}
 	
+	public void setInterpreterNumber(int number) {
+		setByte(TERP_NUMBER, number);
+	}
+	
 	public int getInterpreterVersion() {
 		return getByte(TERP_VERSION);
 	}
 	
+	public void setInterpreterVersion(int version) {
+		setByte(TERP_VERSION, version);
+	}
+	
 	public int getScreenHeight() {
 		return getByte(SCREEN_HEIGHT);
+	}
+	
+	public void setScreenHeight(int height) {
+		setByte(SCREEN_HEIGHT, height);
 	}
 	
 	public int getScreenHeightInUnits() {
@@ -296,6 +308,10 @@ public class Memory {
 	
 	public int getScreenWidth() {
 		return getByte(SCREEN_WIDTH);
+	}
+	
+	public void setScreenWidth(int width) {
+		setByte(SCREEN_WIDTH, width);
 	}
 	
 	public int getScreenWidthInUnits() {

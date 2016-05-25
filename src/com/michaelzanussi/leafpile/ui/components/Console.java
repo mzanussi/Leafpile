@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 /**
  * This class provides a skeletal implementation of the <code>Console</code> 
  * interface, to minimize the effort required to implement this interface.
+ * TODO: add support for font styles bold, italic
  * 
  * @author <a href="mailto:iosdevx@gmail.com">Michael Zanussi</a>
  * @version 1.0 (12 February 2008)
@@ -26,8 +27,6 @@ public class Console extends JPanel implements KeyListener {
 	private static final Color C64_WHITE = new Color(216, 216, 216);
 	//private static final Color C64_BLACK = new Color(0, 0, 0);
 	//private static final Color C64_GREEN = new Color(0, 192, 0);
-	
-	//private ZMachine zm;
 	
 	// Screen dimensions.
 	private int scr_height;
@@ -44,6 +43,14 @@ public class Console extends JPanel implements KeyListener {
 	private Window upperWindow;			// the upper window
 	private Window lowerWindow;			// the lower window
 	private Window cwnd;				// the current window
+	
+	protected boolean noStatusLine;		// has no status line? (8.2)
+	protected boolean splitScreen;		// has split screen? (8.6.1.2)
+	protected boolean dfltVarPitch;		// variable-pitch font is default?
+	protected boolean bold;				// is boldface available? (8.7.1.1)
+	protected boolean italic;			// is italic available? (8.7.1.1)
+	protected boolean fixedSpaceAvail;	// is a fixed-space font available?
+	protected boolean timedInput;		// is a timed keyboard available?
 	
 	private int text_height;			// text height (character height)
 	private int text_adv;				// text advance (character width)
@@ -63,14 +70,7 @@ public class Console extends JPanel implements KeyListener {
 	private int cx;
 	private int cy;
 	
-	/**
-	 * Because: It is strongly recommended that all serializable
-	 * classes explicitly declare serialVersionUID values.
-	 */
-	private static final long serialVersionUID = -2099638606279825632L;
-
-	public Console(/*ZMachine zm, */int scr_width, int scr_height, Font font) {
-		//this.zm = zm;
+	public Console(int scr_width, int scr_height, Font font) {
 		this.scr_width = scr_width;
 		this.scr_height = scr_height;
 		this.font = font;
@@ -79,6 +79,20 @@ public class Console extends JPanel implements KeyListener {
 		upperWindow = null;
 		lowerWindow = null;
 		cwnd = null;
+		// Default to no split screen (V1-3); screen model will set this.
+		splitScreen = false;
+		// Default to no status line (V1-3); screen model will set this.
+		noStatusLine = true;
+		// Default to fixed-pitch (V1-3); screen model will set this.
+		dfltVarPitch = false;
+		// Default to no bold (V4>); screen model will set this.
+		bold = false;
+		// Default to no italics (V4>); screen model will set this.
+		italic = false;
+		// Default to no fixed-space available (V4>); screen model will set this.
+		fixedSpaceAvail = false;
+		// Default to no timed input (V4>); screen model will set this.
+		timedInput = false;
 		// Background/foreground colors.
 		bg_color = C64_BLUE;
 		fg_color = C64_WHITE;
@@ -297,6 +311,7 @@ public class Console extends JPanel implements KeyListener {
     	
     	// Set the font and color.
     	osg.setFont(font);
+System.out.println("FONT STYLE: " + font.getStyle());
     	osg.setColor(fg_color);
 
     	// Set to the background color to clear the window.
@@ -376,6 +391,34 @@ public class Console extends JPanel implements KeyListener {
      */
     protected Window getStatusBar() {
     	return statusBar;
+    }
+    
+    public boolean hasSplitScreen() {
+    	return splitScreen;
+    }
+    
+    public boolean hasNoStatusLine() {
+    	return noStatusLine;
+    }
+    
+    public boolean isVariablePitchDefault() {
+    	return dfltVarPitch;
+    }
+    
+    public boolean isBoldAvailable() {
+    	return bold;
+    }
+    
+    public boolean isItalicAvailable() {
+    	return italic;
+    }
+    
+    public boolean isFixedSpaceFontAvailable() {
+    	return fixedSpaceAvail;
+    }
+    
+    public boolean hasTimedInput() {
+    	return timedInput;
     }
     
     /**

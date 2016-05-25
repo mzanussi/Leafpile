@@ -1,5 +1,7 @@
 package com.michaelzanussi.leafpile.factory;
 
+import java.awt.Font;
+
 import com.michaelzanussi.leafpile.instructions.Instruction;
 import com.michaelzanussi.leafpile.instructions.Instruction.Opcount;
 import com.michaelzanussi.leafpile.objecttable.ObjectTableObject;
@@ -8,6 +10,7 @@ import com.michaelzanussi.leafpile.objecttable.V4Object;
 import com.michaelzanussi.leafpile.opcodes.Add;
 import com.michaelzanussi.leafpile.opcodes.And;
 import com.michaelzanussi.leafpile.opcodes.Call;
+import com.michaelzanussi.leafpile.opcodes.Div;
 import com.michaelzanussi.leafpile.opcodes.Inc_chk;
 import com.michaelzanussi.leafpile.opcodes.Insert_obj;
 import com.michaelzanussi.leafpile.opcodes.Je;
@@ -29,6 +32,10 @@ import com.michaelzanussi.leafpile.opcodes.Store;
 import com.michaelzanussi.leafpile.opcodes.Storew;
 import com.michaelzanussi.leafpile.opcodes.Sub;
 import com.michaelzanussi.leafpile.opcodes.Test_attr;
+import com.michaelzanussi.leafpile.ui.components.Console;
+import com.michaelzanussi.leafpile.ui.components.V1ScreenModel;
+import com.michaelzanussi.leafpile.ui.components.V3ScreenModel;
+import com.michaelzanussi.leafpile.ui.components.V4ScreenModel;
 import com.michaelzanussi.leafpile.instructions.LongFormInstruction;
 import com.michaelzanussi.leafpile.instructions.ShortFormInstruction;
 import com.michaelzanussi.leafpile.instructions.VariableFormInstruction;
@@ -49,6 +56,8 @@ public class Factory {
 	private Zmachine zmachine;
 	private Memory memory;
 	
+	private int version;
+	
 	/**
 	 * Single-arg instruction takes a Z-machine as its only arg.
 	 * 
@@ -57,10 +66,32 @@ public class Factory {
 	public Factory(Zmachine zmachine) {
 		this.zmachine = zmachine;
 		memory = zmachine.memory();
+		version = memory.getVersion();
+	}
+	
+	/**
+	 * Returns a game console based on the story's screen model.
+	 * 
+	 * @param scr_width		screen width
+	 * @param scr_height	screen height
+	 * @param font			initial console font
+	 * @return a game console 
+	 */
+	public Console createConsole(int scr_width, int scr_height, Font font) {
+		if (version == 1 || version == 2) {
+			return new V1ScreenModel(scr_width, scr_height, font);			
+		} else if (version == 3) {
+			return new V3ScreenModel(scr_width, scr_height, font);
+		} else if (version == 4 || version ==5 ) {
+			return new V4ScreenModel(scr_width, scr_height, font);
+		} else {
+			
+		}
+		return null;
 	}
 	
 	public ZSCII createZSCII() {
-		if (memory.getVersion() < 3) {
+		if (version < 3) {
 			return new V1ZSCII(memory);
 		}
 		return new V3ZSCII(memory);
@@ -73,7 +104,7 @@ public class Factory {
 	 * @return the object table object
 	 */
 	public ObjectTableObject createObject(int obj_num) {
-		if (memory.getVersion() < 4) {
+		if (version < 4) {
 			return new V1Object(obj_num, memory);
 		} else {
 			return new V4Object(obj_num, memory);
@@ -121,50 +152,52 @@ public class Factory {
 		switch (opcount) {
 		case O_0OP:
 			switch (opcode_no) {
-			case 0x00:
-				return new Rtrue(instruction);
-			case 0x02:
-				return new Print(instruction);
-			case 0x0b:
-				return new New_line(instruction);
+//			case 0x00:
+//				return new Rtrue(instruction);
+//			case 0x02:
+//				return new Print(instruction);
+//			case 0x0b:
+//				return new New_line(instruction);
 			default:
 				assert (false) : "unimplemented 0OP opcode: 0x" + Integer.toHexString(opcode_no);
 			}
 			break;
 		case O_1OP:
 			switch (opcode_no) {
-			case 0x00:
-				return new Jz(instruction);
-			case 0x0b:
-				return new Ret(instruction);
-			case 0x0c:
-				return new Jump(instruction);
+//			case 0x00:
+//				return new Jz(instruction);
+//			case 0x0b:
+//				return new Ret(instruction);
+//			case 0x0c:
+//				return new Jump(instruction);
 			default:
 				assert (false) : "unimplemented 1OP opcode: 0x" + Integer.toHexString(opcode_no);
 			}
 			break;
 		case O_2OP:
 			switch (opcode_no) {
-			case 0x01:
-				return new Je(instruction);
-			case 0x05:
-				return new Inc_chk(instruction);
-			case 0x09:
-				return new And(instruction);
-			case 0x0a:
-				return new Test_attr(instruction);
-			case 0x0d:
-				return new Store(instruction);
-			case 0x0e:
-				return new Insert_obj(instruction);
-			case 0x0f:
-				return new Loadw(instruction);
+//			case 0x01:
+//				return new Je(instruction);
+//			case 0x05:
+//				return new Inc_chk(instruction);
+//			case 0x09:
+//				return new And(instruction);
+//			case 0x0a:
+//				return new Test_attr(instruction);
+//			case 0x0d:
+//				return new Store(instruction);
+//			case 0x0e:
+//				return new Insert_obj(instruction);
+//			case 0x0f:
+//				return new Loadw(instruction);
 			case 0x10:
 				return new Loadb(instruction);
-			case 0x14:
-				return new Add(instruction);
-			case 0x15:
-				return new Sub(instruction);
+//			case 0x14:
+//				return new Add(instruction);
+//			case 0x15:
+//				return new Sub(instruction);
+			case 0x17:
+				return new Div(instruction);
 			default:
 				assert (false) : "unimplemented 2OP opcode: 0x" + Integer.toHexString(opcode_no);
 			}
@@ -177,18 +210,18 @@ public class Factory {
 				} else {
 					assert (false) : "call_vs not implemented";
 				}
-			case 0x01:
-				return new Storew(instruction);
-			case 0x03:
-				return new Put_prop(instruction);
-			case 0x05:
-				return new Print_char(instruction);
-			case 0x06:
-				return new Print_num(instruction);
-			case 0x08:
-				return new Push(instruction);
-			case 0x09:
-				return new Pull(instruction);
+//			case 0x01:
+//				return new Storew(instruction);
+//			case 0x03:
+//				return new Put_prop(instruction);
+//			case 0x05:
+//				return new Print_char(instruction);
+//			case 0x06:
+//				return new Print_num(instruction);
+//			case 0x08:
+//				return new Push(instruction);
+//			case 0x09:
+//				return new Pull(instruction);
 			default:
 				assert (false) : "unimplemented VAR opcode: 0x" + Integer.toHexString(opcode_no);
 			}

@@ -16,6 +16,9 @@ public class Zmachine extends Thread {
 	
 	// The memory map, which is the story file.
 	private Memory memory;
+	
+	// The story version.
+	private int version;
 
 	// Routine state call stack. So when a new routine is called,
 	// the current routine state will be pushed onto the stack.
@@ -31,9 +34,6 @@ public class Zmachine extends Thread {
 	
 	// The user interface.
 	private IUI ui;
-	
-	// The story file.
-	private File story;
 	
 	public Zmachine(IUI ui) {
 		this.ui = ui;
@@ -68,12 +68,14 @@ public class Zmachine extends Thread {
 	}
 	
 	/**
-	 * Set the story file.
+	 * Set the story file (i.e. initialize memory).
 	 * 
 	 * @param story the story file.
 	 */
 	public void setStory(File story) {
-		this.story = story;
+		// Initialize memory (i.e. open the story file).
+		memory = new Memory(story);
+		version = memory.getVersion();
 	}
 	
 	/* (non-Javadoc)
@@ -82,11 +84,8 @@ public class Zmachine extends Thread {
 	public void run() {
 		
 		// do some init
-		memory = new Memory(story);
 		factory = new Factory(this);
 		rscs = new ArrayDeque<Rous>();
-		
-		int version = memory.getVersion();
 		
 		// create new routine state with pc, set as current
 		current = new Rous(memory.getInitialPC(), this);
@@ -94,20 +93,46 @@ public class Zmachine extends Thread {
 		// setup header FLAGS1
 		int flags1 = memory.getFlags1();
 		if (version <= 3) {
-			// status line NOT available? 1=true; 0=false
-			flags1 &= 0xef;
-			// screen split? 1=true; 0=false
-			flags1 |= 0x20;
-			// font is variable pitch font default? 1=true; 0=false
-			flags1 &= 0xbf;
+			if (ui.hasNoStatusLine()) {				// bit 4
+				flags1 |= 0x10;
+				// TODO: status line type
+			}
+			if (ui.hasSplitScreen()) {				// bit 5
+				flags1 |= 0x20;
+			}
+			if (ui.isVariablePitchDefault()) {		// bit 6
+				flags1 |= 0x40;
+			}
 		} else {
-			assert(false) : "set Flags1 for vers >= 4";
+			// TODO: bit 0, bit 1, bit 5
+			if (ui.isBoldAvailable()) {				// bit 2
+				flags1 |= 0x04;
+			}
+			if (ui.isItalicAvailable()) {			// bit 3
+				flags1 |= 0x08;
+			}
+			if (ui.isFixedSpaceFontAvailable()) {	// bit 4
+				flags1 |= 0x10;
+			}
+			if (ui.hasTimedInput()) {				// bit 7
+				flags1 |= 0x80;
+			}
 		}
 		memory.setFlags1(flags1);
 		
+		// Set the interpreter number.
+		memory.setInterpreterNumber(3);			// 3 = Mac (11.1.3)
+		
+		// Set the interpreter version.
+		if (version == 4 || version == 5) {
+			memory.setInterpreterVersion('Z');	// (11.1.3.1)
+		} else if (version == 6) {
+			memory.setInterpreterVersion(23);	// (11.1.3.1)
+		}
+				
 		while (true) {
 			System.out.println("+++++ NEW INSTRUCTION +++++");
-			if (current.getPC() == 28387) {	// debug only
+			if (current.getPC() == 64977) {	// debug only
 				System.out.print("");
 			}
 			Instruction instruction = factory.createInstruction();

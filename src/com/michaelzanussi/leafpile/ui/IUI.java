@@ -44,4 +44,53 @@ public interface IUI {
 	 */
 	public void debug(String string);
 	
+	/**
+	 * Returns whether the game console supports split screen.
+	 * 
+	 * @return whether the game console supports split screen
+	 */
+	public boolean hasSplitScreen();
+	
+	/**
+	 * Returns whether the game console has no status line.
+	 * 
+	 * @return whether the game console has no status line.
+	 */
+	public boolean hasNoStatusLine();
+	
+	/**
+	 * Returns whether a variable pitch font is default.
+	 * 
+	 * @return whether a variable pitch font is default.
+	 */
+	public boolean isVariablePitchDefault();
+	
+	/**
+	 * Returns if bold is available.
+	 * 
+	 * @return if bold is available.
+	 */
+	public boolean isBoldAvailable();
+	
+	/**
+	 * Returns if italic is available.
+	 * 
+	 * @return if italic is available.
+	 */
+	public boolean isItalicAvailable();
+	
+	/**
+	 * Returns whether a fixed-space font is available.
+	 * 
+	 * @return whether a fixed-space font is available.
+	 */
+	public boolean isFixedSpaceFontAvailable();
+	
+	/**
+	 * Returns whether timed keyboard input is available.
+	 * 
+	 * @return whether timed keyboard input is available.
+	 */
+	public boolean hasTimedInput();
+	
 }

@@ -12,26 +12,21 @@ import java.awt.Font;
 public class V3ScreenModel extends Console {
 
 	/**
-	 * Because: It is strongly recommended that all serializable
-	 * classes explicitly declare serialVersionUID values.
-	 */
-	private static final long serialVersionUID = -3226922362365713315L;
-
-	/**
 	 * The constructor.
 	 * 
 	 * @param width the width of the screen, in units.
 	 * @param height the height of the screen, in units.
 	 * @param font the initial font.
 	 */
-	public V3ScreenModel(Object/*ZMachine*/ zm, int width, int height, Font font) {
-		super(/*zm, */width, height, font);
+	public V3ScreenModel(int width, int height, Font font) {
+		super(width, height, font);
+		splitScreen = true;
+		noStatusLine = false;
 	}
 
 	/* (non-Javadoc)
 	 * @see com.michaelzanussi.leafpile.ui.components.Console#init()
 	 */
-	@Override
 	public void init() {
 		// Byte 0 of text-buffer initially contains the max number of
 		// letters which can be typed, minus 1. Adjust
