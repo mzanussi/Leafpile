@@ -36,7 +36,6 @@ public class Inc_chk extends AbstractOpcode {
 		int value = operands.get(1);
 		
 		// Retrieve the value at variable, increment it, and put back.
-		//short nv = (short)current.getVariableValue(value);
 		int nv = memory.signed(current.getVariableValue(variable));
 		nv++;
 		current.setVariableValue(variable, memory.unsigned(nv));

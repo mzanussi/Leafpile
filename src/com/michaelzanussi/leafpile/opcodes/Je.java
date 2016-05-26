@@ -33,14 +33,15 @@ public class Je extends AbstractOpcode {
 	public void exec() {
 		
 		// Retrieve the operand.
-		int a = operands.get(0);
+		int a = memory.signed(operands.get(0));
 
 		boolean result = false;
 		
+		// Perform the comparison(s).
 		for (int i = 1; i < operands.size(); i++) {
 			// Branch on True occurs if first operand 
 			// equals any of the subsequent operands.
-			int b = operands.get(i);
+			int b = memory.signed(operands.get(i));
 			if (a == b) {
 				result = true;
 				break;
@@ -55,6 +56,7 @@ public class Je extends AbstractOpcode {
 			System.out.print("result:" + result + " ");
 		}
 		
+		// Execute branch.
 		executeBranch(result);
 		
 		{

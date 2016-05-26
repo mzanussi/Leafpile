@@ -35,7 +35,7 @@ public class V3ScreenModel extends Console {
 		// Status bar is 1 row high and sits at top of panel.
 		setStatusBar(new Window(0, 0, getScreenWidth(), 1));
 		// Upper window definition. Initially 0 rows high. 
-		setUpperWindow(new Window(0, 1, getScreenHeight(), 0));
+		setUpperWindow(new Window(0, 1, getScreenWidth(), 0));
 		// Lower window definition, where game play occurs.
 		setLowerWindow(new Window(0, 1, getScreenWidth(), getScreenHeight() - 1));
 		// Set default window to the lower window.

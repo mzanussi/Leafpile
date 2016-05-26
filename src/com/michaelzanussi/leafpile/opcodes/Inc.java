@@ -4,26 +4,25 @@ import com.michaelzanussi.leafpile.instructions.Instruction;
 
 /**
  * This class provides a concrete implementation of the <code>Opcode</code> 
- * interface for Jz (jump if zero) instructions. See p. 87.
+ * interface for Inc (increment variable) instructions. See p. 86.
  * 
- * jz a ?(label)
+ * inc (variable)
  * 
- * Jump if a = 0.
+ * Increment variable by 1. (This is signed, so -1 increments to 0.)
  * 
  * @author <a href="mailto:iosdevx@gmail.com">Michael Zanussi</a>
- * @version 1.0 (12 May 2016) 
+ * @version 1.0 (25 May 2016) 
  */
-public class Jz extends AbstractOpcode {
+public class Inc extends AbstractOpcode {
 
 	/**
 	 * Single-arg constructor takes Instruction object as only arg.
 	 * 
 	 * @param instruction the instruction
 	 */
-	public Jz(Instruction instruction) {
+	public Inc(Instruction instruction) {
 		super(instruction);
-		isBranch = true;
-		name = "jz";
+		name = "inc";
 	}
 	
 	/* (non-Javadoc)
@@ -32,19 +31,15 @@ public class Jz extends AbstractOpcode {
 	public void exec() {
 		
 		// Retrieve the operand.
-		int a = memory.signed(operands.get(0));
-
-		// Perform the comparison.
-		boolean result = (a == 0);
-
-		{
-			System.out.print("JZ a:" + a + " result:" + result + " ");
-		}
-
-		// Execute branch.
-		executeBranch(result);
+		int variable = operands.get(0);
+		
+		// Retrieve the value at variable, increment it, and put back.
+		int nv = memory.signed(current.getVariableValue(variable));
+		nv++;
+		current.setVariableValue(variable, memory.unsigned(nv));
 		
 		{
+			System.out.println("INC var:" + variable + " (inc:" + nv + ")");
 			System.out.println();
 		}
 		

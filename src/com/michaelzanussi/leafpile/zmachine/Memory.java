@@ -342,4 +342,34 @@ public class Memory {
 		return getWord(STATIC_STRINGS_OFFSET) * 8;
 	}
 	
+	/**
+	 * A utility method for unpacking a packed address. A packed
+	 * address specifies where a routine or string begins in high
+	 * memory. The packed address is arrived at a variety of ways
+	 * (see code). (1.2.3)
+	 * 
+	 * @param addr the packed address to unpack.
+	 * @return the unpacked address.
+	 */
+	public int unpackAddress(int addr) {
+		
+		switch (getVersion()) {
+		case 1:
+		case 2:
+		case 3:
+			return 2 * addr;
+		case 4:
+		case 5:
+			return 4 * addr;
+		case 6:
+		case 7:
+			assert(false) : "getUnpackedAddress for v6-7";
+			return (4 * addr);
+		case 8:
+		default:
+			return 8 * addr;	
+		}
+		
+	}
+
 }

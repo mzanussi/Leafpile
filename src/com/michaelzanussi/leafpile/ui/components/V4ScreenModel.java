@@ -30,7 +30,6 @@ public class V4ScreenModel extends Console {
 	 * @see com.michaelzanussi.leafpile.ui.components.Console#init()
 	 */
 	public void init() {
-		// TODO: need to revisit this as it was a copy of v3screenmodel
 		// Byte 0 of text-buffer initially contains the max number of
 		// letters which can be typed, minus 1. Adjust
 		// buffer accordingly. See p. 95.
@@ -38,7 +37,7 @@ public class V4ScreenModel extends Console {
 		// Status bar is 1 row high and sits at top of panel.
 		setStatusBar(new Window(0, 0, getScreenWidth(), 1));
 		// Upper window definition. Initially 0 rows high. 
-		setUpperWindow(new Window(0, 1, getScreenHeight(), 0));
+		setUpperWindow(new Window(0, 1, getScreenWidth(), 0));
 		// Lower window definition, where game play occurs.
 		setLowerWindow(new Window(0, 1, getScreenWidth(), getScreenHeight() - 1));
 		// Set default window to the lower window.

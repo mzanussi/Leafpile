@@ -10,10 +10,14 @@ import com.michaelzanussi.leafpile.objecttable.V4Object;
 import com.michaelzanussi.leafpile.opcodes.Add;
 import com.michaelzanussi.leafpile.opcodes.And;
 import com.michaelzanussi.leafpile.opcodes.Call;
+import com.michaelzanussi.leafpile.opcodes.Call_1s;
 import com.michaelzanussi.leafpile.opcodes.Div;
+import com.michaelzanussi.leafpile.opcodes.Erase_window;
+import com.michaelzanussi.leafpile.opcodes.Inc;
 import com.michaelzanussi.leafpile.opcodes.Inc_chk;
 import com.michaelzanussi.leafpile.opcodes.Insert_obj;
 import com.michaelzanussi.leafpile.opcodes.Je;
+import com.michaelzanussi.leafpile.opcodes.Jl;
 import com.michaelzanussi.leafpile.opcodes.Jump;
 import com.michaelzanussi.leafpile.opcodes.Jz;
 import com.michaelzanussi.leafpile.opcodes.Loadb;
@@ -29,6 +33,7 @@ import com.michaelzanussi.leafpile.opcodes.Put_prop;
 import com.michaelzanussi.leafpile.opcodes.Ret;
 import com.michaelzanussi.leafpile.opcodes.Rtrue;
 import com.michaelzanussi.leafpile.opcodes.Store;
+import com.michaelzanussi.leafpile.opcodes.Storeb;
 import com.michaelzanussi.leafpile.opcodes.Storew;
 import com.michaelzanussi.leafpile.opcodes.Sub;
 import com.michaelzanussi.leafpile.opcodes.Test_attr;
@@ -166,6 +171,10 @@ public class Factory {
 			switch (opcode_no) {
 //			case 0x00:
 //				return new Jz(instruction);
+			case 0x05:
+				return new Inc(instruction);
+			case 0x08:
+				return new Call_1s(instruction);
 //			case 0x0b:
 //				return new Ret(instruction);
 //			case 0x0c:
@@ -178,14 +187,16 @@ public class Factory {
 			switch (opcode_no) {
 //			case 0x01:
 //				return new Je(instruction);
+			case 0x02:
+				return new Jl(instruction);
 //			case 0x05:
 //				return new Inc_chk(instruction);
 //			case 0x09:
 //				return new And(instruction);
 //			case 0x0a:
 //				return new Test_attr(instruction);
-//			case 0x0d:
-//				return new Store(instruction);
+			case 0x0d:
+				return new Store(instruction);
 //			case 0x0e:
 //				return new Insert_obj(instruction);
 //			case 0x0f:
@@ -212,6 +223,8 @@ public class Factory {
 				}
 //			case 0x01:
 //				return new Storew(instruction);
+			case 0x02:
+				return new Storeb(instruction);
 //			case 0x03:
 //				return new Put_prop(instruction);
 //			case 0x05:
@@ -222,6 +235,8 @@ public class Factory {
 //				return new Push(instruction);
 //			case 0x09:
 //				return new Pull(instruction);
+			case 0x0d:
+				return new Erase_window(instruction);
 			default:
 				assert (false) : "unimplemented VAR opcode: 0x" + Integer.toHexString(opcode_no);
 			}
