@@ -37,6 +37,7 @@ public class AboutAction extends AbstractAction {
 	/* (non-Javadoc)
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
+	@Override
 	public void actionPerformed(ActionEvent event) {
 		String app = "Leafpile Test Driver v1.0";
 		app += "\n\nDeveloped by Michael Zanussi\nhttp://www.michaelzanussi.com/";
@@ -45,4 +46,5 @@ public class AboutAction extends AbstractAction {
 		ClassLoader cldr = this.getClass().getClassLoader();
 		JOptionPane.showMessageDialog(mf, app, "About", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(cldr.getResource(/*GuiPropertyManager.getInstance()*/pm.getAboutDialogIcon())));
 	}
+	
 }

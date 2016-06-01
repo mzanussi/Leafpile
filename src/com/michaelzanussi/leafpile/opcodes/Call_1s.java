@@ -30,6 +30,7 @@ public class Call_1s extends AbstractOpcode {
 	/* (non-Javadoc)
 	 * @see com.michaelzanussi.leafpile.opcodes.AbstractOpcode#exec()
 	 */
+	@Override
 	public void exec() {
 		
 		// First operand is packed address to routine start address. (5.1)

@@ -32,6 +32,7 @@ import com.michaelzanussi.leafpile.opcodes.Push;
 import com.michaelzanussi.leafpile.opcodes.Put_prop;
 import com.michaelzanussi.leafpile.opcodes.Ret;
 import com.michaelzanussi.leafpile.opcodes.Rtrue;
+import com.michaelzanussi.leafpile.opcodes.Split_window;
 import com.michaelzanussi.leafpile.opcodes.Store;
 import com.michaelzanussi.leafpile.opcodes.Storeb;
 import com.michaelzanussi.leafpile.opcodes.Storew;
@@ -235,6 +236,8 @@ public class Factory {
 //				return new Push(instruction);
 //			case 0x09:
 //				return new Pull(instruction);
+			case 0x0a:
+				return new Split_window(instruction);
 			case 0x0d:
 				return new Erase_window(instruction);
 			default:

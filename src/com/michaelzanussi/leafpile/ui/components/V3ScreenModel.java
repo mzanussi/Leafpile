@@ -27,6 +27,7 @@ public class V3ScreenModel extends Console {
 	/* (non-Javadoc)
 	 * @see com.michaelzanussi.leafpile.ui.components.Console#init()
 	 */
+	@Override
 	public void init() {
 		// Byte 0 of text-buffer initially contains the max number of
 		// letters which can be typed, minus 1. Adjust
@@ -47,4 +48,20 @@ public class V3ScreenModel extends Console {
 		wipe(getLowerWindow(), getBgColor());
 	}
 	
+    /* (non-Javadoc)
+     * @see com.michaelzanussi.leafpile.ui.components.Console#erase_window(int)
+     */
+	@Override
+    public void erase_window(int window) {
+    	// does nothing
+    }
+
+    /* (non-Javadoc)
+     * @see com.michaelzanussi.leafpile.ui.components.Console#split_window(int)
+     */
+	@Override
+    public void split_window(int lines) {
+    	assert(false) : "implment split_window v3screenmodel";
+    }
+
 }

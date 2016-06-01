@@ -107,6 +107,7 @@ public abstract class AbstractOpcode implements Opcode {
 	/* (non-Javadoc)
 	 * @see com.michaelzanussi.leafpile.instructions.Opcode#isStore()
 	 */
+	@Override
 	public boolean isStore() {
 		return isStore;
 	}
@@ -114,6 +115,7 @@ public abstract class AbstractOpcode implements Opcode {
 	/* (non-Javadoc)
 	 * @see com.michaelzanussi.leafpile.opcodes.Opcode#isBranch()
 	 */
+	@Override
 	public boolean isBranch() {
 		return isBranch;
 	}
@@ -121,6 +123,7 @@ public abstract class AbstractOpcode implements Opcode {
 	/* (non-Javadoc)
 	 * @see com.michaelzanussi.leafpile.instructions.Opcode#exec()
 	 */
+	@Override
 	public abstract void exec();
 	
 }

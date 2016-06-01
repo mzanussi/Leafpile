@@ -19,6 +19,10 @@ public class V1ZSCII extends ZSCII {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.michaelzanussi.leafpile.zscii.ZSCII#decode(int[])
+	 */
+	@Override
 	public String decode(int[] data) {
 		// set the default alphabet
 		String alphabet = a0;

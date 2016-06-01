@@ -81,6 +81,7 @@ public class Zmachine extends Thread {
 	/* (non-Javadoc)
 	 * @see java.lang.Thread#run()
 	 */
+	@Override
 	public void run() {
 		
 		// do some init

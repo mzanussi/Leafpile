@@ -61,4 +61,5 @@ public class FileMenu extends JMenu {
 	public ExitMenuItem getExitMenuItem() {
 		return exitMenuItem;
 	}
+	
 }

@@ -63,6 +63,7 @@ public abstract class AbstractInstruction implements Instruction {
 	/* (non-Javadoc)
 	 * @see com.michaelzanussi.leafpile.instructions.Instruction#branchWhen()
 	 */
+	@Override
 	public boolean branchWhen() {
 		if (branchWhenFalse) {
 			return false;
@@ -75,6 +76,7 @@ public abstract class AbstractInstruction implements Instruction {
 		return (branchWhenFalse || branchWhenTrue);
 	}
 	
+	@Override
 	public int getBranchOffset() {
 		return branchOffset;
 	}
@@ -127,6 +129,7 @@ public abstract class AbstractInstruction implements Instruction {
 	/* (non-Javadoc)
 	 * @see com.michaelzanussi.leafpile.instructions.Instruction#getOpcount()
 	 */
+	@Override
 	public Opcount getOpcount() {
 		return opcount;
 	}
@@ -134,6 +137,7 @@ public abstract class AbstractInstruction implements Instruction {
 	/* (non-Javadoc)
 	 * @see com.michaelzanussi.leafpile.instructions.Instruction#getOpcodeNumber()
 	 */
+	@Override
 	public int getOpcodeNumber() {
 		return opcode_no;
 	}
@@ -141,6 +145,7 @@ public abstract class AbstractInstruction implements Instruction {
 	/* (non-Javadoc)
 	 * @see com.michaelzanussi.leafpile.instructions.Instruction#getOpcodeByte()
 	 */
+	@Override
 	public int getOpcodeByte() {
 		return opcode_byte;
 	}
@@ -148,6 +153,7 @@ public abstract class AbstractInstruction implements Instruction {
 	/* (non-Javadoc)
 	 * @see com.michaelzanussi.leafpile.instructions.Instruction#getOperands()
 	 */
+	@Override
 	public List<Integer> getOperands() {
 		return operands;
 	}
@@ -155,6 +161,7 @@ public abstract class AbstractInstruction implements Instruction {
 	/* (non-Javadoc)
 	 * @see com.michaelzanussi.leafpile.instructions.Instruction#getZmachine()
 	 */
+	@Override
 	public Zmachine getZmachine() {
 		return zmachine;
 	}
@@ -162,11 +169,13 @@ public abstract class AbstractInstruction implements Instruction {
 	/* (non-Javadoc)
 	 * @see com.michaelzanussi.leafpile.instructions.Instruction#exec()
 	 */
+	@Override
 	public abstract void exec();
 	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("@" + start_pc + " (rous=" + current.getId() + ") "+ form + " " + opcount + " obyte=" + opcode_byte + " opcode=" + opcode_no + " operands={");

@@ -29,6 +29,7 @@ public class V4ScreenModel extends Console {
 	/* (non-Javadoc)
 	 * @see com.michaelzanussi.leafpile.ui.components.Console#init()
 	 */
+	@Override
 	public void init() {
 		// Byte 0 of text-buffer initially contains the max number of
 		// letters which can be typed, minus 1. Adjust
@@ -49,4 +50,28 @@ public class V4ScreenModel extends Console {
 		wipe(getLowerWindow(), getBgColor());
 	}
 	
+    /* (non-Javadoc)
+     * @see com.michaelzanussi.leafpile.ui.components.Console#erase_window(int)
+     */
+	@Override
+    public void erase_window(int window) {
+    	
+		if (window == -1) {			// unsplit then clear
+			System.err.println("implement details erase_window -1");
+		} else if (window == -2) {	// clear the screen
+			System.err.println("implement details erase_window -2");
+		} else {					// erase window to background color
+			System.err.println("implement details erase_window " + window);
+		}
+		
+    }
+    
+    /* (non-Javadoc)
+     * @see com.michaelzanussi.leafpile.ui.components.Console#split_window(int)
+     */
+	@Override
+    public void split_window(int lines) {
+		System.err.println("implement details split_window " + lines);
+    }
+
 }

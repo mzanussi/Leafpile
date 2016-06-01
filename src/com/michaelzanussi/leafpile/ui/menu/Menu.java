@@ -62,7 +62,9 @@ public class Menu extends JMenuBar {
 	 * 
 	 * @return the Help menu
 	 */
+	@Override
 	public HelpMenu getHelpMenu() {
 		return help;
 	}
+	
 }

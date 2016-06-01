@@ -28,6 +28,7 @@ public class New_line extends AbstractOpcode {
 	/* (non-Javadoc)
 	 * @see com.michaelzanussi.leafpile.opcodes.AbstractOpcode#exec()
 	 */
+	@Override
 	public void exec() {
 		
 		String string = "\n";

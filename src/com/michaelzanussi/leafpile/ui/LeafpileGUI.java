@@ -152,6 +152,7 @@ public class LeafpileGUI extends JFrame implements IUI {
 	/* (non-Javadoc)
 	 * @see com.michaelzanussi.leafpile.ui.IUI#filename(boolean)
 	 */
+	@Override
 	public String filename(boolean isSave) {
 		JFileChooser file = new JFileChooser();
 		File dir = pm.getDir();
@@ -172,6 +173,7 @@ public class LeafpileGUI extends JFrame implements IUI {
 	/* (non-Javadoc)
 	 * @see com.michaelzanussi.leafpile.ui.IUI#read(java.lang.StringBuilder, int)
 	 */
+	@Override
 	public void read(StringBuilder in, int count) {
 		// TODO: flush buffer here instead of sread and the like?
 		flush_buf();
@@ -182,6 +184,7 @@ public class LeafpileGUI extends JFrame implements IUI {
 	/* (non-Javadoc)
 	 * @see com.michaelzanussi.leafpile.ui.IUI#write(java.lang.String)
 	 */
+	@Override
 	public void write(String data) {
 
 		// There may be a better way to do this, but since
@@ -218,6 +221,7 @@ public class LeafpileGUI extends JFrame implements IUI {
 	/* (non-Javadoc)
 	 * @see com.michaelzanussi.leafpile.ui.IUI#flush_buf()
 	 */
+	@Override
 	public void flush_buf() {
 		EventQueue.invokeLater(new EventDispatcher(buffer.toString(), false));
 		buffer.delete(0, buffer.length());
@@ -229,6 +233,7 @@ public class LeafpileGUI extends JFrame implements IUI {
 	/* (non-Javadoc)
 	 * @see com.michaelzanussi.leafpile.ui.IUI#debug(java.lang.String)
 	 */
+	@Override
 	public void debug(String string) {
 
 	}
@@ -324,6 +329,7 @@ public class LeafpileGUI extends JFrame implements IUI {
 		/* (non-Javadoc)
 		 * @see java.lang.Runnable#run()
 		 */
+		@Override
 		public void run() {
 			if (erase) {
 				console.erase_chars(data);
@@ -354,6 +360,7 @@ public class LeafpileGUI extends JFrame implements IUI {
 	/* (non-Javadoc)
 	 * @see com.michaelzanussi.leafpile.ui.IUI#hasSplitScreen()
 	 */
+	@Override
 	public boolean hasSplitScreen() {
 		return console.hasSplitScreen();
 	}
@@ -361,6 +368,7 @@ public class LeafpileGUI extends JFrame implements IUI {
 	/* (non-Javadoc)
 	 * @see com.michaelzanussi.leafpile.ui.IUI#hasNoStatusLine()
 	 */
+	@Override
 	public boolean hasNoStatusLine() {
 		return console.hasNoStatusLine();
 	}
@@ -368,6 +376,7 @@ public class LeafpileGUI extends JFrame implements IUI {
 	/* (non-Javadoc)
 	 * @see com.michaelzanussi.leafpile.ui.IUI#isVariablePitchDefault()
 	 */
+	@Override
 	public boolean isVariablePitchDefault() {
 		return console.isVariablePitchDefault();
 	}
@@ -375,6 +384,7 @@ public class LeafpileGUI extends JFrame implements IUI {
 	/* (non-Javadoc)
 	 * @see com.michaelzanussi.leafpile.ui.IUI#isBoldAvailable()
 	 */
+	@Override
 	public boolean isBoldAvailable() {
 		return console.isBoldAvailable();
 	}
@@ -382,6 +392,7 @@ public class LeafpileGUI extends JFrame implements IUI {
 	/* (non-Javadoc)
 	 * @see com.michaelzanussi.leafpile.ui.IUI#isItalicAvailable()
 	 */
+	@Override
 	public boolean isItalicAvailable() {
 		return console.isItalicAvailable();
 	}
@@ -389,6 +400,7 @@ public class LeafpileGUI extends JFrame implements IUI {
 	/* (non-Javadoc)
 	 * @see com.michaelzanussi.leafpile.ui.IUI#isFixedSpaceFontAvailable()
 	 */
+	@Override
 	public boolean isFixedSpaceFontAvailable() {
 		return console.isFixedSpaceFontAvailable();
 	}
@@ -396,8 +408,25 @@ public class LeafpileGUI extends JFrame implements IUI {
 	/* (non-Javadoc)
 	 * @see com.michaelzanussi.leafpile.ui.IUI#hasTimedInput()
 	 */
+	@Override
 	public boolean hasTimedInput() {
 		return console.hasTimedInput();
+	}
+
+	/* (non-Javadoc)
+	 * @see com.michaelzanussi.leafpile.ui.IUI#erase_window(int)
+	 */
+	@Override
+	public void erase_window(int window) {
+		console.erase_window(window);
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.michaelzanussi.leafpile.ui.IUI#split_window(int)
+	 */
+	@Override
+	public void split_window(int lines) {
+		console.split_window(lines);
 	}
 
 	/**
@@ -426,11 +455,13 @@ public class LeafpileGUI extends JFrame implements IUI {
 	 * Zav file filter class.
 	 */
 	private class ZavFileFilter extends FileFilter {
+		@Override
 		public boolean accept(File f) {
 			return f.isDirectory() | (f.isFile()
 					&& f.getName().toLowerCase().endsWith(".zav"));
 		}
 
+		@Override
 		public String getDescription() {
 			return ".zav files";
 		}

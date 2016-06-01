@@ -31,6 +31,7 @@ public class Erase_window extends AbstractOpcode {
 	/* (non-Javadoc)
 	 * @see com.michaelzanussi.leafpile.opcodes.AbstractOpcode#exec()
 	 */
+	@Override
 	public void exec() {
 		
 		// Retrieve the operand.
@@ -41,13 +42,7 @@ public class Erase_window extends AbstractOpcode {
 			System.out.println();
 		}
 		
-		if (window == -1) {			// unsplit then clear
-			System.err.println("implement details erase_window -1");
-		} else if (window == -2) {	// clear the screen
-			System.err.println("implement details erase_window -2");
-		} else {					// erase window to background color
-			System.err.println("implement details erase_window " + window);
-		}
+		zmachine.ui().erase_window(window);
 		
 	}
 		

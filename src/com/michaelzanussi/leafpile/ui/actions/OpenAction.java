@@ -37,6 +37,7 @@ public class OpenAction extends AbstractAction {
 	/* (non-Javadoc)
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
+	@Override
 	public void actionPerformed(ActionEvent event) {
 		JFileChooser file = new JFileChooser();
 		File dir = pm.getDir();
@@ -48,4 +49,5 @@ public class OpenAction extends AbstractAction {
 			mf.start(file.getSelectedFile());
 		}
 	}
+	
 }

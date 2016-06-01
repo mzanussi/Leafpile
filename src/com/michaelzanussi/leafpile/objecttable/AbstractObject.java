@@ -40,26 +40,32 @@ public abstract class AbstractObject implements ObjectTableObject {
 		version = memory.getVersion();
 	}
 	
+	@Override
 	public int getParent() {
 		return parent;
 	}
 	
+	@Override
 	public void setParent(int parent) {
 		memory.setByte(parent_addr, parent);
 	}
 	
+	@Override
 	public int getSibling() {
 		return sibling;
 	}
 	
+	@Override
 	public void setSibling(int sibling) {
 		memory.setByte(sibling_addr, sibling);
 	}
 	
+	@Override
 	public int getChild() {
 		return child;
 	}
 	
+	@Override
 	public void setChild(int child) {
 		memory.setByte(child_addr, child);
 	}
@@ -67,11 +73,13 @@ public abstract class AbstractObject implements ObjectTableObject {
 	/* (non-Javadoc)
 	 * @see com.michaelzanussi.leafpile.objecttable.ObjectTableObject#setProperty(int, int)
 	 */
+	@Override
 	public abstract void setProperty(int property, int value);
 	
 	/* (non-Javadoc)
 	 * @see com.michaelzanussi.leafpile.objecttable.ObjectTableObject#isAttributeSet(int)
 	 */
+	@Override
 	public boolean isAttributeSet(int attribute) {
 		boolean isSet = attributes.get(attribute);
 		return isSet;
@@ -91,6 +99,7 @@ public abstract class AbstractObject implements ObjectTableObject {
 		int prop_size;
 		int prop_ptr;
 		
+		@Override
 		public String toString() {
 			StringBuilder sb = new StringBuilder();
 			sb.append("[" + prop_num + "] ");
@@ -102,6 +111,7 @@ public abstract class AbstractObject implements ObjectTableObject {
 		}
 	}
 	
+	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(obj_num + ".\t");

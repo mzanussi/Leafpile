@@ -16,12 +16,11 @@ import javax.swing.JPanel;
 /**
  * This class provides a skeletal implementation of the <code>Console</code> 
  * interface, to minimize the effort required to implement this interface.
- * TODO: add support for font styles bold, italic
  * 
  * @author <a href="mailto:iosdevx@gmail.com">Michael Zanussi</a>
  * @version 1.0 (12 February 2008)
  */
-public class Console extends JPanel implements KeyListener {
+public abstract class Console extends JPanel implements KeyListener {
 
 	private static final Color C64_BLUE = new Color(0, 110, 192);
 	private static final Color C64_WHITE = new Color(216, 216, 216);
@@ -143,9 +142,14 @@ public class Console extends JPanel implements KeyListener {
 		}
 	}
 	
+	public abstract void erase_window(int window);
+	
+	public abstract void split_window(int lines);
+	
 	/* (non-Javadoc)
 	 * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
 	 */
+	@Override
 	public void paintComponent(Graphics g) {
 		// Paint using off-screen image.
 		super.paintComponent(g);
@@ -335,6 +339,7 @@ System.out.println("FONT STYLE: " + font.getStyle());
     /* (non-Javadoc)
      * @see javax.swing.JComponent#getPreferredSize()
      */
+	@Override
     public Dimension getPreferredSize() {
     	return new Dimension(scr_width * text_adv, scr_height * text_height);
     }
@@ -550,6 +555,7 @@ System.out.println("FONT STYLE: " + font.getStyle());
     /* (non-Javadoc)
      * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
      */
+	@Override
     public synchronized void keyPressed(KeyEvent evt) {
     	if (!ignore_input) {
             if (evt.getKeyCode() != KeyEvent.VK_SHIFT) {
@@ -565,12 +571,14 @@ System.out.println("FONT STYLE: " + font.getStyle());
     /* (non-Javadoc)
      * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
      */
+	@Override
     public synchronized void keyReleased(KeyEvent evt) {
     }
     
     /* (non-Javadoc)
      * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
      */
+	@Override
     public synchronized void keyTyped(KeyEvent evt) {
     }
 
@@ -578,8 +586,4 @@ System.out.println("FONT STYLE: " + font.getStyle());
     	this.adj_buf_size = adj_buf_size;
     }
     
-    /*public ZMachine getZMachine() {
-    	return zm;
-    }*/
-
 }

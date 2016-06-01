@@ -114,6 +114,7 @@ public class V4Object extends AbstractObject {
 	/* (non-Javadoc)
 	 * @see com.michaelzanussi.leafpile.objecttable.AbstractObject#setProperty(int, int)
 	 */
+	@Override
 	public void setProperty(int property, int value) {
 		assert(false);
 	}

@@ -93,4 +93,18 @@ public interface IUI {
 	 */
 	public boolean hasTimedInput();
 	
+	/**
+	 * Erases window with given number.
+	 * 
+	 * @param window the window to erase.
+	 */
+	public void erase_window(int window);
+	
+	/**
+	 * Split window the designated number of lines.
+	 * 
+	 * @param lines the number of lines in upper window.
+	 */
+	public void split_window(int lines);
+	
 }

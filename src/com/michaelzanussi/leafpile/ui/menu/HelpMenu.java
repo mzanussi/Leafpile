@@ -48,4 +48,5 @@ public class HelpMenu extends JMenu {
 	public AboutMenuItem getAboutMenuItem() {
 		return aboutMenuItem;
 	}
+	
 }

@@ -33,8 +33,10 @@ public class DebugOutputAction extends AbstractAction {
 	/* (non-Javadoc)
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
+	@Override
 	public void actionPerformed(ActionEvent event) {
 		JCheckBoxMenuItem debout = (JCheckBoxMenuItem)event.getSource();
 		mf.setDebug(debout.isSelected());
 	}
+	
 }

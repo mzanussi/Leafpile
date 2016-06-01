@@ -72,6 +72,7 @@ public class ShortFormInstruction extends AbstractInstruction {
 	/* (non-Javadoc)
 	 * @see com.michaelzanussi.leafpile.instructions.AbstractInstruction#exec()
 	 */
+	@Override
 	public void exec() {
 		opcode.exec();
 	}

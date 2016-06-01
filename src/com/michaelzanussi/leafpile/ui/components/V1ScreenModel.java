@@ -16,7 +16,24 @@ public class V1ScreenModel extends Console {
 		noStatusLine = false;
 	}
 	
+	@Override
 	public void init() {
 	}
 	
+    /* (non-Javadoc)
+     * @see com.michaelzanussi.leafpile.ui.components.Console#erase_window(int)
+     */
+	@Override
+    public void erase_window(int window) {
+    	// does nothing
+    }
+    
+    /* (non-Javadoc)
+     * @see com.michaelzanussi.leafpile.ui.components.Console#split_window(int)
+     */
+	@Override
+    public void split_window(int lines) {
+    	// does nothing
+    }
+
 }
