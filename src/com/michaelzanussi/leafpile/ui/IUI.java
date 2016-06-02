@@ -107,4 +107,20 @@ public interface IUI {
 	 */
 	public void split_window(int lines);
 	
+	/**
+	 * Selects the given window.
+	 * 
+	 * @param window the window to select
+	 */
+	public void set_window(int window);
+	
+	/**
+	 * Move the cursor.
+	 * 
+	 * @param line the line to move cursor to
+	 * @param column the column to move cursor to
+	 * @param window the window to move cursor in
+	 */
+	public void set_cursor(int line, int column, int window);
+	
 }

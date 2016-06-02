@@ -9,6 +9,7 @@ import com.michaelzanussi.leafpile.objecttable.V1Object;
 import com.michaelzanussi.leafpile.objecttable.V4Object;
 import com.michaelzanussi.leafpile.opcodes.Add;
 import com.michaelzanussi.leafpile.opcodes.And;
+import com.michaelzanussi.leafpile.opcodes.Buffer_mode;
 import com.michaelzanussi.leafpile.opcodes.Call;
 import com.michaelzanussi.leafpile.opcodes.Call_1s;
 import com.michaelzanussi.leafpile.opcodes.Div;
@@ -32,6 +33,8 @@ import com.michaelzanussi.leafpile.opcodes.Push;
 import com.michaelzanussi.leafpile.opcodes.Put_prop;
 import com.michaelzanussi.leafpile.opcodes.Ret;
 import com.michaelzanussi.leafpile.opcodes.Rtrue;
+import com.michaelzanussi.leafpile.opcodes.Set_cursor;
+import com.michaelzanussi.leafpile.opcodes.Set_window;
 import com.michaelzanussi.leafpile.opcodes.Split_window;
 import com.michaelzanussi.leafpile.opcodes.Store;
 import com.michaelzanussi.leafpile.opcodes.Storeb;
@@ -238,8 +241,14 @@ public class Factory {
 //				return new Pull(instruction);
 			case 0x0a:
 				return new Split_window(instruction);
+			case 0x0b:
+				return new Set_window(instruction);
 			case 0x0d:
 				return new Erase_window(instruction);
+			case 0x0f:
+				return new Set_cursor(instruction);
+			case 0x12:
+				return new Buffer_mode(instruction);
 			default:
 				assert (false) : "unimplemented VAR opcode: 0x" + Integer.toHexString(opcode_no);
 			}

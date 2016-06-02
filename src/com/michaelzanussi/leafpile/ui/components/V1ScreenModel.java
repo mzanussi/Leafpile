@@ -25,7 +25,7 @@ public class V1ScreenModel extends Console {
      */
 	@Override
     public void erase_window(int window) {
-    	// does nothing
+		throw new UnsupportedOperationException();
     }
     
     /* (non-Javadoc)
@@ -33,7 +33,23 @@ public class V1ScreenModel extends Console {
      */
 	@Override
     public void split_window(int lines) {
-    	// does nothing
+		throw new UnsupportedOperationException();
     }
+
+	/* (non-Javadoc)
+	 * @see com.michaelzanussi.leafpile.ui.components.Console#set_window(int)
+	 */
+	@Override
+	public void set_window(int window) {
+		throw new UnsupportedOperationException();
+	}
+
+	/* (non-Javadoc)
+	 * @see com.michaelzanussi.leafpile.ui.components.Console#set_cursor(int, int, int)
+	 */
+	@Override
+	public void set_cursor(int line, int column, int window) {
+		throw new UnsupportedOperationException();
+	}
 
 }

@@ -53,7 +53,7 @@ public class V3ScreenModel extends Console {
      */
 	@Override
     public void erase_window(int window) {
-    	// does nothing
+		throw new UnsupportedOperationException();
     }
 
     /* (non-Javadoc)
@@ -61,7 +61,32 @@ public class V3ScreenModel extends Console {
      */
 	@Override
     public void split_window(int lines) {
-    	assert(false) : "implment split_window v3screenmodel";
+		setUpperWindow(new Window(0, 1, getScreenWidth(), lines));
+		setLowerWindow(new Window(0, lines + 1, getScreenWidth(), getScreenHeight() - lines - 1));
+		wipe(getUpperWindow(), getBgColor());
+		wipe(getLowerWindow(), getBgColor());
     }
+
+	/* (non-Javadoc)
+	 * @see com.michaelzanussi.leafpile.ui.components.Console#set_window(int)
+	 */
+	@Override
+	public void set_window(int window) {
+		if (window == 0) {
+			setCurrentWindow(getLowerWindow());
+		} else if (window == 1) {
+			setCurrentWindow(getUpperWindow());
+		} else {
+			assert(false) : "unsupported window " + window;
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see com.michaelzanussi.leafpile.ui.components.Console#set_cursor(int, int, int)
+	 */
+	@Override
+	public void set_cursor(int line, int column, int window) {
+		throw new UnsupportedOperationException();
+	}
 
 }

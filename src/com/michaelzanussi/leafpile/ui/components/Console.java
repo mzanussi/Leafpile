@@ -146,6 +146,10 @@ public abstract class Console extends JPanel implements KeyListener {
 	
 	public abstract void split_window(int lines);
 	
+	public abstract void set_window(int window);
+	
+	public abstract void set_cursor(int line, int column, int window);
+	
 	/* (non-Javadoc)
 	 * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
 	 */

@@ -429,6 +429,22 @@ public class LeafpileGUI extends JFrame implements IUI {
 		console.split_window(lines);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.michaelzanussi.leafpile.ui.IUI#set_window(int)
+	 */
+	@Override
+	public void set_window(int window) {
+		console.set_window(window);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.michaelzanussi.leafpile.ui.IUI#set_cursor(int, int, int)
+	 */
+	@Override
+	public void set_cursor(int line, int column, int window) {
+		console.set_cursor(line, column, window);
+	}
+
 	/**
 	 * @return
 	 */

@@ -1,6 +1,7 @@
 package com.michaelzanussi.leafpile.ui.components;
 
 import java.awt.Font;
+import java.awt.Point;
 
 /**
  * This class provides a concrete implementation of the <code>Console</code> 
@@ -47,6 +48,7 @@ public class V4ScreenModel extends Console {
 		super.init();
 		// Clear the windows.
 		wipe(getStatusBar(), getFgColor());
+		wipe(getUpperWindow(), getBgColor());
 		wipe(getLowerWindow(), getBgColor());
 	}
 	
@@ -57,11 +59,19 @@ public class V4ScreenModel extends Console {
     public void erase_window(int window) {
     	
 		if (window == -1) {			// unsplit then clear
-			System.err.println("implement details erase_window -1");
+			setUpperWindow(new Window(0, 1, getScreenWidth(), 0));
+			setLowerWindow(new Window(0, 1, getScreenWidth(), getScreenHeight() - 1));
+			wipe(getUpperWindow(), getBgColor());
+			wipe(getLowerWindow(), getBgColor());
 		} else if (window == -2) {	// clear the screen
-			System.err.println("implement details erase_window -2");
+			Window uw = getUpperWindow();
+			uw.setCursor(0, 0);
+			wipe(uw, getBgColor());
+			Window lw = getLowerWindow();
+			lw.setCursor(0, 0);
+			wipe(lw, getBgColor());
 		} else {					// erase window to background color
-			System.err.println("implement details erase_window " + window);
+			assert(false):"implement details erase_window, reset cursor";
 		}
 		
     }
@@ -71,7 +81,32 @@ public class V4ScreenModel extends Console {
      */
 	@Override
     public void split_window(int lines) {
-		System.err.println("implement details split_window " + lines);
+		setUpperWindow(new Window(0, 1, getScreenWidth(), lines));
+		setLowerWindow(new Window(0, lines + 1, getScreenWidth(), getScreenHeight() - lines - 1));
     }
+
+	/* (non-Javadoc)
+	 * @see com.michaelzanussi.leafpile.ui.components.Console#set_window(int)
+	 */
+	@Override
+	public void set_window(int window) {
+		if (window == 0) {
+			setCurrentWindow(getLowerWindow());
+		} else if (window == 1) {
+			setCurrentWindow(getUpperWindow());
+		} else {
+			assert(false) : "unsupported window " + window;
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see com.michaelzanussi.leafpile.ui.components.Console#set_cursor(int, int, int)
+	 */
+	@Override
+	public void set_cursor(int line, int column, int window) {
+		Window cw = getCurrentWindow();
+		Point origin = cw.getOrigin();
+		cw.setCursor(origin.x + line - 1, origin.y + column - 1);
+	}
 
 }
