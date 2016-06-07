@@ -12,6 +12,8 @@ import com.michaelzanussi.leafpile.opcodes.And;
 import com.michaelzanussi.leafpile.opcodes.Buffer_mode;
 import com.michaelzanussi.leafpile.opcodes.Call;
 import com.michaelzanussi.leafpile.opcodes.Call_1s;
+import com.michaelzanussi.leafpile.opcodes.Call_2s;
+import com.michaelzanussi.leafpile.opcodes.Dec_chk;
 import com.michaelzanussi.leafpile.opcodes.Div;
 import com.michaelzanussi.leafpile.opcodes.Erase_window;
 import com.michaelzanussi.leafpile.opcodes.Inc;
@@ -34,6 +36,7 @@ import com.michaelzanussi.leafpile.opcodes.Put_prop;
 import com.michaelzanussi.leafpile.opcodes.Ret;
 import com.michaelzanussi.leafpile.opcodes.Rtrue;
 import com.michaelzanussi.leafpile.opcodes.Set_cursor;
+import com.michaelzanussi.leafpile.opcodes.Set_text_style;
 import com.michaelzanussi.leafpile.opcodes.Set_window;
 import com.michaelzanussi.leafpile.opcodes.Split_window;
 import com.michaelzanussi.leafpile.opcodes.Store;
@@ -161,12 +164,12 @@ public class Factory {
 		switch (opcount) {
 		case O_0OP:
 			switch (opcode_no) {
-//			case 0x00:
-//				return new Rtrue(instruction);
-//			case 0x02:
-//				return new Print(instruction);
-//			case 0x0b:
-//				return new New_line(instruction);
+			case 0x00:
+				return new Rtrue(instruction);
+			case 0x02:
+				return new Print(instruction);
+			case 0x0b:
+				return new New_line(instruction);
 			default:
 				assert (false) : "unimplemented 0OP opcode: 0x" + Integer.toHexString(opcode_no);
 			}
@@ -181,8 +184,8 @@ public class Factory {
 				return new Call_1s(instruction);
 //			case 0x0b:
 //				return new Ret(instruction);
-//			case 0x0c:
-//				return new Jump(instruction);
+			case 0x0c:
+				return new Jump(instruction);
 			default:
 				assert (false) : "unimplemented 1OP opcode: 0x" + Integer.toHexString(opcode_no);
 			}
@@ -193,6 +196,8 @@ public class Factory {
 //				return new Je(instruction);
 			case 0x02:
 				return new Jl(instruction);
+			case 0x04:
+				return new Dec_chk(instruction);
 //			case 0x05:
 //				return new Inc_chk(instruction);
 //			case 0x09:
@@ -213,6 +218,8 @@ public class Factory {
 //				return new Sub(instruction);
 			case 0x17:
 				return new Div(instruction);
+			case 0x19:
+				return new Call_2s(instruction);
 			default:
 				assert (false) : "unimplemented 2OP opcode: 0x" + Integer.toHexString(opcode_no);
 			}
@@ -231,8 +238,8 @@ public class Factory {
 				return new Storeb(instruction);
 //			case 0x03:
 //				return new Put_prop(instruction);
-//			case 0x05:
-//				return new Print_char(instruction);
+			case 0x05:
+				return new Print_char(instruction);
 //			case 0x06:
 //				return new Print_num(instruction);
 //			case 0x08:
@@ -247,6 +254,8 @@ public class Factory {
 				return new Erase_window(instruction);
 			case 0x0f:
 				return new Set_cursor(instruction);
+			case 0x11:
+				return new Set_text_style(instruction);
 			case 0x12:
 				return new Buffer_mode(instruction);
 			default:

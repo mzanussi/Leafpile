@@ -5,26 +5,26 @@ import com.michaelzanussi.leafpile.zmachine.Rous;
 
 /**
  * This class provides a concrete implementation of the <code>Opcode</code> 
- * interface for Call_1s (call routine, store retval) instructions. See p. 80.
+ * interface for Call_2s (call routine, store retval) instructions. See p. 81.
  * 
- * call_1s routine -> (result)
+ * call_2s routine arg1 -> (result)
  * 
- * Stores routine().
+ * Stores routine(arg1).
  * 
  * @author <a href="mailto:iosdevx@gmail.com">Michael Zanussi</a>
  * @version 1.0 (25 May 2016) 
  */
-public class Call_1s extends AbstractOpcode {
+public class Call_2s extends AbstractOpcode {
 
 	/**
 	 * Single-arg constructor takes Instruction object as only arg.
 	 * 
 	 * @param instruction the instruction
 	 */
-	public Call_1s(Instruction instruction) {
+	public Call_2s(Instruction instruction) {
 		super(instruction);
 		isStore = true;
-		name = "call_1s";
+		name = "call_2s";
 	}
 	
 	/* (non-Javadoc)
@@ -70,7 +70,7 @@ public class Call_1s extends AbstractOpcode {
 		}
 		
 		{
-			System.out.print("CALL_1S addr:");
+			System.out.print("CALL_2S addr:");
 			System.out.print(routine_addr + " args:");
 			for (int x = 0; x < 7; x++) {
 				System.out.print(locals[x] + " ");
@@ -87,5 +87,5 @@ public class Call_1s extends AbstractOpcode {
 		rous.setNumberOfArgs(num_of_args > num_of_locals ? num_of_locals : num_of_args);
 		
 	}
-
+	
 }

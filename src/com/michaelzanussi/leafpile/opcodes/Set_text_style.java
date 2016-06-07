@@ -43,7 +43,7 @@ public class Set_text_style extends AbstractOpcode {
 			System.out.println();
 		}
 		
-		System.exit(0);
+		System.err.println("complete set_text_style");
 		
 	}
 		
