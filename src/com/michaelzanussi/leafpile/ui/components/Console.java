@@ -64,6 +64,7 @@ public abstract class Console extends JPanel implements KeyListener {
 	private int max_count;
 	private int char_count;
 	private boolean adj_buf_size;
+	private boolean hide_chars = false;
 	
 	// Current cursor location.
 	private int cx;
@@ -191,6 +192,13 @@ public abstract class Console extends JPanel implements KeyListener {
     	
     }
     
+    public void show_cursor() {
+    	// TODO: need a check here to see if cursor
+    	// should be displayed at all
+    	osg.setColor(Color.CYAN);
+    	osg.fillRect(cx * text_adv, cy * text_height, text_adv, text_height);
+    }
+    
     /**
      * Write lines to the screen.
      * 
@@ -203,7 +211,7 @@ public abstract class Console extends JPanel implements KeyListener {
     	cy = cwnd.getCursor().y;
 
     	String [] lines = null;
-    	lines = out.split("\n");
+    	lines = out.split("\n", -1);
 
         int j = lines.length;
     	for (int i = 0; i < lines.length - 1; i++) {
@@ -229,6 +237,7 @@ public abstract class Console extends JPanel implements KeyListener {
     		}
     		write_char(ch);
     	}
+    	
     }
     
     /**
@@ -297,7 +306,7 @@ public abstract class Console extends JPanel implements KeyListener {
 		}
 		
 		//zm.getLogger().debug("(cx,cy) = (" + cx + "," + cy + ")");
-		//System.out.println("(cx,cy) = (" + cx + "," + cy + ")");
+		System.out.println("(cx,cy) = (" + cx + "," + cy + ")");
 		
     	// Calculate the absolute cursor position. 
     	int ax = cx * text_adv;
@@ -484,6 +493,10 @@ System.out.println("FONT STYLE: " + font.getStyle());
     	return cwnd;
     }
     
+    /*
+     * KeyListener methods, and other keyboard support.
+     */
+    
     public synchronized void read(StringBuilder in, int count) {
     	/*System.out.println("count: " + count);
     	if (count <= 0) {
@@ -515,6 +528,17 @@ System.out.println("FONT STYLE: " + font.getStyle());
     	ignore_input = true;
     }
     
+    public synchronized void read_char(StringBuilder in) {
+    	buf = in;
+    	char_count = 0;
+    	max_count = 1;
+    	ignore_input = false;
+    	hide_chars = true;	// don't want to see key pressed
+    	wait_for_key();
+    	ignore_input = true;
+    	hide_chars = false;
+    }
+    
     /**
      * Wait for user keypress.
      */
@@ -531,6 +555,12 @@ System.out.println("FONT STYLE: " + font.getStyle());
      * @param keychar
      */
     private synchronized void processKey(int keycode, char keychar) {
+    	
+    	if (hide_chars) {
+    		buf.append(keychar);
+    		notifyAll();
+    		return;
+    	}
     	
     	if (keycode == KeyEvent.VK_ENTER) {	
     		eol = true;

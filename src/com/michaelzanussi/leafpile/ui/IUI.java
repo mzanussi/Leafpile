@@ -29,6 +29,13 @@ public interface IUI {
 	public void read(StringBuilder in, int count);
 	
 	/**
+	 * Get input from device.
+	 * 
+	 * @param in a StringBuilder containing input
+	 */
+	public void read_char(StringBuilder in);
+	
+	/**
 	 * Gets a filename from the user, for saving and
 	 * retrieving game state.
 	 * 

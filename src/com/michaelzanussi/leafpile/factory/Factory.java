@@ -33,6 +33,7 @@ import com.michaelzanussi.leafpile.opcodes.Print_num;
 import com.michaelzanussi.leafpile.opcodes.Pull;
 import com.michaelzanussi.leafpile.opcodes.Push;
 import com.michaelzanussi.leafpile.opcodes.Put_prop;
+import com.michaelzanussi.leafpile.opcodes.Read_char;
 import com.michaelzanussi.leafpile.opcodes.Ret;
 import com.michaelzanussi.leafpile.opcodes.Rtrue;
 import com.michaelzanussi.leafpile.opcodes.Set_cursor;
@@ -258,6 +259,8 @@ public class Factory {
 				return new Set_text_style(instruction);
 			case 0x12:
 				return new Buffer_mode(instruction);
+			case 0x16:
+				return new Read_char(instruction);
 			default:
 				assert (false) : "unimplemented VAR opcode: 0x" + Integer.toHexString(opcode_no);
 			}

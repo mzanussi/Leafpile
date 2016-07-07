@@ -180,6 +180,13 @@ public class LeafpileGUI extends JFrame implements IUI {
 		console.read(in, count);
 		// TODO: backspace ^H^H^H^H^H^H^H^H over More
 	}
+	
+	@Override
+	public void read_char(StringBuilder in) {
+		flush_buf();
+		System.out.println("buffer flushed!");
+		console.read_char(in);
+	}
 
 	/* (non-Javadoc)
 	 * @see com.michaelzanussi.leafpile.ui.IUI#write(java.lang.String)
@@ -333,8 +340,10 @@ public class LeafpileGUI extends JFrame implements IUI {
 		public void run() {
 			if (erase) {
 				console.erase_chars(data);
+				console.show_cursor();
 			} else {
 				console.write_lines(data);
+				console.show_cursor();
 			}
 		}
 

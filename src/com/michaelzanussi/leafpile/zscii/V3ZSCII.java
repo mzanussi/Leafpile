@@ -77,8 +77,17 @@ public class V3ZSCII extends ZSCII {
 				}
 			} else {
 				if (zchars[i] == 6 && alphabet == a2) {
-					// next 2 z-chars specify 10-bit ZSCII; top 5 bits, then bottom 5-bits
-					assert(false) : "zchar is 6 and alphabet is A2. string so far: " + sb.toString();
+					// next 2 z-chars specify 10-bit ZSCII; top 5 bits, then bottom 5-bits (3.4)
+					byte a = zchars[++i];
+					byte b = zchars[++i];
+					// Shift-left first 5 bits of first z-char and 
+					// bitwise OR with first 5 bits of second z-char,
+					// giving us a 10-bit ZSCII character code.
+					int nchar = ((a & 0x1f) << 5) | (b & 0x1f);
+					//char ch = alphabet.charAt(nchar);
+					sb.append(String.valueOf((char)nchar));
+					alphabet = a1;
+					//assert(false) : "zchar is 6 and alphabet is A2. string so far: " + sb.toString();
 				} else {
 					char ch = alphabet.charAt(zchars[i]);
 					sb.append(ch);
