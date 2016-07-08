@@ -185,8 +185,8 @@ public class Factory {
 				return new Inc(instruction);
 			case 0x08:
 				return new Call_1s(instruction);
-//			case 0x0b:
-//				return new Ret(instruction);
+			case 0x0b:
+				return new Ret(instruction);
 			case 0x0c:
 				return new Jump(instruction);
 			default:
@@ -211,10 +211,10 @@ public class Factory {
 //				return new Test_attr(instruction);
 			case 0x0d:
 				return new Store(instruction);
-//			case 0x0e:
-//				return new Insert_obj(instruction);
-//			case 0x0f:
-//				return new Loadw(instruction);
+			case 0x0e:
+				return new Insert_obj(instruction);
+			case 0x0f:
+				return new Loadw(instruction);
 			case 0x10:
 				return new Loadb(instruction);
 			case 0x14:
