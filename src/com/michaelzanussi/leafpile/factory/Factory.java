@@ -13,6 +13,7 @@ import com.michaelzanussi.leafpile.opcodes.Buffer_mode;
 import com.michaelzanussi.leafpile.opcodes.Call;
 import com.michaelzanussi.leafpile.opcodes.Call_1s;
 import com.michaelzanussi.leafpile.opcodes.Call_2s;
+import com.michaelzanussi.leafpile.opcodes.Call_vs;
 import com.michaelzanussi.leafpile.opcodes.Dec_chk;
 import com.michaelzanussi.leafpile.opcodes.Div;
 import com.michaelzanussi.leafpile.opcodes.Erase_window;
@@ -20,6 +21,7 @@ import com.michaelzanussi.leafpile.opcodes.Inc;
 import com.michaelzanussi.leafpile.opcodes.Inc_chk;
 import com.michaelzanussi.leafpile.opcodes.Insert_obj;
 import com.michaelzanussi.leafpile.opcodes.Je;
+import com.michaelzanussi.leafpile.opcodes.Jg;
 import com.michaelzanussi.leafpile.opcodes.Jl;
 import com.michaelzanussi.leafpile.opcodes.Jump;
 import com.michaelzanussi.leafpile.opcodes.Jz;
@@ -177,8 +179,8 @@ public class Factory {
 			break;
 		case O_1OP:
 			switch (opcode_no) {
-//			case 0x00:
-//				return new Jz(instruction);
+			case 0x00:
+				return new Jz(instruction);
 			case 0x05:
 				return new Inc(instruction);
 			case 0x08:
@@ -193,10 +195,12 @@ public class Factory {
 			break;
 		case O_2OP:
 			switch (opcode_no) {
-//			case 0x01:
-//				return new Je(instruction);
+			case 0x01:
+				return new Je(instruction);
 			case 0x02:
 				return new Jl(instruction);
+			case 0x03:
+				return new Jg(instruction);
 			case 0x04:
 				return new Dec_chk(instruction);
 //			case 0x05:
@@ -213,10 +217,10 @@ public class Factory {
 //				return new Loadw(instruction);
 			case 0x10:
 				return new Loadb(instruction);
-//			case 0x14:
-//				return new Add(instruction);
-//			case 0x15:
-//				return new Sub(instruction);
+			case 0x14:
+				return new Add(instruction);
+			case 0x15:
+				return new Sub(instruction);
 			case 0x17:
 				return new Div(instruction);
 			case 0x19:
@@ -231,10 +235,10 @@ public class Factory {
 				if (zmachine.memory().getVersion() <= 3) {
 					return new Call(instruction);
 				} else {
-					assert (false) : "call_vs not implemented";
+					return new Call_vs(instruction);
 				}
-//			case 0x01:
-//				return new Storew(instruction);
+			case 0x01:
+				return new Storew(instruction);
 			case 0x02:
 				return new Storeb(instruction);
 //			case 0x03:

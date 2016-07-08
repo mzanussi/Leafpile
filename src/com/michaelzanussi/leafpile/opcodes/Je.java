@@ -52,7 +52,7 @@ public class Je extends AbstractOpcode {
 		{
 			System.out.print("JE a:" + a + " ");
 			for (int j = 1; j < operands.size(); j++) {
-				System.out.print("b" + j + ":" + operands.get(j) + " ");
+				System.out.print("b" + j + ":" + memory.signed(operands.get(j)) + " ");
 			}
 			System.out.print("result:" + result + " ");
 		}

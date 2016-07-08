@@ -130,9 +130,12 @@ public class Zmachine extends Thread {
 		} else if (version == 6) {
 			memory.setInterpreterVersion(23);	// (11.1.3.1)
 		}
+		
+		int counter=0;
 				
 		while (true) {
-			System.out.println("+++++ NEW INSTRUCTION +++++");
+			counter++;
+			System.out.println("+++++ NEW INSTRUCTION +++++ " + counter);
 			if (current.getPC() == 64977) {	// debug only
 				System.out.print("");
 			}

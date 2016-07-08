@@ -58,18 +58,25 @@ public abstract class Console extends JPanel implements KeyListener {
     private Graphics2D osg;				// off-screen graphics object
 	private BufferedImage img;			// the off-screen image
 	
-	private boolean eol = false;
-	private boolean ignore_input = true;
-	private StringBuilder buf;
-	private int max_count;
-	private int char_count;
-	private boolean adj_buf_size;
-	private boolean hide_chars = false;
+	private boolean eol = false;			// at end of line?
+	private boolean ignore_input = true;	// ignore keypresses?
+	private StringBuilder buf;				// text buffer
+	private int max_count;					// max character count
+	private int char_count;					// character count
+	private boolean adj_buf_size;			// adjusted buffer size? (see p. 95)
+	private boolean hide_chars = false;		// hide chars from screen?
 	
 	// Current cursor location.
 	private int cx;
 	private int cy;
 	
+	/**
+	 * Constructor.
+	 * 
+	 * @param scr_width		the screen width in chars
+	 * @param scr_height	the screen height in chars
+	 * @param font			the font for the screen
+	 */
 	public Console(int scr_width, int scr_height, Font font) {
 		this.scr_width = scr_width;
 		this.scr_height = scr_height;
@@ -143,12 +150,34 @@ public abstract class Console extends JPanel implements KeyListener {
 		}
 	}
 	
+	/**
+	 * Erase a window.
+	 * 
+	 * @param window the window to erase
+	 */
 	public abstract void erase_window(int window);
 	
+	/**
+	 * Split the current window.
+	 * 
+	 * @param lines number of lines in new window
+	 */
 	public abstract void split_window(int lines);
 	
+	/**
+	 * Set the current window.
+	 * 
+	 * @param window the window to set as current
+	 */
 	public abstract void set_window(int window);
 	
+	/**
+	 * Set the cursor.
+	 * 
+	 * @param line the line where cursor resides
+	 * @param column the column where cursor resides
+	 * @param window the window where cursor resides
+	 */
 	public abstract void set_cursor(int line, int column, int window);
 	
 	/* (non-Javadoc)
@@ -192,6 +221,9 @@ public abstract class Console extends JPanel implements KeyListener {
     	
     }
     
+    /**
+     * Show the cursor on the screen.
+     */
     public void show_cursor() {
     	// TODO: need a check here to see if cursor
     	// should be displayed at all
@@ -224,6 +256,11 @@ public abstract class Console extends JPanel implements KeyListener {
 		
     }
 
+    /**
+     * Erase characters using stream of backspaces.
+     * 
+     * @param str string containing backspaces
+     */
     public void erase_chars(String str) {
     	
     	// Get the cursor location.
@@ -411,30 +448,65 @@ System.out.println("FONT STYLE: " + font.getStyle());
     	return statusBar;
     }
     
+    /**
+     * Returns split screen status.
+     * 
+     * @return split screen status
+     */
     public boolean hasSplitScreen() {
     	return splitScreen;
     }
     
+    /**
+     * Returns status line status.
+     * 
+     * @return status line status
+     */
     public boolean hasNoStatusLine() {
     	return noStatusLine;
     }
     
+    /**
+     * Returns if variable pitch default.
+     * 
+     * @return if variable pitch default
+     */
     public boolean isVariablePitchDefault() {
     	return dfltVarPitch;
     }
     
+    /**
+     * Returns if bold is available.
+     * 
+     * @return if bold is available.
+     */
     public boolean isBoldAvailable() {
     	return bold;
     }
     
+    /**
+     * Returns if italic is available.
+     * 
+     * @return if italic is available
+     */
     public boolean isItalicAvailable() {
     	return italic;
     }
     
+    /**
+     * Returns if fixed space font is available.
+     * 
+     * @return if fixed space font is available
+     */
     public boolean isFixedSpaceFontAvailable() {
     	return fixedSpaceAvail;
     }
     
+    /**
+     * Returns if timed input.
+     * 
+     * @return if timed input.
+     */
     public boolean hasTimedInput() {
     	return timedInput;
     }
@@ -497,11 +569,13 @@ System.out.println("FONT STYLE: " + font.getStyle());
      * KeyListener methods, and other keyboard support.
      */
     
+    /**
+     * Read user input from keyboard, up to count characters.
+     * 
+     * @param in the buffer to hold keypresses
+     * @param count the max number of characters to read
+     */
     public synchronized void read(StringBuilder in, int count) {
-    	/*System.out.println("count: " + count);
-    	if (count <= 0) {
-    		// ODO: set to some other val, like 255?
-    	}*/
     	// Set the internal buffer.
     	buf = in;
     	// Max # of chars to read. For adj_buf_size, see p. 95.
@@ -528,14 +602,27 @@ System.out.println("FONT STYLE: " + font.getStyle());
     	ignore_input = true;
     }
     
+    /**
+     * Read a character from the keyboard.
+     * 
+     * @param in the buffer to hold the keypress
+     */
     public synchronized void read_char(StringBuilder in) {
+    	// Set the internal buffer.
     	buf = in;
+    	// Reset character count.
     	char_count = 0;
+    	// Max # of chars to read.
     	max_count = 1;
+    	// Don't ignore any user input...
     	ignore_input = false;
-    	hide_chars = true;	// don't want to see key pressed
+    	// ...but we don't want to see what user pressed.
+    	hide_chars = true;
+    	// Wait for a key to be pressed.
     	wait_for_key();
+    	// Ignore subsequent keypresses until next read_char().
     	ignore_input = true;
+    	// Make characters visible again.
     	hide_chars = false;
     }
     
@@ -551,6 +638,8 @@ System.out.println("FONT STYLE: " + font.getStyle());
     }
     
     /**
+     * Process the key just pressed.
+     * 
      * @param keycode
      * @param keychar
      */
