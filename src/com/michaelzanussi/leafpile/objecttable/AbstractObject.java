@@ -85,6 +85,14 @@ public abstract class AbstractObject implements ObjectTableObject {
 		return isSet;
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.michaelzanussi.leafpile.objecttable.ObjectTableObject#getShortName()
+	 */
+	@Override
+	public String getShortName() {
+		return short_name;
+	}
+	
 	/**
 	 * The Property class represents a single property for an object.
 	 * It holds the property number, the size of the property, and a

@@ -1,5 +1,8 @@
 package com.michaelzanussi.leafpile.zscii;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.michaelzanussi.leafpile.Debug;
 import com.michaelzanussi.leafpile.zmachine.Memory;
 
@@ -26,6 +29,30 @@ public abstract class ZSCII {
 	public ZSCII(Memory memory) {
 		this.memory = memory;
 		version = memory.getVersion();
+	}
+	
+	/**
+	 * Decode the string stored at address.
+	 * Defer implementation to the subclass.
+	 * 
+	 * @param address
+	 * @return
+	 */
+	public String decode(int address) {
+		List<Integer> temp = new ArrayList<Integer>();
+		int data = 0;
+		do {
+			data = memory.getWord(address);
+			address += 2;
+			temp.add(data);
+		} while ((data & 0x8000) != 0x8000);
+		int[] short_name_ints = new int[temp.size()];
+		int index = 0;
+		for (int aaa : temp) {
+			short_name_ints[index++] = aaa;
+		}
+		
+		return decode(short_name_ints);
 	}
 	
 	/**

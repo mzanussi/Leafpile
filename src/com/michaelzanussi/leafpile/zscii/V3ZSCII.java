@@ -18,6 +18,19 @@ public class V3ZSCII extends ZSCII {
 		// TODO: look at $34 in header. see 3.5.5 and 3.5.5.1 for more info.
 		assert (version < 5) : "add support for alt alphabets";
 	}
+	
+	/* (non-Javadoc)
+	 * @see com.michaelzanussi.leafpile.zscii.ZSCII#decode(int)
+	 */
+/*	public String decode(int address) {
+		int text_length = memory.getByte(address++);
+		assert(text_length>0) : "hmm text length is 0. troubleshoot.";
+		int[] short_name_ints = new int[text_length];
+		for (int i = 0; i < text_length; i++) {
+			short_name_ints[i] = memory.getWord(address + (i * 2));
+		}
+		return decode(short_name_ints);
+	}*/
 
 	/* (non-Javadoc)
 	 * @see com.michaelzanussi.leafpile.zscii.ZSCII#decode(int[])

@@ -32,6 +32,8 @@ import com.michaelzanussi.leafpile.opcodes.Opcode;
 import com.michaelzanussi.leafpile.opcodes.Print;
 import com.michaelzanussi.leafpile.opcodes.Print_char;
 import com.michaelzanussi.leafpile.opcodes.Print_num;
+import com.michaelzanussi.leafpile.opcodes.Print_obj;
+import com.michaelzanussi.leafpile.opcodes.Print_paddr;
 import com.michaelzanussi.leafpile.opcodes.Pull;
 import com.michaelzanussi.leafpile.opcodes.Push;
 import com.michaelzanussi.leafpile.opcodes.Put_prop;
@@ -185,10 +187,14 @@ public class Factory {
 				return new Inc(instruction);
 			case 0x08:
 				return new Call_1s(instruction);
+			case 0x0a:
+				return new Print_obj(instruction);
 			case 0x0b:
 				return new Ret(instruction);
 			case 0x0c:
 				return new Jump(instruction);
+			case 0x0d:
+				return new Print_paddr(instruction);
 			default:
 				assert (false) : "unimplemented 1OP opcode: 0x" + Integer.toHexString(opcode_no);
 			}
@@ -207,8 +213,8 @@ public class Factory {
 //				return new Inc_chk(instruction);
 //			case 0x09:
 //				return new And(instruction);
-//			case 0x0a:
-//				return new Test_attr(instruction);
+			case 0x0a:
+				return new Test_attr(instruction);
 			case 0x0d:
 				return new Store(instruction);
 			case 0x0e:

@@ -24,6 +24,8 @@ public abstract class AbstractOpcode implements Opcode {
 	protected List<Integer> operands;	// operands
 	protected Factory factory;			// object factory
 	
+	protected int version;
+	
 	protected String name;
 	
 	protected boolean isStore;
@@ -43,6 +45,7 @@ public abstract class AbstractOpcode implements Opcode {
 		memory = zmachine.memory();
 		current = zmachine.getCurrentRous();
 		operands = instruction.getOperands();
+		version = memory.getVersion();
 		factory = new Factory(zmachine);
 		isStore = false;
 		isBranch = false;

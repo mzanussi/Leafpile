@@ -7,6 +7,8 @@ import com.michaelzanussi.leafpile.zscii.V3ZSCII;
 import com.michaelzanussi.leafpile.zscii.ZSCII;
 
 /**
+ * A version 3 and earlier object.
+ * 
  * @author <a href="mailto:iosdevx@gmail.com">Michael Zanussi</a>
  * @version 1.0 (28 April 2016) 
  */
@@ -17,24 +19,38 @@ public class V1Object extends AbstractObject {
 	private static final int OBJECT_SIZE = 9;
 	private static final int ATTRIBUTES = 32;
 
+	/**
+	 * Constructor.
+	 * 
+	 * @param obj_num object number
+	 * @param memory pointer to memory
+	 */
 	public V1Object(int obj_num, Memory memory) {
 		
 		super(obj_num, memory);
 		
+		// If this is object 0, do nothing. (12.3)
 		if (obj_num == 0) {
 			return;
 		}
 		
-		//{ debug.println("ZOBJECT: OBJ NUMBER " + obj_num); }
-		
-		if (obj_num < 1 || obj_num > MAX_OBJECTS) {
+		// Is this a valid object number? (12.3.1)
+		if (obj_num < 0 || obj_num > MAX_OBJECTS) {
 			throw new IndexOutOfBoundsException("Invalid object number: " + obj_num);
 		}
 		
+		// Object table base address. (12.1)
 		int obj_tbl_addr = memory.getObjectTableBase();
+		// The offset into the object tree where we'll find our
+		// object. For OBJECT_SIZE see 12.3.1.
 		int offset = (obj_num - 1) * OBJECT_SIZE;
+		// The absolute address of our object in the object tree.
+		// It's the object table base address, plus the property
+		// defaults table size, plus the offset. For the
+		// PROPERTY_DEFAULTS_TABLE_SIZE see 12.2.
 		int address = obj_tbl_addr + (PROPERTY_DEFAULTS_TABLE_SIZE * 2) + offset;
 
+		// Attributes start object tree. (12.3.1)
 		attributes = new ArrayList<Boolean>();
 		
 		for (int i = 0; i < ATTRIBUTES; i++) {
@@ -46,23 +62,23 @@ public class V1Object extends AbstractObject {
 		
 		address += ATTRIBUTES / 8;
 		
-		//{ debug.print("parent: "); }
+		// Parent object number after attributes. (12.3.1)
 		parent_addr = address++;
-		parent = memory.getByte(parent_addr/*address++*/);
+		parent = memory.getByte(parent_addr);
 		
-		//{ debug.print("sibling: "); }
+		// Sibling object number after parent. (12.3.1)
 		sibling_addr = address++;
-		sibling = memory.getByte(sibling_addr/*address++*/);
+		sibling = memory.getByte(sibling_addr);
 		
-		//{ debug.print("child: "); }
+		// Child object number after sibling. (12.3.1)
 		child_addr = address++;
-		child = memory.getByte(child_addr/*address++*/);
+		child = memory.getByte(child_addr);
 		
-		//{ debug.print("properties: "); }
+		// Finally, get the property table address. (12.3.1)
 		prop_addr = memory.getWord(address);
 		
-		prop_table = new ArrayList<Property>();
-		
+		// First is the property table header, containing short name. (12.4)
+		// TODO: moved bulk of this code into ZSCII, consider using it here.
 		address = prop_addr;
 		text_length = memory.getByte(address++);
 		assert(text_length>0) : "hmm text length is 0. troubleshoot.";
@@ -81,17 +97,24 @@ public class V1Object extends AbstractObject {
 		}
 		address += text_length * 2;	// TODO: get short name, but skip for now.
 		
+		// Next are the properties for this object. (12.4.1)
+		prop_table = new ArrayList<Property>();
+
 		do {
-			
+			// Get the size byte. (12.4.1)
 			int size_byte = memory.getByte(address++);
 			
 			if (size_byte == 0) {
 				break;
 			}
 			
+			// Get the property number and size The size byte is
+			// arranged as 32 times the number of data bytes minus
+			// one, plus the property number. (12.4.1)
 			int prop_num = size_byte & 0x1f;
 			int prop_size = (size_byte / 32) + 1;
-			//System.out.println(prop_num + ": size=" + prop_size);
+			
+			// Create the property and store it off in the list.
 			Property property = new Property();
 			property.prop_num = prop_num;
 			property.prop_size = prop_size;
