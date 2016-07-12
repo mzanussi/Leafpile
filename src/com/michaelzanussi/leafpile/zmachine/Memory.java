@@ -98,7 +98,7 @@ public class Memory {
 		}
 		byte byte_value = (byte)(value & 0xff);
 		memory[address] = byte_value;
-		{ debug.println("\t--> SET byte [" + address + "] = " + value + " (byteval=" + value +")"); }
+		{ debug.println("\t--> SET byte [" + address + "] = " + value + " (byteval=" + byte_value +")"); }
 	}
 	
 	/**

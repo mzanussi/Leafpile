@@ -22,6 +22,7 @@ import com.michaelzanussi.leafpile.opcodes.Inc_chk;
 import com.michaelzanussi.leafpile.opcodes.Insert_obj;
 import com.michaelzanussi.leafpile.opcodes.Je;
 import com.michaelzanussi.leafpile.opcodes.Jg;
+import com.michaelzanussi.leafpile.opcodes.Jin;
 import com.michaelzanussi.leafpile.opcodes.Jl;
 import com.michaelzanussi.leafpile.opcodes.Jump;
 import com.michaelzanussi.leafpile.opcodes.Jz;
@@ -40,6 +41,7 @@ import com.michaelzanussi.leafpile.opcodes.Put_prop;
 import com.michaelzanussi.leafpile.opcodes.Read_char;
 import com.michaelzanussi.leafpile.opcodes.Ret;
 import com.michaelzanussi.leafpile.opcodes.Rtrue;
+import com.michaelzanussi.leafpile.opcodes.Set_attr;
 import com.michaelzanussi.leafpile.opcodes.Set_cursor;
 import com.michaelzanussi.leafpile.opcodes.Set_text_style;
 import com.michaelzanussi.leafpile.opcodes.Set_window;
@@ -211,10 +213,14 @@ public class Factory {
 				return new Dec_chk(instruction);
 //			case 0x05:
 //				return new Inc_chk(instruction);
+			case 0x06:
+				return new Jin(instruction);
 //			case 0x09:
 //				return new And(instruction);
 			case 0x0a:
 				return new Test_attr(instruction);
+			case 0x0b:
+				return new Set_attr(instruction);
 			case 0x0d:
 				return new Store(instruction);
 			case 0x0e:

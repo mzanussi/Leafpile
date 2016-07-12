@@ -19,6 +19,7 @@ public interface ObjectTableObject {
 	public void setProperty(int property, int value);
 	
 	public boolean isAttributeSet(int attribute);
+	public void setAttribute(int attribute);
 	
 	public String getShortName();
 }

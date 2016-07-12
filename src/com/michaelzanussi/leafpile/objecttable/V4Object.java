@@ -184,4 +184,21 @@ public class V4Object extends AbstractObject {
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.michaelzanussi.leafpile.objecttable.ObjectTableObject#setAttribute(int)
+	 */
+	@Override
+	public void setAttribute(int attribute) {
+		// See constructor above for details on these 3 vars.
+		int obj_tbl_addr = memory.getObjectTableBase();
+		int offset = (obj_num - 1) * OBJECT_SIZE;
+		int address = obj_tbl_addr + (PROPERTY_DEFAULTS_TABLE_SIZE * 2) + offset;
+
+		int byteno = attribute / 8;
+		int value = memory.getByte(address + byteno);
+		value |= (0x80 >> (attribute & 7));
+		memory.setByte(address + byteno, value);
+		attributes.set(attribute, true);
+	}
+	
 }

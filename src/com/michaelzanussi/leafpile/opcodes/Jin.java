@@ -5,26 +5,26 @@ import com.michaelzanussi.leafpile.objecttable.ObjectTableObject;
 
 /**
  * This class provides a concrete implementation of the <code>Opcode</code> 
- * interface for Test_attr (jump if object has attribute) instructions. See p. 103.
+ * interface for Jin (jump if parent) instructions. See p. 87.
  * 
- * test_attr object attribute ?(label)
+ * jin obj1 obj2 ?(label)
  * 
- * Jump if object has attribute.
+ * Jump if object a is a direct child of b, i.e., if parent of a is b.
  * 
  * @author <a href="mailto:iosdevx@gmail.com">Michael Zanussi</a>
- * @version 1.0 (16 May 2016) 
+ * @version 1.0 (11 July 2016) 
  */
-public class Test_attr extends AbstractOpcode {
+public class Jin extends AbstractOpcode {
 
 	/**
 	 * Single-arg constructor takes Instruction object as only arg.
 	 * 
 	 * @param instruction the instruction
 	 */
-	public Test_attr(Instruction instruction) {
+	public Jin(Instruction instruction) {
 		super(instruction);
 		isBranch = true;
-		name = "test_attr";
+		name = "jin";
 	}
 	
 	/* (non-Javadoc)
@@ -33,18 +33,22 @@ public class Test_attr extends AbstractOpcode {
 	@Override
 	public void exec() {
 		
-		// Retrieve the operands.
-		int obj = operands.get(0);
-		int attribute = operands.get(1);
-				
-		ObjectTableObject oto = factory.createObject(obj);
+		// Retrieve the operand.
+		int obj1 = operands.get(0);
+		int obj2 = operands.get(1);
+
+		// Get object 1's parent.
+		ObjectTableObject oto = factory.createObject(obj1);
+		int parent = oto.getParent();
 		
-		boolean result = oto.isAttributeSet(attribute);
+		// Perform the comparison.
+		boolean result = (parent == obj2);
 		
 		{
-			System.out.print("TEST_ATTR object:" + obj + " attribute:" + attribute + " isSet:" + result + " ");
+			System.out.print("JIN obj1:" + obj1 + " obj2:" + obj2 + " obj1-parent=" + parent + " result:" + result + " ");
 		}
 		
+		// Execute branch.
 		executeBranch(result);
 		
 		{

@@ -5,26 +5,25 @@ import com.michaelzanussi.leafpile.objecttable.ObjectTableObject;
 
 /**
  * This class provides a concrete implementation of the <code>Opcode</code> 
- * interface for Test_attr (jump if object has attribute) instructions. See p. 103.
+ * interface for Set_attr (set attribute) instructions. See p. 99.
  * 
- * test_attr object attribute ?(label)
+ * set_attr object attribute
  * 
- * Jump if object has attribute.
+ * Make <b>object</b> have the attribute numbered <b>attribute</b>.
  * 
  * @author <a href="mailto:iosdevx@gmail.com">Michael Zanussi</a>
- * @version 1.0 (16 May 2016) 
+ * @version 1.0 (11 July 2016) 
  */
-public class Test_attr extends AbstractOpcode {
+public class Set_attr extends AbstractOpcode {
 
 	/**
 	 * Single-arg constructor takes Instruction object as only arg.
 	 * 
 	 * @param instruction the instruction
 	 */
-	public Test_attr(Instruction instruction) {
+	public Set_attr(Instruction instruction) {
 		super(instruction);
-		isBranch = true;
-		name = "test_attr";
+		name = "set_attr";
 	}
 	
 	/* (non-Javadoc)
@@ -39,17 +38,17 @@ public class Test_attr extends AbstractOpcode {
 				
 		ObjectTableObject oto = factory.createObject(obj);
 		
-		boolean result = oto.isAttributeSet(attribute);
+		oto.setAttribute(attribute);
 		
 		{
-			System.out.print("TEST_ATTR object:" + obj + " attribute:" + attribute + " isSet:" + result + " ");
-		}
-		
-		executeBranch(result);
-		
-		{
+			System.out.println("SET_ATTR object:" + obj + " attribute:" + attribute);
 			System.out.println();
 		}
+		
+		// TODO: for testing only, too compare ObjectTableObjects
+		// before and after setting attribute.
+		//ObjectTableObject foo = factory.createObject(obj);
+		//System.out.println();
 		
 	}
 	

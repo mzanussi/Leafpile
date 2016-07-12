@@ -8,7 +8,7 @@ import com.michaelzanussi.leafpile.instructions.Instruction;
  * 
  * jg a b ?(label)
  * 
- * Jump if a > b (using a signed 16-bit comparision).
+ * Jump if a > b (using a signed 16-bit comparison).
  * 
  * @author <a href="mailto:iosdevx@gmail.com">Michael Zanussi</a>
  * @version 1.0 (7 July 2016) 
