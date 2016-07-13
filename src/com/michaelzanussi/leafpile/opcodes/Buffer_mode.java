@@ -36,7 +36,7 @@ public class Buffer_mode extends AbstractOpcode {
 	public void exec() {
 		
 		// Retrieve the operand.
-		int flag = memory.signed(operands.get(0));
+		int flag = operands.get(0);
 		
 		{
 			System.out.println("BUFFER_MODE flag:" + flag);

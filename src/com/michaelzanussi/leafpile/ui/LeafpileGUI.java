@@ -181,6 +181,9 @@ public class LeafpileGUI extends JFrame implements IUI {
 		// TODO: backspace ^H^H^H^H^H^H^H^H over More
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.michaelzanussi.leafpile.ui.IUI#read_char(java.lang.StringBuilder)
+	 */
 	@Override
 	public void read_char(StringBuilder in) {
 		flush_buf();
@@ -340,11 +343,16 @@ public class LeafpileGUI extends JFrame implements IUI {
 		public void run() {
 			if (erase) {
 				console.erase_chars(data);
-				console.show_cursor();
+				//console.show_cursor();
 			} else {
 				console.write_lines(data);
-				console.show_cursor();
+				//console.show_cursor();
 			}
+			// if show cursor, then 
+			// 	console.show_cursor();
+			// alternatively, console.show_cursor() as
+			// above, but need to erase the old cursor
+			// first
 		}
 
 	}

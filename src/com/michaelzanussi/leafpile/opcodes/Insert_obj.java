@@ -37,8 +37,8 @@ public class Insert_obj extends AbstractOpcode {
 	public void exec() {
 		
 		// Retrieve the operands.
-		int obj = memory.signed(operands.get(0));
-		int dest = memory.signed(operands.get(1));
+		int obj = operands.get(0);
+		int dest = operands.get(1);
 		
 		// Move object 'obj' to become first child of 'dest'.
 		

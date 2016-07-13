@@ -46,9 +46,7 @@ public abstract class AbstractObject implements ObjectTableObject {
 	}
 	
 	@Override
-	public void setParent(int parent) {
-		memory.setByte(parent_addr, parent);
-	}
+	public abstract void setParent(int parent);
 	
 	@Override
 	public int getSibling() {
@@ -56,9 +54,7 @@ public abstract class AbstractObject implements ObjectTableObject {
 	}
 	
 	@Override
-	public void setSibling(int sibling) {
-		memory.setByte(sibling_addr, sibling);
-	}
+	public abstract void setSibling(int sibling);
 	
 	@Override
 	public int getChild() {
@@ -66,15 +62,45 @@ public abstract class AbstractObject implements ObjectTableObject {
 	}
 	
 	@Override
-	public void setChild(int child) {
-		memory.setByte(child_addr, child);
-	}
+	public abstract void setChild(int child);
 	
 	/* (non-Javadoc)
 	 * @see com.michaelzanussi.leafpile.objecttable.ObjectTableObject#setProperty(int, int)
 	 */
 	@Override
 	public abstract void setProperty(int property, int value);
+	
+	/* (non-Javadoc)
+	 * @see com.michaelzanussi.leafpile.objecttable.ObjectTableObject#getProperty(int)
+	 */
+	@Override
+	public int getProperty(int property) {
+		
+		int address = 0;
+		int size = 0;
+		for (Property prop : prop_table) {
+			if (prop.prop_num == property) {
+				address = prop.prop_ptr;
+				size = prop.prop_size;
+				break;
+			}
+		}
+		
+		int value = 0;
+		
+		if (address > 0) {
+			if (size == 1) {
+				value = memory.getByte(address);
+			} else {
+				value = memory.getWord(address);
+			}
+		} else {
+			// default property table
+			assert(false) : "flesh out default property table";
+		}
+		
+		return value;
+	}
 	
 	/* (non-Javadoc)
 	 * @see com.michaelzanussi.leafpile.objecttable.ObjectTableObject#isAttributeSet(int)

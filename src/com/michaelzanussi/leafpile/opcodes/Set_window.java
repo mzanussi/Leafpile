@@ -32,7 +32,7 @@ public class Set_window extends AbstractOpcode {
 	public void exec() {
 		
 		// Retrieve the operand.
-		int window = memory.signed(operands.get(0));
+		int window = operands.get(0);
 		
 		{
 			System.out.println("SET_WINDOW window:" + window);

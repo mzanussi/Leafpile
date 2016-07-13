@@ -34,7 +34,7 @@ public class Print_char extends AbstractOpcode {
 	public void exec() {
 
 		// Retrieve the operand.
-		int output_character_code = memory.signed(operands.get(0));
+		int output_character_code = operands.get(0);
 		
 		// Output the character.
 		Character ch = new Character((char)output_character_code);

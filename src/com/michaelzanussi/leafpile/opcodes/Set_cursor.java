@@ -41,8 +41,8 @@ public class Set_cursor extends AbstractOpcode {
 	public void exec() {
 		
 		// Retrieve the operands.
-		int line = memory.signed(operands.get(0));
-		int column = memory.signed(operands.get(1));
+		int line = operands.get(0);
+		int column = operands.get(1);
 		// TODO: V6 get window from operand 2
 		int window = 0;
 		

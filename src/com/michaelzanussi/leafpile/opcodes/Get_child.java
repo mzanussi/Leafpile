@@ -1,29 +1,32 @@
 package com.michaelzanussi.leafpile.opcodes;
 
 import com.michaelzanussi.leafpile.instructions.Instruction;
+import com.michaelzanussi.leafpile.objecttable.ObjectTableObject;
 
 /**
  * This class provides a concrete implementation of the <code>Opcode</code> 
- * interface for Inc_chk (increment then branch) instructions. See p. 86.
+ * interface for Get_child (get child) instructions. See p. 84.
  * 
- * inc_chk (variable) value ?(label)
+ * get_child object -> (result) ?(label)
  * 
- * Increment variable, and branch if now greater than value.
+ * Get first object contained in given object, branching if this exists,
+ * i.e. is not <b>nothing</b> (i.e., is not 0).
  * 
  * @author <a href="mailto:iosdevx@gmail.com">Michael Zanussi</a>
- * @version 1.0 (23 May 2016) 
+ * @version 1.0 (12 July 2016) 
  */
-public class Inc_chk extends AbstractOpcode {
+public class Get_child extends AbstractOpcode {
 
 	/**
 	 * Single-arg constructor takes Instruction object as only arg.
 	 * 
 	 * @param instruction the instruction
 	 */
-	public Inc_chk(Instruction instruction) {
+	public Get_child(Instruction instruction) {
 		super(instruction);
 		isBranch = true;
-		name = "inc_chk";
+		isStore = true;
+		name = "get_child";
 	}
 	
 	/* (non-Javadoc)
@@ -32,28 +35,26 @@ public class Inc_chk extends AbstractOpcode {
 	@Override
 	public void exec() {
 		
-		// Retrieve the operands.
-		int variable = operands.get(0);
-		int value = memory.signed(operands.get(1));
+		// Retrieve the operand.
+		int obj = operands.get(0);
 		
-		// Retrieve the value at variable, increment it, and put back.
-		int nv = memory.signed(current.getVariableValue(variable));
-		nv++;
-		current.setVariableValue(variable, memory.unsigned(nv));
+		// Perform the operation and store.
+		ObjectTableObject oto = factory.createObject(obj);
+		int child = oto.getChild();
+		current.setVariableValue(current.getStoreVariable(), child);
 		
 		// Perform the comparison.
-		boolean result = nv > value;
-
+		boolean result = (child != 0);
+		
 		{
-			System.out.print("INC_CHK var:" + variable + " (inc:" + nv + ") value:" + value + " ");
+			System.out.print("GET_CHILD obj:" + obj + " child:" + child + " store:" + current.getStoreVariable() + " ");
 			System.out.print("result:" + result + " ");
 		}
 		
-		// Branch on condition.
+		// Execute branch.
 		executeBranch(result);
 		
 		{
-			System.out.println();
 			System.out.print("local vars now = ");
 			int[] locals = current.getLocals();
 			for (int i = 0; i < locals.length; i++) {

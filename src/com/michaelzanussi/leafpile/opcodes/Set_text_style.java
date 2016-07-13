@@ -36,14 +36,15 @@ public class Set_text_style extends AbstractOpcode {
 	public void exec() {
 		
 		// Retrieve the operand.
-		int style = memory.signed(operands.get(0));
+		int style = operands.get(0);
 		
 		{
 			System.out.println("SET_TEXT_STYLE style:" + style);
 			System.out.println();
 		}
 		
-		System.err.println("complete set_text_style");
+		System.err.println("complete set_text_style (" + style + ")");
+		zmachine.ui().flush_buf();
 		
 	}
 		

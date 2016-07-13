@@ -160,6 +160,21 @@ public class V4Object extends AbstractObject {
 		assert(false);
 	}
 	
+	@Override
+	public void setParent(int parent) {
+		memory.setWord(parent_addr, parent);
+	}
+	
+	@Override
+	public void setSibling(int sibling) {
+		memory.setWord(sibling_addr, sibling);
+	}
+	
+	@Override
+	public void setChild(int child) {
+		memory.setWord(child_addr, child);
+	}
+	
 	// gets called when the game attempts to read the value of property n
 	// for an object which does not provide property n. in such a case,
 	// the n-th entry in the property default table is the resulting value.

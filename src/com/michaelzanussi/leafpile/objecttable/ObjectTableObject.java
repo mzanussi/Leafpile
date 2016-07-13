@@ -17,6 +17,7 @@ public interface ObjectTableObject {
 	
 	//private int getPropertyDefault(int prop_num);
 	public void setProperty(int property, int value);
+	public int getProperty(int property);
 	
 	public boolean isAttributeSet(int attribute);
 	public void setAttribute(int attribute);

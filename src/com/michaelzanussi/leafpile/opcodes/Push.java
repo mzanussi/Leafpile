@@ -32,7 +32,7 @@ public class Push extends AbstractOpcode {
 	public void exec() {
 		
 		// Retrieve the operand.
-		int value = memory.signed(operands.get(0));
+		int value = operands.get(0);
 		
 		// Push the value onto the game stack.
 		current.setVariableValue(0, value);

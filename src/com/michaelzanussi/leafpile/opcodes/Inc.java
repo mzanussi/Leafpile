@@ -42,6 +42,14 @@ public class Inc extends AbstractOpcode {
 		{
 			System.out.println("INC var:" + variable + " (inc:" + nv + ")");
 			System.out.println();
+			System.out.print("local vars now = ");
+			int[] locals = current.getLocals();
+			for (int i = 0; i < locals.length; i++) {
+				System.out.print(locals[i] + " ");
+			}
+			System.out.print("\n");
+			System.out.println("stack now = " + current.getStack());
+			System.out.println();
 		}
 		
 	}

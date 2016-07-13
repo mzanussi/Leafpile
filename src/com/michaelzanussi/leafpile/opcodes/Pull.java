@@ -35,7 +35,7 @@ public class Pull extends AbstractOpcode {
 	public void exec() {
 		
 		// Retrieve the operand.
-		int variable = memory.signed(operands.get(0));
+		int variable = operands.get(0);
 		
 		if (memory.getVersion() < 6) {
 			// Pop the stack and store locally via var.

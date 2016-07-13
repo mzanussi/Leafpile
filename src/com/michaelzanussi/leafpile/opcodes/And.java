@@ -33,8 +33,8 @@ public class And extends AbstractOpcode {
 	public void exec() {
 		
 		// Retrieve the operands.
-		int a = memory.signed(operands.get(0));
-		int b = memory.signed(operands.get(1));
+		int a = operands.get(0);
+		int b = operands.get(1);
 		
 		// Perform the operation and store unsigned.
 		int result = a & b;

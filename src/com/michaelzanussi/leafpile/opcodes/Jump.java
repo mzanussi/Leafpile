@@ -36,19 +36,16 @@ public class Jump extends AbstractOpcode {
 	public void exec() {
 		
 		// Retrieve the operand.
-		int op = operands.get(0);
-		
-		// return the signed operand
-		int signed = memory.signed(op);
+		int op = memory.signed(operands.get(0));
 		
 		// calculate the new pc
-		int pc = current.getPC() + signed - 2;
+		int pc = current.getPC() + op - 2;
 		
 		// set the new pc
 		current.setPC(pc);
 		
 		{
-			System.out.println("JUMP op:" + op + " (signed=" + signed + ", new pc=" + pc + ")");
+			System.out.println("JUMP op:" + op + " (new pc=" + pc + ")");
 			System.out.println();
 		}
 

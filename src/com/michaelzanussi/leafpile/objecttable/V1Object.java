@@ -154,6 +154,21 @@ public class V1Object extends AbstractObject {
 		
 	}
 	
+	@Override
+	public void setParent(int parent) {
+		memory.setByte(parent_addr, parent);
+	}
+	
+	@Override
+	public void setSibling(int sibling) {
+		memory.setByte(sibling_addr, sibling);
+	}
+	
+	@Override
+	public void setChild(int child) {
+		memory.setByte(child_addr, child);
+	}
+	
 	// gets called when the game attempts to read the value of property n
 	// for an object which does not provide property n. in such a case,
 	// the n-th entry in the property default table is the resulting value.

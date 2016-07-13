@@ -34,6 +34,7 @@ public class Print extends AbstractOpcode {
 	 */
 	@Override
 	public void exec() {
+		
 		ZSCII zscii = factory.createZSCII();
 		List<Integer> array = new ArrayList<Integer>();
 		

@@ -47,6 +47,14 @@ public class Read_char extends AbstractOpcode {
 		{
 			System.out.println("READ_CHAR 1:" + one + " result:~" + in + "~ store:" + current.getStoreVariable());
 			System.out.println();
+			System.out.print("local vars now = ");
+			int[] locals = current.getLocals();
+			for (int i = 0; i < locals.length; i++) {
+				System.out.print(locals[i] + " ");
+			}
+			System.out.print("\n");
+			System.out.println("stack now = " + current.getStack());
+			System.out.println();
 		}
 		
 	}

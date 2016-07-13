@@ -34,7 +34,7 @@ public class Dec_chk extends AbstractOpcode {
 		
 		// Retrieve the operands.
 		int variable = operands.get(0);
-		int value = operands.get(1);
+		int value = memory.signed(operands.get(1));
 		
 		// Retrieve the value at variable, increment it, and put back.
 		int nv = memory.signed(current.getVariableValue(variable));
@@ -52,6 +52,14 @@ public class Dec_chk extends AbstractOpcode {
 		executeBranch(result);
 		
 		{
+			System.out.println();
+			System.out.print("local vars now = ");
+			int[] locals = current.getLocals();
+			for (int i = 0; i < locals.length; i++) {
+				System.out.print(locals[i] + " ");
+			}
+			System.out.print("\n");
+			System.out.println("stack now = " + current.getStack());
 			System.out.println();
 		}
 		

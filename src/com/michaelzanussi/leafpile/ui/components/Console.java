@@ -173,6 +173,10 @@ public abstract class Console extends JPanel implements KeyListener {
 	
 	/**
 	 * Set the cursor.
+	 * TODO: erase old cursor prior to setting new cursor,
+	 * will require using getCursor for coordinates. see 
+	 * show_cursor() below for actual erasing..., or,
+	 * just create another method erase_cursor()...
 	 * 
 	 * @param line the line where cursor resides
 	 * @param column the column where cursor resides
@@ -226,7 +230,10 @@ public abstract class Console extends JPanel implements KeyListener {
      */
     public void show_cursor() {
     	// TODO: need a check here to see if cursor
-    	// should be displayed at all
+    	// should be displayed at all (as in, check story version)
+    	// Also, erase old cursor first!
+    	// probably: osg.setColor(background)
+    	// and then: fillRect(,,,) [use proper coords]
     	osg.setColor(Color.CYAN);
     	osg.fillRect(cx * text_adv, cy * text_height, text_adv, text_height);
     }
