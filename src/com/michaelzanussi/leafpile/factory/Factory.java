@@ -19,6 +19,7 @@ import com.michaelzanussi.leafpile.opcodes.Div;
 import com.michaelzanussi.leafpile.opcodes.Erase_window;
 import com.michaelzanussi.leafpile.opcodes.Get_child;
 import com.michaelzanussi.leafpile.opcodes.Get_prop;
+import com.michaelzanussi.leafpile.opcodes.Get_sibling;
 import com.michaelzanussi.leafpile.opcodes.Inc;
 import com.michaelzanussi.leafpile.opcodes.Inc_chk;
 import com.michaelzanussi.leafpile.opcodes.Insert_obj;
@@ -187,6 +188,8 @@ public class Factory {
 			switch (opcode_no) {
 			case 0x00:
 				return new Jz(instruction);
+			case 0x01:
+				return new Get_sibling(instruction);
 			case 0x02:
 				return new Get_child(instruction);
 			case 0x05:

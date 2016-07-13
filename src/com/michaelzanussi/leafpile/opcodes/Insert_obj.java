@@ -55,6 +55,14 @@ public class Insert_obj extends AbstractOpcode {
 		
 		if (obj_parent != 0) {
 			assert(false) : "complete for obj_parent != 0";
+			// get parent's child
+			// if parent's child same as obj, then
+			//		set parent's child to obj's sibling
+			//		set obj's sibling to nothing
+			//		set obj's parent to nothing
+			// else
+			//		find obj's sibling
+			//		remove it (see above code)
 		}
 		
 		// Now, find out child of 'dest' and save it, because
