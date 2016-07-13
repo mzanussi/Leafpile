@@ -126,11 +126,21 @@ public class Factory {
 	 * @return the object table object
 	 */
 	public ObjectTableObject createObject(int obj_num) {
+		
+		ObjectTableObject oto = null;
+		
+		// lookup object in hash table.
+		// if it exists already, return object;
+		// otherwise, create new object, add to hash table, and return object.
+		
 		if (version < 4) {
-			return new V1Object(obj_num, memory);
+			oto = new V1Object(obj_num, memory);
 		} else {
-			return new V4Object(obj_num, memory);
+			oto = new V4Object(obj_num, memory);
 		}
+		
+		return oto;
+		
 	}
 	
 	/**

@@ -132,7 +132,7 @@ public class V4Object extends AbstractObject {
 				// If bit 6 of the size byte is set then the
 				// length is 2, and if it is clear, then the
 				// length is 1. (12.4.2.2)
-				if ((size_byte & 0x20) == 0x20) {
+				if ((size_byte & 0x40) == 0x40) {
 					prop_size = 2;
 				} else {
 					prop_size = 1;				
