@@ -43,7 +43,7 @@ public class Put_prop extends AbstractOpcode {
 		int property = operands.get(1);
 		int value = operands.get(2);
 		
-		ObjectTableObject oto = factory.createObject(obj_num);
+		ObjectTableObject oto = zmachine.getFactory().retrieveObject(obj_num);
 		oto.setProperty(property, value);
 		
 		{

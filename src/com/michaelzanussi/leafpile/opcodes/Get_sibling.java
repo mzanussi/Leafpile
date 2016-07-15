@@ -38,7 +38,7 @@ public class Get_sibling extends AbstractOpcode {
 		int obj = operands.get(0);
 		
 		// Perform the operation and store.
-		ObjectTableObject oto = factory.createObject(obj);
+		ObjectTableObject oto = zmachine.getFactory().retrieveObject(obj);
 		int sibling = oto.getSibling();
 		current.setVariableValue(current.getStoreVariable(), sibling);
 		

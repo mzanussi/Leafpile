@@ -58,8 +58,7 @@ public class LongFormInstruction extends AbstractInstruction {
 		}
 		
 		// Create the opcode object.
-		Factory factory = new Factory(zmachine);
-		opcode = factory.createOpcode(this);
+		opcode = zmachine.getFactory().createOpcode(this);
 		
 		// The variable number of where to put result. (4.6)
 		if (opcode.isStore()) {

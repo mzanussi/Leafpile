@@ -35,7 +35,7 @@ public class Print extends AbstractOpcode {
 	@Override
 	public void exec() {
 		
-		ZSCII zscii = factory.createZSCII();
+		ZSCII zscii = zmachine.getFactory().createZSCII();
 		List<Integer> array = new ArrayList<Integer>();
 		
 		// Text opcodes. Read in the text string starting at PC. The text 

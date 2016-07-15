@@ -54,6 +54,10 @@ public class Zmachine extends Thread {
 		return current;
 	}
 	
+	public Factory getFactory() {
+		return factory;
+	}
+	
 	public Rous createRoutine(int pc) {
 		// first push the current routine onto the stack
 		rscs.push(current);
@@ -76,6 +80,8 @@ public class Zmachine extends Thread {
 		// Initialize memory (i.e. open the story file).
 		memory = new Memory(story);
 		version = memory.getVersion();
+		// Also create the Factory
+		factory = new Factory(this);
 	}
 	
 	/* (non-Javadoc)
@@ -85,7 +91,6 @@ public class Zmachine extends Thread {
 	public void run() {
 		
 		// do some init
-		factory = new Factory(this);
 		rscs = new ArrayDeque<Rous>();
 		
 		// create new routine state with pc, set as current

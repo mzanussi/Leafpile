@@ -1,6 +1,8 @@
 package com.michaelzanussi.leafpile.factory;
 
 import java.awt.Font;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.michaelzanussi.leafpile.instructions.Instruction;
 import com.michaelzanussi.leafpile.instructions.Instruction.Opcount;
@@ -80,6 +82,8 @@ public class Factory {
 	
 	private int version;
 	
+	private Map<Integer, ObjectTableObject> object_table;
+	
 	/**
 	 * Single-arg instruction takes a Z-machine as its only arg.
 	 * 
@@ -89,6 +93,7 @@ public class Factory {
 		this.zmachine = zmachine;
 		memory = zmachine.memory();
 		version = memory.getVersion();
+		object_table = new HashMap<Integer, ObjectTableObject>();
 	}
 	
 	/**
@@ -120,24 +125,35 @@ public class Factory {
 	}
 	
 	/**
-	 * Creates an object table object for the given object number.
+	 * Retrieves an object table object for the given object number
+	 * from the hashmap. If the object doesn't exist, create the object,
+	 * add it to the hashmap, and return the newly created object.
 	 * 
-	 * @param obj_num the object number to create
+	 * @param obj_num the object number to retrieve
 	 * @return the object table object
 	 */
-	public ObjectTableObject createObject(int obj_num) {
+	public ObjectTableObject retrieveObject(int obj_num) {
 		
-		ObjectTableObject oto = null;
+		// Lookup the object in the hashmap.
+		ObjectTableObject oto = object_table.get(obj_num);
 		
-		// lookup object in hash table.
-		// if it exists already, return object;
-		// otherwise, create new object, add to hash table, and return object.
+		// If the object exists already, return it.
+		if (oto != null) {
+			System.out.println("existing object " + obj_num);
+			return oto;
+		}
+		
+		// Otherwise, create a new object, add it to the
+		// hashmap, and then return the object.
 		
 		if (version < 4) {
 			oto = new V1Object(obj_num, memory);
 		} else {
 			oto = new V4Object(obj_num, memory);
 		}
+		
+		object_table.put(obj_num, oto);
+		System.out.println("new object " + obj_num + " (object_table size=" + object_table.size() +")");
 		
 		return oto;
 		

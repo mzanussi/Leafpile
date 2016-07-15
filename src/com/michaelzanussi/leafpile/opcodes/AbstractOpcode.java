@@ -2,7 +2,6 @@ package com.michaelzanussi.leafpile.opcodes;
 
 import java.util.List;
 
-import com.michaelzanussi.leafpile.factory.Factory;
 import com.michaelzanussi.leafpile.instructions.Instruction;
 import com.michaelzanussi.leafpile.zmachine.Memory;
 import com.michaelzanussi.leafpile.zmachine.Rous;
@@ -22,7 +21,6 @@ public abstract class AbstractOpcode implements Opcode {
 	protected Memory memory;
 	protected Rous current;				// current routine state
 	protected List<Integer> operands;	// operands
-	protected Factory factory;			// object factory
 	
 	protected int version;
 	
@@ -46,7 +44,6 @@ public abstract class AbstractOpcode implements Opcode {
 		current = zmachine.getCurrentRous();
 		operands = instruction.getOperands();
 		version = memory.getVersion();
-		factory = new Factory(zmachine);
 		isStore = false;
 		isBranch = false;
 	}

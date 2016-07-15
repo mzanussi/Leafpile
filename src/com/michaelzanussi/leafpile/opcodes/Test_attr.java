@@ -37,7 +37,7 @@ public class Test_attr extends AbstractOpcode {
 		int obj = operands.get(0);
 		int attribute = operands.get(1);
 				
-		ObjectTableObject oto = factory.createObject(obj);
+		ObjectTableObject oto = zmachine.getFactory().retrieveObject(obj);
 		
 		boolean result = oto.isAttributeSet(attribute);
 		

@@ -42,7 +42,7 @@ public class Get_prop extends AbstractOpcode {
 		int property = operands.get(1);
 		
 		// Perform the operation and store.
-		ObjectTableObject oto = factory.createObject(obj);
+		ObjectTableObject oto = zmachine.getFactory().retrieveObject(obj);
 		int result = oto.getProperty(property);
 		current.setVariableValue(current.getStoreVariable(), result);
 		

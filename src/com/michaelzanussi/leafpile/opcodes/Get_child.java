@@ -39,7 +39,7 @@ public class Get_child extends AbstractOpcode {
 		int obj = operands.get(0);
 		
 		// Perform the operation and store.
-		ObjectTableObject oto = factory.createObject(obj);
+		ObjectTableObject oto = zmachine.getFactory().retrieveObject(obj);
 		int child = oto.getChild();
 		current.setVariableValue(current.getStoreVariable(), child);
 		

@@ -38,7 +38,7 @@ public class Jin extends AbstractOpcode {
 		int obj2 = operands.get(1);
 
 		// Get object 1's parent.
-		ObjectTableObject oto = factory.createObject(obj1);
+		ObjectTableObject oto = zmachine.getFactory().retrieveObject(obj1);
 		int parent = oto.getParent();
 		
 		// Perform the comparison.

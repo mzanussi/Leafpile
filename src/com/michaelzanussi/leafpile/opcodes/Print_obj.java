@@ -37,7 +37,7 @@ public class Print_obj extends AbstractOpcode {
 		// Retrieve the operand.
 		int object = operands.get(0);
 		
-		ObjectTableObject oto = factory.createObject(object);
+		ObjectTableObject oto = zmachine.getFactory().retrieveObject(object);
 		String shortName = oto.getShortName();
 		zmachine.ui().write(shortName);
 		

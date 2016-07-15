@@ -11,7 +11,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.filechooser.FileFilter;
 
-import com.michaelzanussi.leafpile.factory.Factory;
 import com.michaelzanussi.leafpile.ui.components.Console;
 import com.michaelzanussi.leafpile.ui.menu.Menu;
 import com.michaelzanussi.leafpile.ui.property.GuiPropertyManager;
@@ -30,7 +29,6 @@ public class LeafpileGUI extends JFrame implements IUI {
 	private Menu menu;				// menu bar
 
 	private Zmachine zmachine;		// the virtual machine
-	private Factory factory;		// the object factory
 
 	private Font font;
 	private int scr_height;
@@ -123,13 +121,9 @@ public class LeafpileGUI extends JFrame implements IUI {
 		// get the story version
 		int version = zmachine.memory().getVersion();
 		
-		// Now initialize the factory, this needs to be 
-		// done after the story has been read into memory.
-		factory = new Factory(zmachine);
-		
 		// Get the screen model for this story and init
 		// the fame console.
-		console = factory.createConsole(scr_width, scr_height, font);
+		console = zmachine.getFactory().createConsole(scr_width, scr_height, font);
 		console.init();
 		
 		// Update a few settings in memory specific to GUI.

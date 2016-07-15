@@ -48,7 +48,7 @@ public class Insert_obj extends AbstractOpcode {
 		// going to be the current sibling of 'obj'. (Note
 		// this only applies if parent isn't 0.)
 		
-		ObjectTableObject obj_oto = factory.createObject(obj);
+		ObjectTableObject obj_oto = zmachine.getFactory().retrieveObject(obj);
 		System.out.println(obj_oto);
 		
 		int obj_parent = obj_oto.getParent();
@@ -69,7 +69,7 @@ public class Insert_obj extends AbstractOpcode {
 		// first child of 'dest' is going to be 'obj'. The
 		// current child of 'dest' will be new sibling of 'obj'.
 		
-		ObjectTableObject dest_oto = factory.createObject(dest);
+		ObjectTableObject dest_oto = zmachine.getFactory().retrieveObject(dest);
 		System.out.println(dest_oto);
 		int dest_obj_child = dest_oto.getChild();
 		obj_oto.setSibling(dest_obj_child);
