@@ -7,6 +7,13 @@ package com.michaelzanussi.leafpile.objecttable;
  * @version 1.0 (27 April 2016) 
  */
 public interface ObjectTableObject {
+	
+	/**
+	 * Returns the object's number.
+	 * 
+	 * @return the object number
+	 */
+	public int getObjectNumber();
 
 	/**
 	 * Returns the object's parent.
@@ -87,5 +94,10 @@ public interface ObjectTableObject {
 	 * @param value the value
 	 */
 	public void setProperty(int property, int value);
+	
+	/**
+	 * Remove self from object tree.
+	 */
+	public void remove();
 	
 }

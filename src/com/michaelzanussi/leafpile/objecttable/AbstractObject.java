@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.michaelzanussi.leafpile.Debug;
 import com.michaelzanussi.leafpile.zmachine.Memory;
+import com.michaelzanussi.leafpile.zmachine.Zmachine;
 
 /**
  * This class provides a skeletal implementation of the <code>ObjectTableObject</code> 
@@ -14,6 +15,7 @@ import com.michaelzanussi.leafpile.zmachine.Memory;
  */
 public abstract class AbstractObject implements ObjectTableObject {
 
+	protected Zmachine zmachine;
 	protected Memory memory;
 	protected Debug debug;
 	
@@ -33,11 +35,20 @@ public abstract class AbstractObject implements ObjectTableObject {
 	 * @param obj_num the object number
 	 * @param memory pointer to memory
 	 */
-	public AbstractObject(int obj_num, Memory memory) {
+	public AbstractObject(int obj_num, Zmachine zmachine/*Memory memory*/) {
 		this.obj_num = obj_num;
-		this.memory = memory;
+		this.zmachine = zmachine;
+		memory = zmachine.memory();
 		debug = memory.getDebug();
 		version = memory.getVersion();
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.michaelzanussi.leafpile.objecttable.ObjectTableObject#getObjectNumber()
+	 */
+	@Override
+	public int getObjectNumber() {
+		return obj_num;
 	}
 	
 	/* (non-Javadoc)
@@ -204,6 +215,63 @@ public abstract class AbstractObject implements ObjectTableObject {
 	@Override
 	public void setProperty(int property, int value) {
 		assert(false) : "implement setProperty";
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.michaelzanussi.leafpile.objecttable.ObjectTableObject#remove()
+	 */
+	@Override
+	public void remove() {
+		
+		// Get the parent for this object.
+		ObjectTableObject parent = zmachine.getFactory().retrieveObject(getParent());
+		
+		// Is this object the child of the parent?
+		if (parent.getChild() == obj_num) {
+			// So the parent's child is object we are going to
+			// remove. It's the first child. So set the parent's
+			// child to the object's sibling, and then reset
+			// the object's parent and sibling.
+			int sib = getSibling();
+			parent.setChild(sib);
+			setParent(0);
+			setSibling(0);
+			return;
+		}
+		
+		// Starting with the parent's first child, walk thru
+		// the sibling list until the object we want to remove
+		// is located. Once located, the previous object
+		// sibling should be our object. See 12.5 #b.
+		
+		// Verify parent has a child.
+		if (parent.getChild() == 0) {
+			throw new NullPointerException("Invalid object; parent has no child.");
+		}
+		
+		ObjectTableObject previous = zmachine.getFactory().retrieveObject(parent.getChild());
+		
+		// Verify child has a sibling.
+		if (previous.getSibling() == 0) {
+			throw new NullPointerException("Invalid object; child has no sibling.");
+		}
+		
+		ObjectTableObject current = zmachine.getFactory().retrieveObject(previous.getSibling());
+		
+		// Walk the tree...
+		while (current.getObjectNumber() != getObjectNumber()) {
+			previous = current;
+			current = zmachine.getFactory().retrieveObject(previous.getSibling());
+			if (current.getObjectNumber() == 0) {
+				throw new NullPointerException("Invalid object; no sibling.");
+			}
+		}
+		
+		// Now remove the object, keeping children intact.
+		previous.setSibling(getSibling());
+		setParent(0);
+		setSibling(0);
+		
 	}
 	
 	/* (non-Javadoc)

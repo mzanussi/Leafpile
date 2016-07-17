@@ -147,9 +147,9 @@ public class Factory {
 		// hashmap, and then return the object.
 		
 		if (version < 4) {
-			oto = new V1Object(obj_num, memory);
+			oto = new V1Object(obj_num, zmachine/*memory*/);
 		} else {
-			oto = new V4Object(obj_num, memory);
+			oto = new V4Object(obj_num, zmachine/*memory*/);
 		}
 		
 		object_table.put(obj_num, oto);

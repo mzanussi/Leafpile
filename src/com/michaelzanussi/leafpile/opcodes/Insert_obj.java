@@ -42,27 +42,15 @@ public class Insert_obj extends AbstractOpcode {
 		
 		// Move object 'obj' to become first child of 'dest'.
 		
-		// Since this makes 'dest' the new parent of 'obj',
-		// need to set child of 'obj' parent, because 'obj'
-		// is moving. The new child of 'obj' parent is
-		// going to be the current sibling of 'obj'. (Note
-		// this only applies if parent isn't 0.)
+		// Get 'obj' and find its parent. If a parent exists,
+		// (parent not 0) first remove 'obj' from the tree, 
+		// and then move it to its new position.
 		
 		ObjectTableObject obj_oto = zmachine.getFactory().retrieveObject(obj);
-		System.out.println(obj_oto);
-		
 		int obj_parent = obj_oto.getParent();
 		
 		if (obj_parent != 0) {
-			assert(false) : "complete for obj_parent != 0";
-			// get parent's child
-			// if parent's child same as obj, then
-			//		set parent's child to obj's sibling
-			//		set obj's sibling to nothing
-			//		set obj's parent to nothing
-			// else
-			//		find obj's sibling
-			//		remove it (see above code)
+			obj_oto.remove();
 		}
 		
 		// Now, find out child of 'dest' and save it, because
@@ -70,7 +58,6 @@ public class Insert_obj extends AbstractOpcode {
 		// current child of 'dest' will be new sibling of 'obj'.
 		
 		ObjectTableObject dest_oto = zmachine.getFactory().retrieveObject(dest);
-		System.out.println(dest_oto);
 		int dest_obj_child = dest_oto.getChild();
 		obj_oto.setSibling(dest_obj_child);
 		

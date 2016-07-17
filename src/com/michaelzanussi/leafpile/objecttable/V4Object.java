@@ -3,6 +3,7 @@ package com.michaelzanussi.leafpile.objecttable;
 import java.util.ArrayList;
 
 import com.michaelzanussi.leafpile.zmachine.Memory;
+import com.michaelzanussi.leafpile.zmachine.Zmachine;
 import com.michaelzanussi.leafpile.zscii.V3ZSCII;
 import com.michaelzanussi.leafpile.zscii.ZSCII;
 
@@ -25,9 +26,9 @@ public class V4Object extends AbstractObject {
 	 * @param obj_num object number
 	 * @param memory pointer to memory
 	 */
-	public V4Object(int obj_num, Memory memory) {
+	public V4Object(int obj_num, Zmachine zmachine/*Memory memory*/) {
 		
-		super(obj_num, memory);
+		super(obj_num, zmachine/*memory*/);
 		
 		// If this is object 0, do nothing. (12.3)
 		if (obj_num == 0) {
@@ -78,17 +79,11 @@ public class V4Object extends AbstractObject {
 		address = memory.getWord(address);
 		
 		// First is the property table header, containing short name. (12.4)
-		// TODO: moved bulk of this code into ZSCII, consider using it here.
 		int text_length = memory.getByte(address++);
-		assert(text_length>0) : "hmm text length is 0. troubleshoot.";
-		int[] short_name_ints = new int[text_length];
-		for (int i = 0; i < text_length; i++) {
-			short_name_ints[i] = memory.getWord(address + (i * 2));
-		}
 		switch (version) {
 		case 4:
 			ZSCII zscii = new V3ZSCII(memory);
-			short_name = zscii.decode(short_name_ints);
+			short_name = zscii.decode(address);
 			break;
 		default:
 			assert(false) : "add zscii support >= 5";
