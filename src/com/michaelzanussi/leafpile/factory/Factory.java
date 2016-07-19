@@ -20,6 +20,7 @@ import com.michaelzanussi.leafpile.opcodes.Dec_chk;
 import com.michaelzanussi.leafpile.opcodes.Div;
 import com.michaelzanussi.leafpile.opcodes.Erase_window;
 import com.michaelzanussi.leafpile.opcodes.Get_child;
+import com.michaelzanussi.leafpile.opcodes.Get_parent;
 import com.michaelzanussi.leafpile.opcodes.Get_prop;
 import com.michaelzanussi.leafpile.opcodes.Get_sibling;
 import com.michaelzanussi.leafpile.opcodes.Inc;
@@ -218,6 +219,8 @@ public class Factory {
 				return new Get_sibling(instruction);
 			case 0x02:
 				return new Get_child(instruction);
+			case 0x03:
+				return new Get_parent(instruction);
 			case 0x05:
 				return new Inc(instruction);
 			case 0x08:
