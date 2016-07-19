@@ -32,27 +32,36 @@ public abstract class ZSCII {
 	}
 	
 	/**
-	 * Decode the string stored at address.
-	 * Defer implementation to the subclass.
+	 * Decode the string stored at address. Bit 7 is set
+	 * only on the last 2-byte word of the text, and so
+	 * marks the end. (3.2)
 	 * 
-	 * @param address
-	 * @return
+	 * @param address starting address of string
+	 * @return the decoded string
 	 */
 	public String decode(int address) {
-		List<Integer> temp = new ArrayList<Integer>();
+		
+		// Init some variables.
+		List<Integer> array = new ArrayList<Integer>();
 		int data = 0;
+		
+		// Read words until stop bit is set
 		do {
 			data = memory.getWord(address);
 			address += 2;
-			temp.add(data);
+			array.add(data);
 		} while ((data & 0x8000) != 0x8000);
-		int[] short_name_ints = new int[temp.size()];
+		
+		// Convert ArrayList to primitive int array.
+		int[] string_as_ints = new int[array.size()];
 		int index = 0;
-		for (int aaa : temp) {
-			short_name_ints[index++] = aaa;
+		for (int x : array) {
+			string_as_ints[index++] = x;
 		}
 		
-		return decode(short_name_ints);
+		// Return the decoded int array, a String.
+		return decode(string_as_ints);
+		
 	}
 	
 	/**
