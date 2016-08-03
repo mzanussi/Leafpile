@@ -1,7 +1,6 @@
 package com.michaelzanussi.leafpile.ui;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Toolkit;
@@ -37,10 +36,13 @@ public class LeafpileGUI extends JFrame implements IUI {
 	private GuiPropertyManager pm;
 
 	private boolean debug;
+	
+	private int version;
 
 	private StringBuilder buffer;	// console (output) buffer
 	private int cur_line_len;		// the current line length
 	private int lines;				// number of lines buffered
+	private boolean buffer_mode;	// word wrap active? (7.2)
 	private String more_prompt;		// More prompt
 	
 	/**
@@ -68,6 +70,7 @@ public class LeafpileGUI extends JFrame implements IUI {
 		// setup buffer
 		buffer = new StringBuilder();
 		lines = 0;
+		buffer_mode = true;
 		cur_line_len = 0;
 		more_prompt = "<More> Press any key to continue.";
 
@@ -104,8 +107,9 @@ public class LeafpileGUI extends JFrame implements IUI {
 		// failure to do this results in a null pointer exception
 		setBounds(0, 0, scr_width * text_adv, (scr_height * text_height) + 55);
 
-		setResizable(false);
-		setVisible(true);
+		setLocationRelativeTo(null);	// center window
+		setResizable(false);			// don't allow resizing
+		setVisible(true);				// make window visible
 
 	}
 
@@ -119,7 +123,7 @@ public class LeafpileGUI extends JFrame implements IUI {
 		zmachine.setStory(fn);
 		
 		// get the story version
-		int version = zmachine.memory().getVersion();
+		version = zmachine.memory().getVersion();
 		
 		// Get the screen model for this story and init
 		// the fame console.
@@ -227,7 +231,13 @@ public class LeafpileGUI extends JFrame implements IUI {
 	 */
 	@Override
 	public void flush_buf() {
-		EventQueue.invokeLater(new EventDispatcher(buffer.toString(), false));
+		System.out.println(buffer.length() + " chars ~~~" + buffer.toString() + "~~~");
+		if (buffer.length() == 0) {
+			System.out.println("(nothing to flush; empty buffer)\n");
+			lines = 0;
+			return;
+		}
+		console.write_lines(buffer.toString());
 		buffer.delete(0, buffer.length());
 		// reset lines
 		lines = 0;
@@ -240,6 +250,19 @@ public class LeafpileGUI extends JFrame implements IUI {
 	@Override
 	public void debug(String string) {
 
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.michaelzanussi.leafpile.ui.IUI#setBufferMode(boolean)
+	 */
+	@Override
+	public void setBufferMode(boolean buffer_mode) {
+		// Buffering is always on in Versions 1 to 3.
+		if (version < 4) {
+			this.buffer_mode = true;
+		} else {
+			this.buffer_mode = buffer_mode;
+		}
 	}
 
 	/**
@@ -262,9 +285,13 @@ public class LeafpileGUI extends JFrame implements IUI {
 			// Wrap word to next line if required, that is,
 			// if adding new word to current line would
 			// exceed the screen width. If it does, just
-			// crlf first.
-			if (cur_line_len + word_buf.length() > scr_width) {
-				crlf();
+			// crlf first. Occurs only if buffer_mode is
+			// active (via BUFFER_MODE opcode).
+			if (cur_line_len + word_buf.length() > console.getCurrentWindow().getWindow().width) {
+				if (buffer_mode) {
+System.out.println("<-- word wrap occurred");
+					crlf();
+				}
 			}
 
 			// Append word to buffer then update current line length.
@@ -297,7 +324,7 @@ public class LeafpileGUI extends JFrame implements IUI {
 		// zm.getLogger().debug(" Lines out = " + lines + ", cur_line_len is
 		// reset to " + cur_line_len);
 		// Check if More is required.
-		if (lines == scr_height - 2) {
+		if (lines == console.getCurrentWindow().getWindow().height - 1) {
 			buffer.append(more_prompt);
 			flush_buf();
 			console.wait_for_key();
@@ -312,62 +339,11 @@ public class LeafpileGUI extends JFrame implements IUI {
 		for (int i = 0; i < more_prompt.length(); i++) {
 			buffer.append('\b');
 		}
-		EventQueue.invokeLater(new EventDispatcher(buffer.toString(), true));
+		console.erase_chars(buffer.toString());
 		buffer.delete(0, buffer.length());
 		// zm.getLogger().debug(" More prompt erased.");
 	}
 
-	/**
-	 * AWT thread event dispatcher provided for console output.
-	 */
-	private class EventDispatcher implements Runnable {
-
-		private String data;
-		private boolean erase;
-
-		public EventDispatcher(String data, boolean erase) {
-			this.data = data;
-			this.erase = erase;
-		}
-
-		/* (non-Javadoc)
-		 * @see java.lang.Runnable#run()
-		 */
-		@Override
-		public void run() {
-			if (erase) {
-				console.erase_chars(data);
-				//console.show_cursor();
-			} else {
-				console.write_lines(data);
-				//console.show_cursor();
-			}
-			// if show cursor, then 
-			// 	console.show_cursor();
-			// alternatively, console.show_cursor() as
-			// above, but need to erase the old cursor
-			// first
-		}
-
-	}
-
-	/**
-	 * 
-	 */
-/*	public void setScreenModel() {
-		
-		// setup a factory, get the screen model for this story and init
-		Factory factory = new Factory(zmachine);
-		console = factory.createConsole(scr_width, scr_height, font);
-		console.init();
-		
-		// add to container, add listener
-		add(console);
-		pack();
-		addKeyListener(console);
-		
-	}*/
-	
 	/* (non-Javadoc)
 	 * @see com.michaelzanussi.leafpile.ui.IUI#hasSplitScreen()
 	 */

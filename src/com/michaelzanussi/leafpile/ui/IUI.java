@@ -130,4 +130,11 @@ public interface IUI {
 	 */
 	public void set_cursor(int line, int column, int window);
 	
+	/**
+	 * Sets the current buffer mode. (7.2)
+	 * 
+	 * @param buffer_mode true if buffer mode on; otherwise, false.
+	 */
+	public void setBufferMode(boolean buffer_mode);
+	
 }

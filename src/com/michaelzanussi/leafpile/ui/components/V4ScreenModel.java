@@ -36,20 +36,19 @@ public class V4ScreenModel extends Console {
 		// letters which can be typed, minus 1. Adjust
 		// buffer accordingly. See p. 95.
 		setAdjustBufferSize(true);
-		// Status bar is 1 row high and sits at top of panel.
-		setStatusBar(new Window(0, 0, getScreenWidth(), 1));
-		// Upper window definition. Initially 0 rows high. 
-		setUpperWindow(new Window(0, 1, getScreenWidth(), 0));
+		// Upper window definition. Initial height of 0. (8.7.3.3)
+		setUpperWindow(new Window(0, 0, getScreenWidth(), 0));
 		// Lower window definition, where game play occurs.
-		setLowerWindow(new Window(0, 1, getScreenWidth(), getScreenHeight() - 1));
-		// Set default window to the lower window.
+		setLowerWindow(new Window(0, 0, getScreenWidth(), getScreenHeight()));
+		// TODO: handle version 5 cursor
+		getLowerWindow().setCursor(0, getScreenHeight() - 1);
+		// Set default window to the lower window. (8.7.3.3)
 		setCurrentWindow(getLowerWindow());
 		// With windows set, call the superclass init() method.
 		super.init();
 		// Clear the windows.
-		wipe(getStatusBar(), getFgColor());
-		wipe(getUpperWindow(), getBgColor());
-		wipe(getLowerWindow(), getBgColor());
+		wipe(getUpperWindow(), getUpperBgColor());	// (8.7.3.3)
+		wipe(getLowerWindow(), getLowerBgColor());	// (8.7.3.3)
 	}
 	
     /* (non-Javadoc)
@@ -57,19 +56,27 @@ public class V4ScreenModel extends Console {
      */
 	@Override
     public void erase_window(int window) {
-    	
-		if (window == -1) {			// unsplit then clear
-			setUpperWindow(new Window(0, 1, getScreenWidth(), 0));
-			setLowerWindow(new Window(0, 1, getScreenWidth(), getScreenHeight() - 1));
-			wipe(getUpperWindow(), getBgColor());
-			wipe(getLowerWindow(), getBgColor());
+
+		if (window == -1) {
+			// Erasing window -1 clears the whole screen to the background colour of the
+			// lower screen, collapses the upper window to height 0, moves the cursor of
+			// the lower screen to the bottom left (in Version 4) or top left (in Version 5
+			// and later) and selects the lower screen. The same operation should happen at
+			// the start of the game. (8.7.3.3)
+			wipe(getUpperWindow(), getUpperBgColor());
+			wipe(getLowerWindow(), getLowerBgColor());
+			setUpperWindow(new Window(0, 0, getScreenWidth(), 0));
+			setLowerWindow(new Window(0, 0, getScreenWidth(), getScreenHeight()));
+			// TODO: handle version 5 cursor
+			getLowerWindow().setCursor(0, getScreenHeight() - 1);
+			setCurrentWindow(getLowerWindow());
 		} else if (window == -2) {	// clear the screen
 			Window uw = getUpperWindow();
 			uw.setCursor(0, 0);
-			wipe(uw, getBgColor());
+			wipe(uw, getUpperBgColor());
 			Window lw = getLowerWindow();
 			lw.setCursor(0, 0);
-			wipe(lw, getBgColor());
+			wipe(lw, getLowerBgColor());
 		} else {					// erase window to background color
 			assert(false):"implement details erase_window, reset cursor";
 		}
@@ -81,8 +88,39 @@ public class V4ScreenModel extends Console {
      */
 	@Override
     public void split_window(int lines) {
-		setUpperWindow(new Window(0, 1, getScreenWidth(), lines));
-		setLowerWindow(new Window(0, lines + 1, getScreenWidth(), getScreenHeight() - lines - 1));
+		
+		// Get current cursor positions before splitting the window.
+		Point uwc = getUpperWindow().getCursor();	// current upper window's cursor
+		Point lwc = getLowerWindow().getCursor();	// current lower window's cursor
+
+		// If current window is upper window, splitting is not allowed.
+		// Leave the cursor where it is if the cursor is still inside the 
+		// new upper window, and otherwise moving the cursor back to the
+		// top left. (8.7.1.1.1) 
+		if (getCurrentWindow() == getUpperWindow()) {
+			if (uwc.y >= lines) {
+				getUpperWindow().setCursor(0, 0);
+			}
+			return;
+		}
+		
+		// Split the window.
+		setUpperWindow(new Window(0, 0, getScreenWidth(), lines));
+		setLowerWindow(new Window(0, lines, getScreenWidth(), getScreenHeight() - lines));
+		
+		// If cursor is no longer inside the upper window, reset to top left. (8.7.2.1.1)
+		if (uwc.y >= lines) {
+			getUpperWindow().setCursor(0, 0);
+		}
+		
+		// For Version 4, the lower window's cursor is always on the bottom 
+		// screen line. (8.7.2.2) Maintain x position, but reset y to the 
+		// bottom line.
+		// TODO: reposition cursor for Version 5
+		getLowerWindow().setCursor(lwc.x, getScreenHeight() - lines - 1);
+
+		// Reset the current window.
+		setCurrentWindow(getLowerWindow());
     }
 
 	/* (non-Javadoc)
@@ -93,6 +131,7 @@ public class V4ScreenModel extends Console {
 		if (window == 0) {
 			setCurrentWindow(getLowerWindow());
 		} else if (window == 1) {
+			getUpperWindow().setCursor(0, 0);	// (8.7.2)
 			setCurrentWindow(getUpperWindow());
 		} else {
 			assert(false) : "unsupported window " + window;
@@ -105,8 +144,7 @@ public class V4ScreenModel extends Console {
 	@Override
 	public void set_cursor(int line, int column, int window) {
 		Window cw = getCurrentWindow();
-		Point origin = cw.getOrigin();
-		cw.setCursor(origin.x + line - 1, origin.y + column - 1);
+		cw.setCursor(cw.getWindow().x + line - 1, cw.getWindow().y + column - 1);
 	}
 
 }

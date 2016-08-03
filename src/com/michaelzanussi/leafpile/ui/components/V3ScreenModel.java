@@ -45,7 +45,7 @@ public class V3ScreenModel extends Console {
 		super.init();
 		// Clear the windows.
 		wipe(getStatusBar(), getFgColor());
-		wipe(getLowerWindow(), getBgColor());
+		wipe(getLowerWindow(), getLowerBgColor());
 	}
 	
     /* (non-Javadoc)
@@ -63,8 +63,8 @@ public class V3ScreenModel extends Console {
     public void split_window(int lines) {
 		setUpperWindow(new Window(0, 1, getScreenWidth(), lines));
 		setLowerWindow(new Window(0, lines + 1, getScreenWidth(), getScreenHeight() - lines - 1));
-		wipe(getUpperWindow(), getBgColor());
-		wipe(getLowerWindow(), getBgColor());
+		wipe(getUpperWindow(), getUpperBgColor());
+		wipe(getLowerWindow(), getLowerBgColor());
     }
 
 	/* (non-Javadoc)

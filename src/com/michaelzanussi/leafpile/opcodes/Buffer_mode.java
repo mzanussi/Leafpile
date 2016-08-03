@@ -43,8 +43,9 @@ public class Buffer_mode extends AbstractOpcode {
 			System.out.println();
 		}
 		
-		// Currently, all output is buffered, and unless it becomes
-		// absolutely necessary, this will not change. So do nothing.
+		// Flushing the current buffer then set buffer_mode.
+		zmachine.ui().flush_buf();
+		zmachine.ui().setBufferMode(flag == 1 ? true : false);
 		
 	}
 	

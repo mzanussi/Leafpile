@@ -39,6 +39,7 @@ public class Set_window extends AbstractOpcode {
 			System.out.println();
 		}
 		
+		zmachine.ui().flush_buf();
 		zmachine.ui().set_window(window);
 		
 	}

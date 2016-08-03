@@ -141,7 +141,7 @@ public class Zmachine extends Thread {
 		while (true) {
 			counter++;
 			System.out.println("+++++ NEW INSTRUCTION +++++ " + counter);
-			if (current.getPC() == 64977) {	// debug only
+			if (current.getPC() == 66072) {	// debug only
 				System.out.print("");
 			}
 			Instruction instruction = factory.createInstruction();

@@ -51,6 +51,7 @@ public class Set_cursor extends AbstractOpcode {
 			System.out.println();
 		}
 		
+		zmachine.ui().flush_buf();
 		zmachine.ui().set_cursor(line, column, window);
 		
 	}

@@ -52,6 +52,7 @@ public class Split_window extends AbstractOpcode {
 			System.out.println();
 		}
 		
+		zmachine.ui().flush_buf();
 		zmachine.ui().split_window(lines);
 		
 	}

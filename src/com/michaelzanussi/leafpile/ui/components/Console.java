@@ -22,10 +22,10 @@ import javax.swing.JPanel;
  */
 public abstract class Console extends JPanel implements KeyListener {
 
-	private static final Color C64_BLUE = new Color(0, 110, 192);
-	private static final Color C64_WHITE = new Color(216, 216, 216);
-	//private static final Color C64_BLACK = new Color(0, 0, 0);
-	//private static final Color C64_GREEN = new Color(0, 192, 0);
+	protected static final Color C64_BLUE = new Color(0, 110, 192);
+	protected static final Color C64_WHITE = new Color(216, 216, 216);
+	protected static final Color C64_BLACK = new Color(0, 0, 0);
+	protected static final Color C64_GREEN = new Color(0, 192, 0);
 	
 	// Screen dimensions.
 	private int scr_height;
@@ -147,6 +147,8 @@ public abstract class Console extends JPanel implements KeyListener {
 			osg.setColor(col);
 			// Fill it.
 			osg.fillRect(r.x, r.y, r.width, r.height);
+			// Repaint the window.
+			repaint();
 		}
 	}
 	
@@ -197,6 +199,11 @@ public abstract class Console extends JPanel implements KeyListener {
 	
     /**
      * Scroll the window up one line.
+     * 
+     * TODO: The upper window should never be scrolled: it is legal for a
+     * character to be printed on the bottom right portion of the upper
+     * window (but the position of the cursor after this operation is 
+     * undefined: the author suggests it stay put. (8.7.3.1)
      */
     private void scroll() {
     	
@@ -204,23 +211,23 @@ public abstract class Console extends JPanel implements KeyListener {
     	osg.setColor(bg_color);
     	
     	// Locate the origin of this window.
-    	int ox = cwnd.getOrigin().x;
-    	int oy = cwnd.getOrigin().y + 1; 	// begin with line below top line
+    	int ox = cwnd.getWindow().x;
+    	int oy = cwnd.getWindow().y + 1;
     	
     	// Copy the area to be scrolled.
-    	int x = ox * text_adv;							// starting column * text width
-    	int y = oy * text_height;						// starting row * text height
-    	int width = scr_width * text_adv;				// width of area to copy
-    	int height = (scr_height * text_height) - y;	// height of area to copy
-    	int dx = 0;										// don't move left or right
-    	int dy = -text_height;							// move up one row
+    	int x = ox * text_adv;									// starting column * text width
+    	int y = oy * text_height;								// starting row * text height
+    	int width = cwnd.getWindow().width * text_adv;			// width of area to copy
+    	int height = (cwnd.getWindow().height * text_height);	// height of area to copy
+    	int dx = 0;												// don't move left or right
+    	int dy = -text_height;									// move up one row
 		osg.copyArea(x, y, width, height, dx, dy);
 		
 		// Wipe out the line.
-		x = cx * text_adv;				// typically cx will be 0
-		y = cy * text_height;			// typically cy will be scr_height - 1
-		width = scr_width * text_adv;	// width of entire window will be erased
-		height = text_height;			// erase one row only
+		x = (cx + cwnd.getWindow().x) * text_adv;		// typically cx will be 0
+		y = (cy + cwnd.getWindow().y) * text_height;	// typically cy will be scr_height - 1
+		width = cwnd.getWindow().width * text_adv;		// width of entire window will be erased
+		height = text_height;							// erase one row only
     	osg.fillRect(x, y, width, height);
     	
     }
@@ -249,16 +256,36 @@ public abstract class Console extends JPanel implements KeyListener {
     	cx = cwnd.getCursor().x;
     	cy = cwnd.getCursor().y;
 
-    	String [] lines = null;
-    	lines = out.split("\n", -1);
-
-        int j = lines.length;
-    	for (int i = 0; i < lines.length - 1; i++) {
-    		console_write(lines[i]);
-    		crlf();
+    	StringBuilder cur_buf = new StringBuilder();
+    	
+    	// Cycle through the out string and output its contents.
+    	for (int i = 0; i < out.length(); i++) {
+    		// Get the next char.
+    		char ch = out.charAt(i);
+    		// Check for newline.
+    		if (ch == '\n') {
+    			// If the current buffer is not empty, write
+    			// buffer to the console, then delete the
+    			// contents of the buffer.
+    			if (cur_buf.length() > 0) {
+    				console_write(cur_buf.toString());
+    				cur_buf.delete(0, cur_buf.length());
+    			}
+    			// Reset the cursor.
+    			crlf();
+    		} else {
+    			// Add to the current buffer.
+    			cur_buf.append(ch);
+    		}
     	}
-    	console_write(lines[j-1]);
-    	cx += lines[j-1].length();
+    	
+    	// Anything left in the buffer? If so, write the buffer
+    	// contents to the console and advance the cursor.
+    	if (cur_buf.length() > 0) {
+    		console_write(cur_buf.toString());
+    		cx += cur_buf.length();
+    	}
+    	
 		cwnd.setCursor(cx, cy);
 		
     }
@@ -329,6 +356,11 @@ public abstract class Console extends JPanel implements KeyListener {
     private void crlf() {
 		cx = 0;
 		cy++;
+		// TODO: if cursor off screen, scroll up a line.
+		if (cy == cwnd.getWindow().height) {
+			cy--;
+			scroll();
+		}
 		cwnd.setCursor(cx, cy);
     }
     
@@ -344,17 +376,21 @@ public abstract class Console extends JPanel implements KeyListener {
     	// If so, scroll up one line before writing the text 
     	// by setting cursor to bottom line of window and 
     	// then scrolling up a single line.
-		if (cy == scr_height) {
+		if (cy == cwnd.getWindow().height) {
 			cy--;
 			scroll();
 		}
 		
+		// Calculate cursor position with respect to console.
+		int ox = cx + cwnd.getWindow().x;
+		int oy = cy + cwnd.getWindow().y;
+		
 		//zm.getLogger().debug("(cx,cy) = (" + cx + "," + cy + ")");
-		System.out.println("(cx,cy) = (" + cx + "," + cy + ")");
+		System.out.println("(cx,cy)=(" + cx + "," + cy + ")  (ox,oy)=(" + ox + "," + oy + ")  string=\"" + str + "\"");
 		
     	// Calculate the absolute cursor position. 
-    	int ax = cx * text_adv;
-    	int ay = cy * text_height;
+    	int ax = ox * text_adv;
+    	int ay = oy * text_height;
 
     	// If user is trying to backspace, save the current
     	// background color then set it to new background.
@@ -411,12 +447,21 @@ System.out.println("FONT STYLE: " + font.getStyle());
     }
     
     /**
-     * Returns the background color.
+     * Returns the lower window background color.
      * 
-     * @return the background color.
+     * @return the lower window background color.
      */
-    protected Color getBgColor() {
-    	return bg_color;
+    protected Color getLowerBgColor() {
+    	return C64_BLUE;
+    }
+    
+    /**
+     * Returns the upper window background color.
+     * 
+     * @return the upper window background color.
+     */
+    protected Color getUpperBgColor() {
+    	return C64_GREEN;
     }
     
     /**
@@ -568,7 +613,7 @@ System.out.println("FONT STYLE: " + font.getStyle());
      * 
      * @return the current window.
      */
-    protected Window getCurrentWindow() {
+    public Window getCurrentWindow() {
     	return cwnd;
     }
     
