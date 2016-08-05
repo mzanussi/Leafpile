@@ -11,6 +11,10 @@ import com.michaelzanussi.leafpile.zscii.V3ZSCII;
  */
 public class V4Dictionary extends Dictionary {
 
+	// Encoded text of word, contains 9 z-chars
+	// over 6 bytes, or 3 words. (13.4)
+	private static final int ENCODED_WORDS = 3;
+
 	public V4Dictionary(Memory memory) {
 		super(memory);
 		
@@ -19,14 +23,14 @@ public class V4Dictionary extends Dictionary {
 		zscii = new V3ZSCII(memory);
 		
 		// encoded text of word
-		int[] encoded_word = new int[3];
+		int[] encoded_word = new int[ENCODED_WORDS];
 		
-		int msb, lsb;
-		
+		// extract each word in dictionary and add to Map.
 		for (int i = 0; i < num_entries; i++) {
-			int base_address = address;
-			msb = memory.getByte(address++);
-			lsb = memory.getByte(address++);
+			int entry_address = address;
+			// build the encoded word
+			int msb = memory.getByte(address++);
+			int lsb = memory.getByte(address++);
 			encoded_word[0] = (msb << 8) | lsb;
 			msb = memory.getByte(address++);
 			lsb = memory.getByte(address++);
@@ -34,15 +38,15 @@ public class V4Dictionary extends Dictionary {
 			msb = memory.getByte(address++);
 			lsb = memory.getByte(address++);
 			encoded_word[2] = (msb << 8) | lsb;
+			// decode the encoded word
 			String zstr = zscii.decode(encoded_word);
-			// SKIP bytes of data (entry_length-4 bytes)
-			int data_len = entry_length - 4;
-			address += data_len; 
-			// store word it off
-			Integer ba = dictionary.put(zstr, base_address);
+			// set next entry address
+			address = entry_address + entry_length;
+			// store word off
+			Integer ba = dictionary.put(zstr, entry_address);
 			if (ba != null) {
 				// should not happen
-				assert(ba==null) : "duplicate dictionary entry found";
+				assert(false) : "duplicate dictionary entry found";
 			}
 		}
 		

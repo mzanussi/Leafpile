@@ -13,6 +13,8 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
+import com.michaelzanussi.leafpile.zmachine.Zmachine;
+
 /**
  * This class provides a skeletal implementation of the <code>Console</code> 
  * interface, to minimize the effort required to implement this interface.
@@ -27,12 +29,15 @@ public abstract class Console extends JPanel implements KeyListener {
 	protected static final Color C64_BLACK = new Color(0, 0, 0);
 	protected static final Color C64_GREEN = new Color(0, 192, 0);
 	
+	protected Zmachine zmachine;
+	
 	// Screen dimensions.
 	private int scr_height;
 	private int scr_width;
 	
 	// Text defs.
 	private Font font;
+	private Font default_font;			// the default font
 	private FontMetrics metrics;
 	private Color bg_color;
 	private Color fg_color;
@@ -54,6 +59,7 @@ public abstract class Console extends JPanel implements KeyListener {
 	private int text_height;			// text height (character height)
 	private int text_adv;				// text advance (character width)
 	private int text_ascent;
+	private int text_style;
 	
     private Graphics2D osg;				// off-screen graphics object
 	private BufferedImage img;			// the off-screen image
@@ -77,10 +83,12 @@ public abstract class Console extends JPanel implements KeyListener {
 	 * @param scr_height	the screen height in chars
 	 * @param font			the font for the screen
 	 */
-	public Console(int scr_width, int scr_height, Font font) {
+	public Console(Zmachine zmachine, int scr_width, int scr_height, Font font) {
+		this.zmachine = zmachine;
 		this.scr_width = scr_width;
 		this.scr_height = scr_height;
 		this.font = font;
+		default_font = font;
 		// Set windows.
 		statusBar = null;
 		upperWindow = null;
@@ -407,16 +415,46 @@ public abstract class Console extends JPanel implements KeyListener {
     	}
     	
     	// Set the font and color.
-    	osg.setFont(font);
-System.out.println("FONT STYLE: " + font.getStyle());
-    	osg.setColor(fg_color);
-
-    	// Set to the background color to clear the window.
-    	// TODO: if reverse mode, use reverse bg color
-    	//osg.setColor(bg_color);
-    	// TODO: if reverse mode Clear the text area prior to printing text.
-    	//osg.fillRect(ax, ay, metrics.stringWidth(str), text_height);
+    	switch (text_style) {
+    	case 0:	// default
+    		font = default_font;
+    		osg.setFont(font);
+    		osg.setColor(fg_color);
+    		osg.setBackground(bg_color);
+    		break;
+    	case 1: // reverse
+        	// Set the rectangle color to the fg color.
+    		osg.setColor(fg_color);
+    		// Fill the rectangle.
+    		osg.fillRect(ax, ay, metrics.stringWidth(str), text_height);
+    		// Reset font.
+    		font = default_font;
+    		osg.setFont(font);
+    		// Set the text color to the bg color.
+    		osg.setColor(bg_color);
+    		break;
+    	case 2:	// bold
+    		font = new Font("Courier New Bold", Font.BOLD, 18);
+    		osg.setFont(font);
+    		osg.setColor(fg_color);
+    		osg.setBackground(bg_color);
+    		break;
+    	case 4:	// italic
+    		font = new Font("Courier New Bold", Font.ITALIC, 18);
+    		osg.setFont(font);
+    		osg.setColor(fg_color);
+    		osg.setBackground(bg_color);
+    		break;
+    	case 8:	// fixed pitch
+    		font = default_font;
+    		osg.setFont(font);
+    		osg.setColor(fg_color);
+    		osg.setBackground(bg_color);
+    		break;
+    	}
     	
+//System.out.println("FONT STYLE: " + font.getStyle());
+
     	// Adjust using the text ascent so the text 
     	// won't get cut-off on the first line.
     	ay += text_ascent;
@@ -461,7 +499,7 @@ System.out.println("FONT STYLE: " + font.getStyle());
      * @return the upper window background color.
      */
     protected Color getUpperBgColor() {
-    	return C64_GREEN;
+    	return C64_BLUE;
     }
     
     /**
@@ -561,6 +599,15 @@ System.out.println("FONT STYLE: " + font.getStyle());
      */
     public boolean hasTimedInput() {
     	return timedInput;
+    }
+    
+    /**
+     * The text style.
+     * 
+     * @param text_style the text style
+     */
+    public void set_text_style(int text_style) {
+    	this.text_style = text_style;
     }
     
     /**

@@ -43,8 +43,9 @@ public class Set_text_style extends AbstractOpcode {
 			System.out.println();
 		}
 		
-		System.err.println("complete set_text_style (" + style + ")");
 		zmachine.ui().flush_buf();
+		zmachine.ui().set_text_style(style);
+		// TODO: set memory 0x26, 0x27
 		
 	}
 		

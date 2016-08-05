@@ -24,26 +24,37 @@ public abstract class Dictionary {
 	
 	public Dictionary(Memory memory) {
 
-		// Dictionary base address
+		// Dictionary base address (13.1)
 		address = memory.getDictionaryBase();
 		
-		// number of word separators
+		// number of word separators (13.2)
 		int n = memory.getByte(address++);
 
-		// list of keyboard input codes (word separators)
+		// list of keyboard input codes (word separators) (13.2)
 		word_separators = new ArrayList<Character>();
 		for (int i = 0; i < n; i++) {
 			char word_separator = (char)memory.getByte(address++);
 			word_separators.add(word_separator);
 		}
 		
-		// entry length
+		// entry length (13.2)
 		entry_length = memory.getByte(address++);
 		
-		// number of entries
+		// number of entries (13.2)
 		num_entries = memory.getWord(address);
 		address += 2;
 		
 	}
 	
+	/**
+	 * Returns the address of the word in the dictionary.
+	 * 
+	 * @param word The word to locate in the dictionary.
+	 * @return the address of the word in the dictionary.
+	 */
+	public int lookup(String word) {
+		Integer addr = dictionary.get(word);
+		return (addr != null ? addr.intValue() : 0);
+	}
+
 }

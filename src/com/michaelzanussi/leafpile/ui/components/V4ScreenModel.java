@@ -3,6 +3,8 @@ package com.michaelzanussi.leafpile.ui.components;
 import java.awt.Font;
 import java.awt.Point;
 
+import com.michaelzanussi.leafpile.zmachine.Zmachine;
+
 /**
  * This class provides a concrete implementation of the <code>Console</code> 
  * interface for versions 4 and 5 screen models.
@@ -19,8 +21,8 @@ public class V4ScreenModel extends Console {
 	 * @param height the height of the screen, in units.
 	 * @param font the initial font.
 	 */
-	public V4ScreenModel(int width, int height, Font font) {
-		super(width, height, font);
+	public V4ScreenModel(Zmachine zmachine, int width, int height, Font font) {
+		super(zmachine, width, height, font);
 		bold = true;
 		italic = true;
 		fixedSpaceAvail = true;
@@ -144,7 +146,7 @@ public class V4ScreenModel extends Console {
 	@Override
 	public void set_cursor(int line, int column, int window) {
 		Window cw = getCurrentWindow();
-		cw.setCursor(cw.getWindow().x + line - 1, cw.getWindow().y + column - 1);
+		cw.setCursor(cw.getWindow().x + column - 1, cw.getWindow().y + line - 1);
 	}
 
 }

@@ -4,6 +4,9 @@ import java.awt.Font;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.michaelzanussi.leafpile.dictionary.Dictionary;
+import com.michaelzanussi.leafpile.dictionary.V1Dictionary;
+import com.michaelzanussi.leafpile.dictionary.V4Dictionary;
 import com.michaelzanussi.leafpile.instructions.Instruction;
 import com.michaelzanussi.leafpile.instructions.Instruction.Opcount;
 import com.michaelzanussi.leafpile.objecttable.ObjectTableObject;
@@ -34,8 +37,10 @@ import com.michaelzanussi.leafpile.opcodes.Jump;
 import com.michaelzanussi.leafpile.opcodes.Jz;
 import com.michaelzanussi.leafpile.opcodes.Loadb;
 import com.michaelzanussi.leafpile.opcodes.Loadw;
+import com.michaelzanussi.leafpile.opcodes.Mul;
 import com.michaelzanussi.leafpile.opcodes.New_line;
 import com.michaelzanussi.leafpile.opcodes.Opcode;
+import com.michaelzanussi.leafpile.opcodes.Output_stream;
 import com.michaelzanussi.leafpile.opcodes.Print;
 import com.michaelzanussi.leafpile.opcodes.Print_char;
 import com.michaelzanussi.leafpile.opcodes.Print_num;
@@ -47,15 +52,18 @@ import com.michaelzanussi.leafpile.opcodes.Put_prop;
 import com.michaelzanussi.leafpile.opcodes.Read_char;
 import com.michaelzanussi.leafpile.opcodes.Ret;
 import com.michaelzanussi.leafpile.opcodes.Rtrue;
+import com.michaelzanussi.leafpile.opcodes.Scan_table;
 import com.michaelzanussi.leafpile.opcodes.Set_attr;
 import com.michaelzanussi.leafpile.opcodes.Set_cursor;
 import com.michaelzanussi.leafpile.opcodes.Set_text_style;
 import com.michaelzanussi.leafpile.opcodes.Set_window;
 import com.michaelzanussi.leafpile.opcodes.Split_window;
+import com.michaelzanussi.leafpile.opcodes.Sread;
 import com.michaelzanussi.leafpile.opcodes.Store;
 import com.michaelzanussi.leafpile.opcodes.Storeb;
 import com.michaelzanussi.leafpile.opcodes.Storew;
 import com.michaelzanussi.leafpile.opcodes.Sub;
+import com.michaelzanussi.leafpile.opcodes.Test;
 import com.michaelzanussi.leafpile.opcodes.Test_attr;
 import com.michaelzanussi.leafpile.ui.components.Console;
 import com.michaelzanussi.leafpile.ui.components.V1ScreenModel;
@@ -107,11 +115,11 @@ public class Factory {
 	 */
 	public Console createConsole(int scr_width, int scr_height, Font font) {
 		if (version == 1 || version == 2) {
-			return new V1ScreenModel(scr_width, scr_height, font);			
+			return new V1ScreenModel(zmachine, scr_width, scr_height, font);			
 		} else if (version == 3) {
-			return new V3ScreenModel(scr_width, scr_height, font);
+			return new V3ScreenModel(zmachine, scr_width, scr_height, font);
 		} else if (version == 4 || version ==5 ) {
-			return new V4ScreenModel(scr_width, scr_height, font);
+			return new V4ScreenModel(zmachine, scr_width, scr_height, font);
 		} else {
 			
 		}
@@ -123,6 +131,14 @@ public class Factory {
 			return new V1ZSCII(memory);
 		}
 		return new V3ZSCII(memory);
+	}
+	
+	public Dictionary createDictionary() {
+		if (version <= 3) {
+			return new V1Dictionary(memory);
+		} else {
+			return new V4Dictionary(memory);
+		}
 	}
 	
 	/**
@@ -247,10 +263,12 @@ public class Factory {
 				return new Jg(instruction);
 			case 0x04:
 				return new Dec_chk(instruction);
-//			case 0x05:
-//				return new Inc_chk(instruction);
+			case 0x05:
+				return new Inc_chk(instruction);
 			case 0x06:
 				return new Jin(instruction);
+			case 0x07:
+				return new Test(instruction);
 //			case 0x09:
 //				return new And(instruction);
 			case 0x0a:
@@ -271,6 +289,8 @@ public class Factory {
 				return new Add(instruction);
 			case 0x15:
 				return new Sub(instruction);
+			case 0x16:
+				return new Mul(instruction);
 			case 0x17:
 				return new Div(instruction);
 			case 0x19:
@@ -293,6 +313,8 @@ public class Factory {
 				return new Storeb(instruction);
 //			case 0x03:
 //				return new Put_prop(instruction);
+			case 0x04:
+				return new Sread(instruction);
 			case 0x05:
 				return new Print_char(instruction);
 //			case 0x06:
@@ -313,8 +335,12 @@ public class Factory {
 				return new Set_text_style(instruction);
 			case 0x12:
 				return new Buffer_mode(instruction);
+			case 0x13:
+				return new Output_stream(instruction);
 			case 0x16:
 				return new Read_char(instruction);
+			case 0x17:
+				return new Scan_table(instruction);
 			default:
 				assert (false) : "unimplemented VAR opcode: 0x" + Integer.toHexString(opcode_no);
 			}

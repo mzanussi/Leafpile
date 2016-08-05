@@ -45,6 +45,13 @@ public class LeafpileGUI extends JFrame implements IUI {
 	private boolean buffer_mode;	// word wrap active? (7.2)
 	private String more_prompt;		// More prompt
 	
+	private int stream_table;		// address of stream table
+	private int cur_addr;			// the current address within stream table
+	private boolean stream1;		// screen
+	private boolean stream2;		// file
+	private boolean stream3;		// memory
+	private boolean stream4;		// script
+	
 	/**
 	 * Because: It is strongly recommended that all serializable classes
 	 * explicitly declare serialVersionUID values.
@@ -73,6 +80,14 @@ public class LeafpileGUI extends JFrame implements IUI {
 		buffer_mode = true;
 		cur_line_len = 0;
 		more_prompt = "<More> Press any key to continue.";
+		
+		// initial streams setup
+		stream1 = true;
+		stream2 = false;
+		stream3 = false;
+		stream4 = false;
+		stream_table = 0;
+		cur_addr = 0;
 
 		//
 		// THE APPLICATION WINDOW
@@ -92,7 +107,7 @@ public class LeafpileGUI extends JFrame implements IUI {
 		setJMenuBar(menu);
 
 		// duplicated code from Console.java
-		font = new Font("Courier", Font.PLAIN, 18);
+		font = new Font("Courier New", Font.PLAIN, 18);
 		FontMetrics metrics = getFontMetrics(font);
 		// Get the height of a line of text in this font and render context.
 		int text_height = metrics.getHeight();
@@ -194,6 +209,42 @@ public class LeafpileGUI extends JFrame implements IUI {
 	 */
 	@Override
 	public void write(String data) {
+		
+		// Output stream 3 writes to a table in dynamic memory.
+		// When the stream is selected, the table may have any
+		// contents (even the initial 'size' word will be 
+		// ignored by the interpreter). While the stream is
+		// selected, the table's contents are unspecified (and
+		// a game cannot safely read or write to it). When the
+		// stream is deselected, the initial word of the table
+		// holds the number of characters printed and subsequent
+		// bytes hold those characters. (NOTE: # of chars printed
+		// and the chars are actually updated here, not when the
+		// stream is deselected.) Similarly, in Version 6, the
+		// total width of printing (in units) will then be
+		// stored in the word at $30 in the header. (7.1.2.1)
+		// Output stream 3 is unusual in that, while it is 
+		// selected, no text is sent to any other output streams
+		// which are selected. (However, they remain selected.)
+		// (7.1.2.2) Newlines are written to output stream 3 as
+		// ZSCII 13. (A game should never print_char the value
+		// 10, or any other value which is undefined as a ZSCII
+		// output code.) (7.1.2.2.1)
+		if (stream3) {
+			// write out data to memory
+			for (int i = 0; i < data.length(); i++) {
+				char ch = data.charAt(i);
+				zmachine.memory().setByte(cur_addr, ch);
+				cur_addr++;
+			}
+			// Get current character account and add to it length
+			// of current string, then update the character count.
+			int length = zmachine.memory().getWord(stream_table);
+			length += data.length();
+			zmachine.memory().setWord(stream_table, length);
+			// All done, return.
+			return;
+		}
 
 		// There may be a better way to do this, but since
 		// MOREs need to be handled, this is the easiest.
@@ -250,6 +301,70 @@ public class LeafpileGUI extends JFrame implements IUI {
 	@Override
 	public void debug(String string) {
 
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.michaelzanussi.leafpile.ui.IUI#getStreamTableAddress()
+	 */
+	@Override
+	public int getStreamTableAddress() {
+		return stream_table;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.michaelzanussi.leafpile.ui.IUI#setStreamTableAddress(int)
+	 */
+	@Override
+	public void setStreamTableAddress(int addr) {
+		stream_table = addr;
+		cur_addr = stream_table + 2;
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.michaelzanussi.leafpile.ui.IUI#isStreamSelected(int)
+	 */
+	@Override
+	public boolean isStreamSelected(int stream) {
+		switch (stream) {
+		case 1:
+			// In Versions 1 and 2, output stream 1 
+			// is always selected. (7.3)
+			if (version == 1 || version == 2) {
+				return true;
+			} else {
+				return stream1;
+			}
+		case 2:
+			return stream2;
+		case 3:
+			return stream3;
+		case 4:
+			return stream4;
+		}
+		return false;
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.michaelzanussi.leafpile.ui.IUI#setStream(int, boolean)
+	 */
+	public void setStream(int stream, boolean selected) {
+		// In Versions 1 and 2, stream 2 can be selected
+		// or deselected by the game, by setting or clearing
+		// bit 0 of 'Flags 2'. (7.3) In Versions 3 and later,
+		// all four output streams can be selected or deselected
+		// using the output_stream opcode. In addition,
+		// stream 2 can be selected or deselected by setting
+		// or clearing bit 0 of 'Flags 2'. (7.4)
+		switch (stream) {
+		case 1:
+			stream1 = selected;
+		case 2:
+			stream2 = selected;
+		case 3:
+			stream3 = selected;
+		case 4:
+			stream4 = selected;
+		}
 	}
 	
 	/* (non-Javadoc)
@@ -430,6 +545,14 @@ System.out.println("<-- word wrap occurred");
 	@Override
 	public void set_cursor(int line, int column, int window) {
 		console.set_cursor(line, column, window);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.michaelzanussi.leafpile.ui.IUI#setTextStyle(int)
+	 */
+	@Override
+	public void set_text_style(int style) {
+		console.set_text_style(style);
 	}
 
 	/**

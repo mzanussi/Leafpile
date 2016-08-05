@@ -137,4 +137,40 @@ public interface IUI {
 	 */
 	public void setBufferMode(boolean buffer_mode);
 	
+	/**
+	 * Get the memory address of the stream table.
+	 * 
+	 * @return stream table address
+	 */
+	public int getStreamTableAddress();
+	
+	/**
+	 * Set the memory address of the stream table.
+	 * 
+	 * @param addr stream table address
+	 */
+	public void setStreamTableAddress(int addr);
+	
+	/**
+	 * Is the specified stream selected?
+	 * 
+	 * @param stream the stream to test
+	 * @return true if selected, false if deselected
+	 */
+	public boolean isStreamSelected(int stream);
+	
+	/**
+	 * Set the specified stream as selected or deselected.
+	 * 
+	 * @param stream the stream to set
+	 * @param selected true if selected, false if deselected
+	 */
+	public void setStream(int stream, boolean selected);
+	
+	/**
+	 * Set the current text style.
+	 * 
+	 * @param style the current text style
+	 */
+	public void set_text_style(int style);
 }

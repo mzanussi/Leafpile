@@ -2,6 +2,8 @@ package com.michaelzanussi.leafpile.ui.components;
 
 import java.awt.Font;
 
+import com.michaelzanussi.leafpile.zmachine.Zmachine;
+
 /**
  * This class provides a concrete implementation of the <code>Console</code> 
  * interface for versions 1 and 2 screen models.
@@ -11,8 +13,8 @@ import java.awt.Font;
  */
 public class V1ScreenModel extends Console {
 
-	public V1ScreenModel(int width, int height, Font font) {
-		super(width, height, font);
+	public V1ScreenModel(Zmachine zmachine, int width, int height, Font font) {
+		super(zmachine, width, height, font);
 		noStatusLine = false;
 	}
 	
