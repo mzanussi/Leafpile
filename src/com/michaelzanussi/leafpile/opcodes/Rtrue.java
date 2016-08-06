@@ -36,7 +36,7 @@ public class Rtrue extends AbstractOpcode {
 			System.out.println();
 		}
 		
-		retuurn(1);
+		ret(1);
 		
 	}
 	

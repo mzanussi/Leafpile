@@ -4,25 +4,26 @@ import com.michaelzanussi.leafpile.instructions.Instruction;
 
 /**
  * This class provides a concrete implementation of the <code>Opcode</code> 
- * interface for Ret (return from current routine) instructions. See p. 97.
+ * interface for Ret_popped (pop stack and return) instructions. See p. 98.
  * 
- * ret value
+ * ret_popped
  * 
- * Returns from the current routine with the value given
+ * Pops top of stack and returns that. (This is equivalent to ret sp, but
+ * is one byte cheaper.)
  * 
- * @author <a href="mailto:iosdevx@gmail.com">Michael Zanussi</a>
- * @version 1.0 (12 May 2016) 
+ * @author <a href="mailto:admin@michaelzanussi.com">Michael Zanussi</a>
+ * @version 1.0 (5 August 2016)
  */
-public class Ret extends AbstractOpcode {
+public class Ret_popped extends AbstractOpcode {
 
 	/**
 	 * Single-arg constructor takes Instruction object as only arg.
 	 * 
 	 * @param instruction the instruction
 	 */
-	public Ret(Instruction instruction) {
+	public Ret_popped(Instruction instruction) {
 		super(instruction);
-		name = "ret";
+		name = "ret_popped";
 	}
 	
 	/* (non-Javadoc)
@@ -31,11 +32,11 @@ public class Ret extends AbstractOpcode {
 	@Override
 	public void exec() {
 		
-		// Retrieve the operand.
-		int value = operands.get(0);
+		// Pop the stack.
+		int value = current.getVariableValue(0);
 		
 		{
-			System.out.println("RET value:" + value);
+			System.out.println("RET_POPPED value:" + value);
 			System.out.println();
 		}
 		

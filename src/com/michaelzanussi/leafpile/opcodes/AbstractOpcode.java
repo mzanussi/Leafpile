@@ -69,10 +69,10 @@ public abstract class AbstractOpcode implements Opcode {
 			// An offset of 0 means return False from the current routine
 			// and 1 means return True from the current routine. (4.7.1)
 			if (offset == 0) {
-				retuurn(FALSE);
+				ret(FALSE);
 			}
 			else if (offset == 1) {
-				retuurn(TRUE);
+				ret(TRUE);
 			}
 			
 			// Calculate new program counter based on the offset. (4.7.2)
@@ -97,7 +97,7 @@ public abstract class AbstractOpcode implements Opcode {
 	 * 
 	 * @param retval
 	 */
-	protected void retuurn(int retval) {
+	protected void ret(int retval) {
 		// Try to pop the call stack.
 		Rous previous = zmachine.previousRoutine();
 		// Set the result value.

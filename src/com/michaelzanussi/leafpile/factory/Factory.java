@@ -51,6 +51,7 @@ import com.michaelzanussi.leafpile.opcodes.Push;
 import com.michaelzanussi.leafpile.opcodes.Put_prop;
 import com.michaelzanussi.leafpile.opcodes.Read_char;
 import com.michaelzanussi.leafpile.opcodes.Ret;
+import com.michaelzanussi.leafpile.opcodes.Ret_popped;
 import com.michaelzanussi.leafpile.opcodes.Rtrue;
 import com.michaelzanussi.leafpile.opcodes.Scan_table;
 import com.michaelzanussi.leafpile.opcodes.Set_attr;
@@ -221,6 +222,8 @@ public class Factory {
 				return new Rtrue(instruction);
 			case 0x02:
 				return new Print(instruction);
+			case 0x08:
+				return new Ret_popped(instruction);
 			case 0x0b:
 				return new New_line(instruction);
 			default:
@@ -269,8 +272,8 @@ public class Factory {
 				return new Jin(instruction);
 			case 0x07:
 				return new Test(instruction);
-//			case 0x09:
-//				return new And(instruction);
+			case 0x09:
+				return new And(instruction);
 			case 0x0a:
 				return new Test_attr(instruction);
 			case 0x0b:
@@ -319,8 +322,8 @@ public class Factory {
 				return new Print_char(instruction);
 //			case 0x06:
 //				return new Print_num(instruction);
-//			case 0x08:
-//				return new Push(instruction);
+			case 0x08:
+				return new Push(instruction);
 //			case 0x09:
 //				return new Pull(instruction);
 			case 0x0a:
