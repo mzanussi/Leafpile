@@ -3,6 +3,7 @@ package com.michaelzanussi.leafpile.zmachine;
 import java.io.File;
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.Random;
 
 import com.michaelzanussi.leafpile.factory.Factory;
 import com.michaelzanussi.leafpile.instructions.Instruction;
@@ -32,11 +33,14 @@ public class Zmachine extends Thread {
 	
 	private Factory factory;
 	
+	private Random random;
+	
 	// The user interface.
 	private IUI ui;
 	
 	public Zmachine(IUI ui) {
 		this.ui = ui;
+		random = new Random(System.currentTimeMillis());
 	}
 	
 	// getter
@@ -82,6 +86,25 @@ public class Zmachine extends Thread {
 		version = memory.getVersion();
 		// Also create the Factory
 		factory = new Factory(this);
+	}
+	
+	/**
+	 * Returns a pseudo-random number between 1 and range.
+	 * 
+	 * @param range the range
+	 * @return a pseudo-random number between 1 and range
+	 */
+	public int getRandom(int range) {
+		return random.nextInt(range) + 1;
+	}
+	
+	/**
+	 * Sets the random number generator seed.
+	 * 
+	 * @param seed the random number generator seed.
+	 */
+	public void setSeed(long seed) {
+		random.setSeed(seed);
 	}
 	
 	/* (non-Javadoc)
@@ -141,7 +164,7 @@ public class Zmachine extends Thread {
 		while (true) {
 			counter++;
 			System.out.println("+++++ NEW INSTRUCTION +++++ " + counter);
-			if (current.getPC() == 66092) {	// debug only
+			if (current.getPC() == 95274) {	// debug only
 				System.out.print("");
 			}
 			Instruction instruction = factory.createInstruction();

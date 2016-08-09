@@ -19,12 +19,15 @@ import com.michaelzanussi.leafpile.opcodes.Call;
 import com.michaelzanussi.leafpile.opcodes.Call_1s;
 import com.michaelzanussi.leafpile.opcodes.Call_2s;
 import com.michaelzanussi.leafpile.opcodes.Call_vs;
+import com.michaelzanussi.leafpile.opcodes.Clear_attr;
 import com.michaelzanussi.leafpile.opcodes.Dec_chk;
 import com.michaelzanussi.leafpile.opcodes.Div;
 import com.michaelzanussi.leafpile.opcodes.Erase_window;
 import com.michaelzanussi.leafpile.opcodes.Get_child;
 import com.michaelzanussi.leafpile.opcodes.Get_parent;
 import com.michaelzanussi.leafpile.opcodes.Get_prop;
+import com.michaelzanussi.leafpile.opcodes.Get_prop_addr;
+import com.michaelzanussi.leafpile.opcodes.Get_prop_len;
 import com.michaelzanussi.leafpile.opcodes.Get_sibling;
 import com.michaelzanussi.leafpile.opcodes.Inc;
 import com.michaelzanussi.leafpile.opcodes.Inc_chk;
@@ -46,12 +49,15 @@ import com.michaelzanussi.leafpile.opcodes.Print_char;
 import com.michaelzanussi.leafpile.opcodes.Print_num;
 import com.michaelzanussi.leafpile.opcodes.Print_obj;
 import com.michaelzanussi.leafpile.opcodes.Print_paddr;
+import com.michaelzanussi.leafpile.opcodes.Print_ret;
 import com.michaelzanussi.leafpile.opcodes.Pull;
 import com.michaelzanussi.leafpile.opcodes.Push;
 import com.michaelzanussi.leafpile.opcodes.Put_prop;
+import com.michaelzanussi.leafpile.opcodes.Random;
 import com.michaelzanussi.leafpile.opcodes.Read_char;
 import com.michaelzanussi.leafpile.opcodes.Ret;
 import com.michaelzanussi.leafpile.opcodes.Ret_popped;
+import com.michaelzanussi.leafpile.opcodes.Rfalse;
 import com.michaelzanussi.leafpile.opcodes.Rtrue;
 import com.michaelzanussi.leafpile.opcodes.Scan_table;
 import com.michaelzanussi.leafpile.opcodes.Set_attr;
@@ -220,8 +226,12 @@ public class Factory {
 			switch (opcode_no) {
 			case 0x00:
 				return new Rtrue(instruction);
+			case 0x01:
+				return new Rfalse(instruction);
 			case 0x02:
 				return new Print(instruction);
+			case 0x03:
+				return new Print_ret(instruction);
 			case 0x08:
 				return new Ret_popped(instruction);
 			case 0x0b:
@@ -240,6 +250,8 @@ public class Factory {
 				return new Get_child(instruction);
 			case 0x03:
 				return new Get_parent(instruction);
+			case 0x04:
+				return new Get_prop_len(instruction);
 			case 0x05:
 				return new Inc(instruction);
 			case 0x08:
@@ -278,6 +290,8 @@ public class Factory {
 				return new Test_attr(instruction);
 			case 0x0b:
 				return new Set_attr(instruction);
+			case 0x0c:
+				return new Clear_attr(instruction);
 			case 0x0d:
 				return new Store(instruction);
 			case 0x0e:
@@ -288,6 +302,8 @@ public class Factory {
 				return new Loadb(instruction);
 			case 0x11:
 				return new Get_prop(instruction);
+			case 0x12:
+				return new Get_prop_addr(instruction);
 			case 0x14:
 				return new Add(instruction);
 			case 0x15:
@@ -322,6 +338,8 @@ public class Factory {
 				return new Print_char(instruction);
 //			case 0x06:
 //				return new Print_num(instruction);
+			case 0x07:
+				return new Random(instruction);
 			case 0x08:
 				return new Push(instruction);
 //			case 0x09:

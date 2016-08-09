@@ -73,11 +73,27 @@ public interface ObjectTableObject {
 	public void setAttribute(int attribute);
 	
 	/**
+	 * Clears the given attribute.
+	 * 
+	 * @param attribute the attribute to clear
+	 */
+	public void clearAttribute(int attribute);
+	
+	/**
 	 * Returns the object's short name.
 	 * 
 	 * @return the object's short name.
 	 */
 	public String getShortName();
+	
+	/**
+	 * Returns the property address, or 0 if 
+	 * the property does not exist.
+	 * 
+	 * @param property the property
+	 * @return the property's address
+	 */
+	public int getPropertyAddress(int property);
 	
 	/**
 	 * Returns the property's value.

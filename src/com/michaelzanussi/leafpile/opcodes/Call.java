@@ -40,10 +40,11 @@ public class Call extends AbstractOpcode {
 		// First operand is packed address to routine start address. (5.1)
 		int routine_addr = memory.unpackAddress(operands.get(0));
 		
-		// TODO: A routine call to packed address 0 is legal: 
-		// it does nothing returns false (0). (6.4.3)
+		// A routine call to packed address 0 is legal: 
+		// it does nothing and returns false (0). (6.4.3)
 		if (routine_addr == 0) {
-			assert (false) : "finish Call exec for packed address 0";
+			current.setVariableValue(current.getStoreVariable(), 0);
+			return;
 		}
 
 		// Header. Number of local variables. (5.2)

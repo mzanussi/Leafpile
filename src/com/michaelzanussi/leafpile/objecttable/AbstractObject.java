@@ -116,6 +116,14 @@ public abstract class AbstractObject implements ObjectTableObject {
 	}
 	
 	/* (non-Javadoc)
+	 * @see com.michaelzanussi.leafpile.objecttable.ObjectTableObject#clearAttribute(int)
+	 */
+	@Override
+	public void clearAttribute(int attribute) {
+		attributes.set(attribute, false);
+	}
+	
+	/* (non-Javadoc)
 	 * @see com.michaelzanussi.leafpile.objecttable.ObjectTableObject#getShortName()
 	 */
 	@Override
@@ -164,6 +172,24 @@ public abstract class AbstractObject implements ObjectTableObject {
 			sb.append("\n");
 			return sb.toString();
 		}
+		
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.michaelzanussi.leafpile.objecttable.ObjectTableObject#getPropertyAddress(int)
+	 */
+	@Override
+	public int getPropertyAddress(int property) {
+		
+		// Locate the property in the object. If found,
+		// get the data address.
+		for (Property prop : properties) {
+			if (prop.number == property) {
+				return prop.address;
+			}
+		}
+		
+		return 0;
 		
 	}
 	
