@@ -10,7 +10,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.filechooser.FileFilter;
 
-import com.michaelzanussi.leafpile.ui.components.Console;
+import com.michaelzanussi.leafpile.ui.console.Console;
 import com.michaelzanussi.leafpile.ui.menu.Menu;
 import com.michaelzanussi.leafpile.ui.property.GuiPropertyManager;
 import com.michaelzanussi.leafpile.zmachine.Zmachine;

@@ -1,4 +1,4 @@
-package com.michaelzanussi.leafpile.ui.components;
+package com.michaelzanussi.leafpile.ui.console;
 
 import java.awt.Font;
 import java.awt.Point;
@@ -12,7 +12,7 @@ import com.michaelzanussi.leafpile.zmachine.Zmachine;
  * @author <a href="mailto:iosdevx@gmail.com">Michael Zanussi</a>
  * @version 1.0 (23 May 2016) 
  */
-public class V4ScreenModel extends Console {
+public class V4ConsoleModel extends Console {
 
 	/**
 	 * The constructor.
@@ -21,7 +21,7 @@ public class V4ScreenModel extends Console {
 	 * @param height the height of the screen, in units.
 	 * @param font the initial font.
 	 */
-	public V4ScreenModel(Zmachine zmachine, int width, int height, Font font) {
+	public V4ConsoleModel(Zmachine zmachine, int width, int height, Font font) {
 		super(zmachine, width, height, font);
 		bold = true;
 		italic = true;

@@ -1,4 +1,4 @@
-package com.michaelzanussi.leafpile.ui.components;
+package com.michaelzanussi.leafpile.ui.console;
 
 import java.awt.Font;
 
@@ -11,9 +11,9 @@ import com.michaelzanussi.leafpile.zmachine.Zmachine;
  * @author <a href="mailto:admin@michaelzanussi.com">Michael Zanussi</a>
  * @version 1.0 (12 February 2008)
  */
-public class V1ScreenModel extends Console {
+public class V1ConsoleModel extends Console {
 
-	public V1ScreenModel(Zmachine zmachine, int width, int height, Font font) {
+	public V1ConsoleModel(Zmachine zmachine, int width, int height, Font font) {
 		super(zmachine, width, height, font);
 		noStatusLine = false;
 	}

@@ -5,6 +5,11 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Random;
 
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.SourceDataLine;
+
 import com.michaelzanussi.leafpile.factory.Factory;
 import com.michaelzanussi.leafpile.instructions.Instruction;
 import com.michaelzanussi.leafpile.ui.IUI;
@@ -107,6 +112,32 @@ public class Zmachine extends Thread {
 		random.setSeed(seed);
 	}
 	
+	/**
+	 * Play a sound (beep).
+	 * 
+	 * @param hz frequency
+	 * @param length length in msecs
+	 * @param volume volume
+	 */
+	public void playSound(int hz, int length, double volume) {
+		try {
+			AudioFormat af = new AudioFormat(8000.0f, 8, 1, true, false);
+			SourceDataLine sdl = AudioSystem.getSourceDataLine(af);
+			sdl.open(af);
+			sdl.start();
+			for (int i = 0; i < length * 8; i++) {
+				double angle = i / (8000.0 / hz) * 2 * Math.PI;
+				byte[] b = {(byte)(Math.sin(angle) * 127.0 * volume)};
+				sdl.write(b, 0, 1);
+			}
+			sdl.drain();
+			sdl.stop();
+			sdl.close();
+		} catch (LineUnavailableException e) {
+			// Do nothing.
+		}
+	}
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Thread#run()
 	 */
@@ -164,7 +195,7 @@ public class Zmachine extends Thread {
 		while (true) {
 			counter++;
 			System.out.println("+++++ NEW INSTRUCTION +++++ " + counter);
-			if (current.getPC() == 95274) {	// debug only
+			if (/*current.getPC() == 83764*/counter == 17521 || counter == 17588) {	// debug only
 				System.out.print("");
 			}
 			Instruction instruction = factory.createInstruction();

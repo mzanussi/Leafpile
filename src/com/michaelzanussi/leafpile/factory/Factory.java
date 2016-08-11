@@ -20,6 +20,7 @@ import com.michaelzanussi.leafpile.opcodes.Call_1s;
 import com.michaelzanussi.leafpile.opcodes.Call_2s;
 import com.michaelzanussi.leafpile.opcodes.Call_vs;
 import com.michaelzanussi.leafpile.opcodes.Clear_attr;
+import com.michaelzanussi.leafpile.opcodes.Dec;
 import com.michaelzanussi.leafpile.opcodes.Dec_chk;
 import com.michaelzanussi.leafpile.opcodes.Div;
 import com.michaelzanussi.leafpile.opcodes.Erase_window;
@@ -55,6 +56,7 @@ import com.michaelzanussi.leafpile.opcodes.Push;
 import com.michaelzanussi.leafpile.opcodes.Put_prop;
 import com.michaelzanussi.leafpile.opcodes.Random;
 import com.michaelzanussi.leafpile.opcodes.Read_char;
+import com.michaelzanussi.leafpile.opcodes.Remove_obj;
 import com.michaelzanussi.leafpile.opcodes.Ret;
 import com.michaelzanussi.leafpile.opcodes.Ret_popped;
 import com.michaelzanussi.leafpile.opcodes.Rfalse;
@@ -64,6 +66,7 @@ import com.michaelzanussi.leafpile.opcodes.Set_attr;
 import com.michaelzanussi.leafpile.opcodes.Set_cursor;
 import com.michaelzanussi.leafpile.opcodes.Set_text_style;
 import com.michaelzanussi.leafpile.opcodes.Set_window;
+import com.michaelzanussi.leafpile.opcodes.Sound_effect;
 import com.michaelzanussi.leafpile.opcodes.Split_window;
 import com.michaelzanussi.leafpile.opcodes.Sread;
 import com.michaelzanussi.leafpile.opcodes.Store;
@@ -72,10 +75,10 @@ import com.michaelzanussi.leafpile.opcodes.Storew;
 import com.michaelzanussi.leafpile.opcodes.Sub;
 import com.michaelzanussi.leafpile.opcodes.Test;
 import com.michaelzanussi.leafpile.opcodes.Test_attr;
-import com.michaelzanussi.leafpile.ui.components.Console;
-import com.michaelzanussi.leafpile.ui.components.V1ScreenModel;
-import com.michaelzanussi.leafpile.ui.components.V3ScreenModel;
-import com.michaelzanussi.leafpile.ui.components.V4ScreenModel;
+import com.michaelzanussi.leafpile.ui.console.Console;
+import com.michaelzanussi.leafpile.ui.console.V1ConsoleModel;
+import com.michaelzanussi.leafpile.ui.console.V3ConsoleModel;
+import com.michaelzanussi.leafpile.ui.console.V4ConsoleModel;
 import com.michaelzanussi.leafpile.instructions.LongFormInstruction;
 import com.michaelzanussi.leafpile.instructions.ShortFormInstruction;
 import com.michaelzanussi.leafpile.instructions.VariableFormInstruction;
@@ -122,11 +125,11 @@ public class Factory {
 	 */
 	public Console createConsole(int scr_width, int scr_height, Font font) {
 		if (version == 1 || version == 2) {
-			return new V1ScreenModel(zmachine, scr_width, scr_height, font);			
+			return new V1ConsoleModel(zmachine, scr_width, scr_height, font);			
 		} else if (version == 3) {
-			return new V3ScreenModel(zmachine, scr_width, scr_height, font);
+			return new V3ConsoleModel(zmachine, scr_width, scr_height, font);
 		} else if (version == 4 || version ==5 ) {
-			return new V4ScreenModel(zmachine, scr_width, scr_height, font);
+			return new V4ConsoleModel(zmachine, scr_width, scr_height, font);
 		} else {
 			
 		}
@@ -254,8 +257,12 @@ public class Factory {
 				return new Get_prop_len(instruction);
 			case 0x05:
 				return new Inc(instruction);
+			case 0x06:
+				return new Dec(instruction);
 			case 0x08:
 				return new Call_1s(instruction);
+			case 0x09:
+				return new Remove_obj(instruction);
 			case 0x0a:
 				return new Print_obj(instruction);
 			case 0x0b:
@@ -336,8 +343,8 @@ public class Factory {
 				return new Sread(instruction);
 			case 0x05:
 				return new Print_char(instruction);
-//			case 0x06:
-//				return new Print_num(instruction);
+			case 0x06:
+				return new Print_num(instruction);
 			case 0x07:
 				return new Random(instruction);
 			case 0x08:
@@ -358,6 +365,8 @@ public class Factory {
 				return new Buffer_mode(instruction);
 			case 0x13:
 				return new Output_stream(instruction);
+			case 0x15:
+				return new Sound_effect(instruction);
 			case 0x16:
 				return new Read_char(instruction);
 			case 0x17:

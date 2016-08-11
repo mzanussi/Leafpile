@@ -1,6 +1,5 @@
 package com.michaelzanussi.leafpile.instructions;
 
-import com.michaelzanussi.leafpile.factory.Factory;
 import com.michaelzanussi.leafpile.zmachine.Zmachine;
 
 /**
@@ -34,14 +33,14 @@ public class VariableFormInstruction extends AbstractInstruction {
 		// Get the opcode. (4.3.3)
 		opcode_no = (opcode_byte & 0x1f);
 		
-		// If the opcode is 0x0c (call_vs2) or 0x1a (call_vn2),
-		// then there can be up to 8 possible operands whose types
-		// are specified in 2 bytes; otherwise, there can be up
-		// to 4 possible operands, and their types are specified in
-		// 1 byte. (4.4.3, 4.4.3.1)
+		// If the opcode is 0x0c (call_vs2) or 0x1a (call_vn2), and
+		// it's a variable operand count, then there can be up to 8 
+		// possible operands whose types are specified in 2 bytes; 
+		// otherwise, there can be up to 4 possible operands, and their 
+		// types are specified in 1 byte. (4.4.3, 4.4.3.1)
 		int otypebyte = 0;
 		int poss_ops = 0;
-		if (opcode_no == 0x0c || opcode_no == 0x1a) {
+		if ((opcode_no == 0x0c || opcode_no == 0x1a) && opcount == Opcount.O_VAR) {
 			poss_ops = 8;
 			otypebyte = memory.getWord(current.getPC());
 			current.setPC(current.getPC() + 2);

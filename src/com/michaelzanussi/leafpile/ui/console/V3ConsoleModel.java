@@ -1,4 +1,4 @@
-package com.michaelzanussi.leafpile.ui.components;
+package com.michaelzanussi.leafpile.ui.console;
 
 import java.awt.Font;
 
@@ -11,7 +11,7 @@ import com.michaelzanussi.leafpile.zmachine.Zmachine;
  * @author <a href="mailto:admin@michaelzanussi.com">Michael Zanussi</a>
  * @version 1.0 (12 February 2008)
  */
-public class V3ScreenModel extends Console {
+public class V3ConsoleModel extends Console {
 
 	/**
 	 * The constructor.
@@ -20,7 +20,7 @@ public class V3ScreenModel extends Console {
 	 * @param height the height of the screen, in units.
 	 * @param font the initial font.
 	 */
-	public V3ScreenModel(Zmachine zmachine, int width, int height, Font font) {
+	public V3ConsoleModel(Zmachine zmachine, int width, int height, Font font) {
 		super(zmachine, width, height, font);
 		splitScreen = true;
 		noStatusLine = false;

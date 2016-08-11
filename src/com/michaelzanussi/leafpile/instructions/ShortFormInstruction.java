@@ -1,6 +1,5 @@
 package com.michaelzanussi.leafpile.instructions;
 
-import com.michaelzanussi.leafpile.factory.Factory;
 import com.michaelzanussi.leafpile.zmachine.Zmachine;
 
 /**

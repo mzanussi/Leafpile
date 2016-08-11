@@ -1,4 +1,4 @@
-package com.michaelzanussi.leafpile.ui.components;
+package com.michaelzanussi.leafpile.ui.console;
 
 import java.awt.Color;
 import java.awt.Dimension;
